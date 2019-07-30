@@ -117,7 +117,7 @@ class Admin extends React.Component {
             bgColor={this.state.backgroundColor}
             logo={{
               outterLink: "https://www.creative-tim.com/",
-              text: "Mókás Fogadás | "+this.props.bettingmodal.toString(),
+              text: "Mókás Fogadás",
               imgSrc: logo
             }}
             toggleSidebar={this.toggleSidebar}

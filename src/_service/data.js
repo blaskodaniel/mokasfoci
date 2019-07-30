@@ -8,14 +8,20 @@ export const loadProfile = (userid) => {
             if(data){
                 return data;
             }
+        }).catch(function (error) {
+            // handle error
+            console.log(error);
         });
 }
 
 export const saveProfile = (user) => {
-    return axios.patch(`${AppConfig.serverUrl}/api/profil/${user._id}`,{ headers: tokenHeader() })
+    return axios.patch(`${AppConfig.serverUrl}/api/profil/${user._id}`,user,{ headers: tokenHeader() })
         .then(data => {
             if(data){
                 return data;
             }
+        }).catch(function (error) {
+            // handle error
+            console.log(error);
         });
 }

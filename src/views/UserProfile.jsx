@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { loadProfile } from "../_service/data";
+import { loadProfile, saveProfile } from "../_service/data";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 // reactstrap components
 import {
@@ -29,9 +29,18 @@ const UserProfile = () => {
     loadUserProfile();
   }, []);
 
-  const handleProfilSubmit = (e) => {
+  const handleProfilSubmit = async (e) => {
     e.preventDefault();
     console.log(profildata);
+    try{
+      const saveresult = await saveProfile(profildata);
+      if(saveresult){
+        alert("Mentés sikeres!");
+      }
+    }catch(e){
+      console.log("Hiba történt a profil mentése során", e)
+    }
+    
   };
 
   const handleInputChange = e => {
