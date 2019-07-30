@@ -8,6 +8,7 @@ import {hist} from "./_helpers/browserhistory";
 import "assets/scss/black-dashboard-react.scss";
 import "assets/demo/demo.css";
 import "assets/css/nucleo-icons.css";
+import "assets/css/overwrite.css";
 import AuthenticationProvider from "./context/AuthenticationContext";
 import routes from "routes.js";
 

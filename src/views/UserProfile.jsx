@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
+import Notify from "react-notification-alert";
 import { loadProfile, saveProfile } from "../_service/data";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 // reactstrap components
@@ -17,6 +18,7 @@ import {
 } from "reactstrap";
 
 const UserProfile = () => {
+  const notify = useRef({});
   const currentUser = useContext(AuthenticationContext);
   const [profildata, setProfildata] = useState({});
 
@@ -29,18 +31,27 @@ const UserProfile = () => {
     loadUserProfile();
   }, []);
 
-  const handleProfilSubmit = async (e) => {
+  const openNotify = (msg,type) => {
+    const option = {
+      place: "tc",
+      message: msg,
+      type: type,
+      autoDismiss: 3
+    }
+    notify.current.notificationAlert(option);
+  }
+
+  const handleProfilSubmit = async e => {
     e.preventDefault();
     console.log(profildata);
-    try{
+    try {
       const saveresult = await saveProfile(profildata);
-      if(saveresult){
-        alert("Mentés sikeres!");
+      if (saveresult) {
+        openNotify("Mentés sikeres!","success");
       }
-    }catch(e){
-      console.log("Hiba történt a profil mentése során", e)
+    } catch (e) {
+      console.log("Hiba történt a profil mentése során", e);
     }
-    
   };
 
   const handleInputChange = e => {
@@ -148,7 +159,11 @@ const UserProfile = () => {
                     <Col className="pl-md-1" md="6">
                       <FormGroup>
                         <label>Kedvenc csapatom</label>
-                        <Input defaultValue="Magyarország" type="text" />
+                        <select className="form-control" defaultValue="hu">
+                          <option value="hu">Magyarország</option>
+                          <option value="br">Brazília</option>
+                          <option value="d">Németország</option>
+                        </select>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -190,6 +205,7 @@ const UserProfile = () => {
           </Col>
         </Row>
       </div>
+      <Notify ref={notify} />
     </>
   );
 };

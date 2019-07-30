@@ -1,0 +1,14 @@
+.form-group .form-control,
+.input-group .form-control {
+  padding: 8px 18px 8px 12px; }
+
+select.form-control option {
+    height: calc(2.25rem + 2px);
+    padding: 0.5rem 0.7rem;
+    font-size: 0.875rem;
+    line-height: 1.42857;
+    color: white;
+    background-color: rgb(40, 41, 61);
+    background-clip: padding-box;
+    border: 1px solid #cad1d7;
+}
