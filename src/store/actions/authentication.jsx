@@ -10,7 +10,7 @@ export const Login = (username, password) => {
         axios.post(`${AppConfig.serverUrl}/login`,{email:username,password:password})
             .then(token => {
                 if(token){
-                    localStorage.setItem('user', token.data.token);
+                    localStorage.setItem(AppConfig.JWTtokenname, token.data.token);
                     const decodedToken = JWT(token.data.token);
                     if(decodedToken){
                         dispatch(LoginSuccess(decodedToken));

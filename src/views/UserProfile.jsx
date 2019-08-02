@@ -1,6 +1,7 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import Notify from "react-notification-alert";
-import { loadProfile, saveProfile } from "../_service/data";
+import { loadProfile, saveProfile } from "../_service/api-func";
+import { getTeams, getGroups } from "../_service/api-public-func";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 // reactstrap components
 import {
@@ -17,29 +18,65 @@ import {
   Col
 } from "reactstrap";
 
+/**
+ * User profile component
+ */
 const UserProfile = () => {
   const notify = useRef({});
   const currentUser = useContext(AuthenticationContext);
   const [profildata, setProfildata] = useState({});
+  const [teamsdata, setTeamsdata] = useState([]);
+  const [groupsdata, setGroupsdata] = useState([]);
+  const [groupwithteams, setGroupwithteams] = useState([]);
 
-  useState(() => {
+  useEffect(() => {
     const loadUserProfile = async () => {
       const resultPromise = await loadProfile(currentUser.user.sub);
-      console.log(resultPromise.data);
       setProfildata(resultPromise.data);
     };
+  
+    const loadTeams = async () => {
+      const resultPromise = await getTeams();
+      setTeamsdata(resultPromise.data);
+    };
+  
+    const loadGroups = async () => {
+      const resultPromise = await getGroups();
+      setGroupsdata(resultPromise.data);
+    };
+  
     loadUserProfile();
+    loadTeams();
+    loadGroups();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const openNotify = (msg,type) => {
+  useEffect(()=>{
+    let _groupbyteam = [];
+    teamsdata.forEach(team=>{
+      const _tgr = _groupbyteam.find(x=>x._id === team.groupid._id);
+      if(_tgr){
+        _tgr.teams.push(team)
+      }else{
+        _groupbyteam.push({
+          _id: team.groupid._id,
+          name: team.groupid.name,
+          teams: [team]
+        })
+      }
+    })
+    setGroupwithteams(_groupbyteam);
+  },[teamsdata])
+
+  const openNotify = (msg, type) => {
     const option = {
       place: "tc",
       message: msg,
       type: type,
       autoDismiss: 3
-    }
+    };
     notify.current.notificationAlert(option);
-  }
+  };
 
   const handleProfilSubmit = async e => {
     e.preventDefault();
@@ -47,10 +84,11 @@ const UserProfile = () => {
     try {
       const saveresult = await saveProfile(profildata);
       if (saveresult) {
-        openNotify("Mentés sikeres!","success");
+        openNotify("Mentés sikeres!", "success");
       }
     } catch (e) {
-      console.log("Hiba történt a profil mentése során", e);
+      console.log("ERROR:", e);
+      openNotify("Hiba történt a profil mentése során", "error");
     }
   };
 
@@ -160,9 +198,13 @@ const UserProfile = () => {
                       <FormGroup>
                         <label>Kedvenc csapatom</label>
                         <select className="form-control" defaultValue="hu">
-                          <option value="hu">Magyarország</option>
-                          <option value="br">Brazília</option>
-                          <option value="d">Németország</option>
+                          {teamsdata.map(team => {
+                            return (
+                              <option key={team._id} value={team._id}>
+                                {team.name}
+                              </option>
+                            );
+                          })}
                         </select>
                       </FormGroup>
                     </Col>
@@ -175,6 +217,38 @@ const UserProfile = () => {
                 </CardFooter>
               </Card>
             </Form>
+            <Card>
+              <CardHeader>
+                <h5 className="title">Csoportelső tippjeid</h5>
+              </CardHeader>
+              <CardBody>
+                <Row className="d-flex flex-row flex-wrap justify-content-start">
+                  {groupwithteams.map(group => {
+                    return (
+                      <Col key={group._id} className="px-3" style={{minWidth:'225px'}}>
+                        <FormGroup>
+                          <label>{group.name} csoport</label>
+                          <select className="form-control" defaultValue="hu">
+                            {group.teams.map(team => {
+                              return (
+                                <option key={team._id} value={team._id}>
+                                  {team.name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </FormGroup>
+                      </Col>
+                    );
+                  })}
+                </Row>
+              </CardBody>
+              <CardFooter>
+                <Button className="btn-fill" color="primary" type="submit">
+                  Küldés
+                </Button>
+              </CardFooter>
+            </Card>
             <Card>
               <CardHeader>
                 <h5 className="title">Visszajelzés</h5>
