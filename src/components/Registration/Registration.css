@@ -1,0 +1,35 @@
+.registrationcontainer{
+    background: rgba(0,0,0,0.6);
+    padding: 22px;
+    position: absolute;
+    top:15%;
+}
+
+.registrationcontainer input, .registrationcontainer input:focus{
+    color: white;
+    background-color: #2c3844;
+    border-color: aliceblue;
+    border-radius: 0;
+    border-bottom: 1;
+    border-right: 0;
+    border-top: 0;
+    border-left: 0;
+}
+
+.registrationcontainer input::-webkit-input-placeholder { /* Edge */
+    color: white;
+  }
+  
+  .registrationcontainer input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white;
+  }
+  
+  .registrationcontainer input::placeholder {
+    color: white;
+  }
+
+  @media only screen and (min-width: 300px) {
+    .registrationcontainer form{
+      min-width: 270px;
+    }
+  }

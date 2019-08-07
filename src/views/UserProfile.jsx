@@ -27,6 +27,7 @@ const UserProfile = () => {
   const [profildata, setProfildata] = useState({});
   const [teamsdata, setTeamsdata] = useState([]);
   const [groupsdata, setGroupsdata] = useState([]);
+  const [groupwinbet, setGroupwinbet] = useState([]);
   const [groupwithteams, setGroupwithteams] = useState([]);
 
   useEffect(() => {
@@ -34,39 +35,39 @@ const UserProfile = () => {
       const resultPromise = await loadProfile(currentUser.user.sub);
       setProfildata(resultPromise.data);
     };
-  
+
     const loadTeams = async () => {
       const resultPromise = await getTeams();
       setTeamsdata(resultPromise.data);
     };
-  
+
     const loadGroups = async () => {
       const resultPromise = await getGroups();
       setGroupsdata(resultPromise.data);
     };
-  
+
     loadUserProfile();
     loadTeams();
     loadGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     let _groupbyteam = [];
-    teamsdata.forEach(team=>{
-      const _tgr = _groupbyteam.find(x=>x._id === team.groupid._id);
-      if(_tgr){
-        _tgr.teams.push(team)
-      }else{
+    teamsdata.forEach(team => {
+      const _tgr = _groupbyteam.find(x => x._id === team.groupid._id);
+      if (_tgr) {
+        _tgr.teams.push(team);
+      } else {
         _groupbyteam.push({
           _id: team.groupid._id,
           name: team.groupid.name,
           teams: [team]
-        })
+        });
       }
-    })
+    });
     setGroupwithteams(_groupbyteam);
-  },[teamsdata])
+  }, [teamsdata]);
 
   const openNotify = (msg, type) => {
     const option = {
@@ -96,6 +97,22 @@ const UserProfile = () => {
     const { name, value } = e.target;
     setProfildata({ ...profildata, [name]: value });
   };
+
+  // Group winner submit handler
+  const handleGroupWinSubmit = async e => {
+    e.preventDefault();
+    const sendedObj = { ...groupwinbet, _id: profildata._id};
+    console.log("handleGroupWinSubmit",groupwinbet);
+    try {
+      const saveresult = await saveProfile(groupwinbet);
+      if (saveresult) {
+        openNotify("Mentés sikeres!", "success");
+      }
+    } catch (e) {
+      console.log("ERROR:", e);
+      openNotify("Hiba történt a profil mentése során", "error");
+    }
+  }
 
   return (
     <>
@@ -197,7 +214,7 @@ const UserProfile = () => {
                     <Col className="pl-md-1" md="6">
                       <FormGroup>
                         <label>Kedvenc csapatom</label>
-                        <select className="form-control" defaultValue="hu">
+                        <Input type="select" className="form-control" value={profildata.teamid} name="teamid" onChange={handleInputChange}>
                           {teamsdata.map(team => {
                             return (
                               <option key={team._id} value={team._id}>
@@ -205,7 +222,7 @@ const UserProfile = () => {
                               </option>
                             );
                           })}
-                        </select>
+                        </Input>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -217,38 +234,43 @@ const UserProfile = () => {
                 </CardFooter>
               </Card>
             </Form>
-            <Card>
-              <CardHeader>
-                <h5 className="title">Csoportelső tippjeid</h5>
-              </CardHeader>
-              <CardBody>
-                <Row className="d-flex flex-row flex-wrap justify-content-start">
-                  {groupwithteams.map(group => {
-                    return (
-                      <Col key={group._id} className="px-3" style={{minWidth:'225px'}}>
-                        <FormGroup>
-                          <label>{group.name} csoport</label>
-                          <select className="form-control" defaultValue="hu">
-                            {group.teams.map(team => {
-                              return (
-                                <option key={team._id} value={team._id}>
-                                  {team.name}
-                                </option>
-                              );
-                            })}
-                          </select>
-                        </FormGroup>
-                      </Col>
-                    );
-                  })}
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <Button className="btn-fill" color="primary" type="submit">
-                  Küldés
-                </Button>
-              </CardFooter>
-            </Card>
+            <Form onSubmit={handleProfilSubmit}>
+              <Card>
+                <CardHeader>
+                  <h5 className="title">Csoportelső tippjeid</h5>
+                </CardHeader>
+                <CardBody>
+                  <Row className="d-flex flex-row flex-wrap justify-content-start">
+                    {groupwithteams.map(group => {
+                      return (
+                        <Col
+                          key={group._id}
+                          className="px-3"
+                          style={{ minWidth: "225px" }}>
+                          <FormGroup>
+                            <label>{group.name} csoport</label>
+                            <select className="form-control" value={profildata[group.name]} name={group.name} onChange={handleInputChange}>
+                              {group.teams.map(team => {
+                                return (
+                                  <option key={team._id} value={team._id}>
+                                    {team.name}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          </FormGroup>
+                        </Col>
+                      );
+                    })}
+                  </Row>
+                </CardBody>
+                <CardFooter>
+                  <Button className="btn-fill" color="primary" type="submit">
+                    Küldés
+                  </Button>
+                </CardFooter>
+              </Card>
+            </Form>
             <Card>
               <CardHeader>
                 <h5 className="title">Visszajelzés</h5>

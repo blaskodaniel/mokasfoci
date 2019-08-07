@@ -22,6 +22,8 @@ ReactDOM.render(
       <AuthenticationProvider>
         <Switch>
           <Route exact path="/" render={() => ( <Redirect to="/merkozesek" />)} />
+          <Route path="/login" render={() => ( <Redirect to="/merkozesek" />)} />
+          <Route path="/registration" render={() => ( <Redirect to="/merkozesek" />)} />
           {
             routes.map((route, key) => {
               return (
@@ -40,13 +42,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
-
-/* {state.Login.authentication ?
-  <Switch>
-    <Route path="/admin" render={props => <AdminLayout {...props} />} />
-    <Redirect from="/" to="/admin/merkozesek" />
-  </Switch> :
-  <Switch>
-    <Route path="/" render={props => <Login {...props} /> } />
-  </Switch>
-} */

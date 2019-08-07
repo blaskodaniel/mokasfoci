@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from "react";
-import AdminLayout from "../layouts/Admin/Admin";
+import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
-import Login from "../layouts/Login/Login";
+
 import {
   AuthenticationContext,
   LoginState
@@ -11,6 +10,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   const { loginstatus } = useContext(AuthenticationContext);
 
   return (
+    <>
     <Route
       {...rest}
       render={props => {
@@ -31,6 +31,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         }
       }}
     />
+    </>
   );
 };
 

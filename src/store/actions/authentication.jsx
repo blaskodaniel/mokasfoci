@@ -1,7 +1,6 @@
 import axios from 'axios';
 import * as JWT from 'jwt-decode';
 import {AppConfig} from '../../application.config';
-import {Loader} from './loader';
 import * as actionTypes from './actionTypes';
 import { noAuthUser } from '../../context/AuthenticationContext';
 
@@ -50,21 +49,15 @@ export const LoginError = (user) => {
 
 export const Registration = (email, password, name) => {
     return (dispatch, getState) => {
-        // Run page loader
-        dispatch(Loader(true));
-
         axios.post(`${AppConfig.serverUrl}/register`,{email:email,password:password,name:name})
             .then(data => {
                 dispatch(Login(email,password));
-                dispatch(Loader(false));
             }).catch(err => {
                 if(err.response){
                     dispatch(LoginError(err.response.data));
                 }else{
                     dispatch(LoginError(err.message));
                 }
-                
-                dispatch(Loader(false));
             });
     }
 }

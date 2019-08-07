@@ -20,10 +20,11 @@ if (userToken) {
   };
 }
 
-export const Registration = (state = baseState, action) => {
+export const RegistrationReducer = (state = baseState, action) => {
   const newState = { ...state };
   switch (action.type) {
     case "REGISTER_SUCCESS":
+        newState.msg = action.value.msg;
       return newState;
     case "REGISTER_ERROR":
       newState.msg = action.value.message;
