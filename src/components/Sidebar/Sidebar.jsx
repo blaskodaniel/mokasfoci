@@ -3,7 +3,7 @@ import React from "react";
 import { NavLink, Link } from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
-
+import {AuthenticationContext} from "../../context/AuthenticationContext";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 
@@ -13,6 +13,7 @@ import { Nav } from "reactstrap";
 var ps;
 
 class Sidebar extends React.Component {
+  static contextType = AuthenticationContext;
   constructor(props) {
     super(props);
     this.activeRoute.bind(this);
@@ -100,25 +101,49 @@ class Sidebar extends React.Component {
           <Nav>
             {routes.map((prop, key) => {
               if (prop.redirect) return null;
-              return (
-                <li
-                  className={
-                    this.activeRoute(prop.path) +
-                    (prop.pro ? " active-pro" : "")
-                  }
-                  key={key}
-                >
-                  <NavLink
-                    to={prop.layout + prop.path}
-                    className="nav-link"
-                    activeClassName="active"
-                    onClick={this.props.toggleSidebar}
+              if(this.context.user.role.includes("admin") && prop.type.includes("admin")){
+                return (
+                  <li
+                    className={
+                      this.activeRoute(prop.path) +
+                      (prop.pro ? " active-pro" : "")
+                    }
+                    key={key}
                   >
-                    <i className={prop.icon} />
-                    <p>{prop.name}</p>
-                  </NavLink>
-                </li>
-              );
+                    <NavLink
+                      to={prop.layout + prop.path}
+                      className="nav-link"
+                      activeClassName="active"
+                      onClick={this.props.toggleSidebar}
+                    >
+                      <i className={prop.icon} />
+                      <p>{prop.name}</p>
+                    </NavLink>
+                  </li>
+                );
+              }
+              if(prop.type.includes("player")){
+                return (
+                  <li
+                    className={
+                      this.activeRoute(prop.path) +
+                      (prop.pro ? " active-pro" : "")
+                    }
+                    key={key}
+                  >
+                    <NavLink
+                      to={prop.layout + prop.path}
+                      className="nav-link"
+                      activeClassName="active"
+                      onClick={this.props.toggleSidebar}
+                    >
+                      <i className={prop.icon} />
+                      <p>{prop.name}</p>
+                    </NavLink>
+                  </li>
+                );
+              }
+  
             })}
           </Nav>
         </div>

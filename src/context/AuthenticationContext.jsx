@@ -13,12 +13,9 @@ export const AuthenticationContext = createContext();
 export const noAuthUser = { username: "Visitor", role: "visitor", email: null, sub: null, msg: "" };
 
 const AuthenticationProvider = props => {
-  const [loginState, setLoginState] = useState(LoginState.Unauthenticated, () => {
-    const localstr = authChecker();
-    console.log("Local storage: "+ JSON.stringify(localstr));
-    return localstr ? localstr : noAuthUser
-  });
-  const [register, registerDispatch] = useThunkReducer(RegistrationReducer, noAuthUser)
+  const [loginState, setLoginState] = useState(LoginState.Unauthenticated);
+  const [registerState, setRegisterState] = useState(0);
+  const [register, registerDispatch] = useThunkReducer(RegistrationReducer, {msg:null});
   const [user, userDispatch] = useThunkReducer(LoginReducer, noAuthUser, () => {
     const localstr = authChecker();
     console.log("Local storage: "+ JSON.stringify(localstr));
@@ -40,7 +37,19 @@ const AuthenticationProvider = props => {
       setLoginState(LoginState.Unauthenticated);
     }
     
-  }, [user,loginState,register])
+  }, [user,loginState])
+
+  useEffect(() => {
+    console.log("register: ",register);
+    if(register.msg === 0){
+      // sikeres regisztráció
+      setRegisterState(1);
+    }else{
+      // sikertelen regisztráció
+      setRegisterState(2);
+    }
+    
+  }, [register])
 
   return (
     <>
@@ -51,7 +60,9 @@ const AuthenticationProvider = props => {
           <Switch>
             <Route exact path="/" render={() => ( <Login onLogin={userDispatch} setlogin={setLoginState} msg={user.msg} />)} />
             <Route path="/login" render={() => ( <Login onLogin={userDispatch} setlogin={setLoginState} msg={user.msg} />)} />
-            <Route path="/registration" render={() => ( <Registration onRegister={registerDispatch} setlogin={setLoginState} msg={register.msg} />)} />
+            <Route path="/registration" render={() => ( 
+              <Registration onRegister={registerDispatch} setlogin={setLoginState} msg={register} regstate={registerState} setregstate={setRegisterState} />
+            )} />
           </Switch>
         ) : null}
       </AuthenticationContext.Provider>

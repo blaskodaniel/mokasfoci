@@ -74,6 +74,7 @@ class Admin extends React.Component {
   };
   getRoutes = routes => {
     return routes.map((route, key) => {
+      if(this.context.user.role.includes("admin") && route.type.includes("admin")){
         return (
           <Route
             path={route.layout + route.path}
@@ -81,6 +82,19 @@ class Admin extends React.Component {
             key={key}
           />
         );
+      } 
+      if(route.type.includes("player")){
+        return (
+          <Route
+            path={route.layout + route.path}
+            component={route.component}
+            key={key}
+          />
+        );
+      }else{
+        return null;
+      }
+      
     });
   };
   handleBgClick = color => {

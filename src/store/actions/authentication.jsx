@@ -51,21 +51,18 @@ export const Registration = (email, password, name) => {
     return (dispatch, getState) => {
         axios.post(`${AppConfig.serverUrl}/register`,{email:email,password:password,name:name})
             .then(data => {
-                dispatch(Login(email,password));
+                dispatch({
+                    type: actionTypes.REGISTER_SUCCESS,
+                    value: data
+                });
+                // dispatch(Login(email,password));
             }).catch(err => {
                 if(err.response){
-                    dispatch(LoginError(err.response.data));
+                    dispatch(RegisterError(err.response.data));
                 }else{
-                    dispatch(LoginError(err.message));
+                    dispatch(RegisterError(err.message));
                 }
             });
-    }
-}
-
-export const RegisterSuccess = (payload) => {
-    return {
-        type: actionTypes.REGISTER_SUCCESS,
-        value: payload
     }
 }
 
