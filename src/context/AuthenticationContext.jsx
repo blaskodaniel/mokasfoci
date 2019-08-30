@@ -10,7 +10,7 @@ import Registration from "../components/Registration/Registration";
 
 export const AuthenticationContext = createContext();
 
-export const noAuthUser = { username: "Visitor", role: "visitor", email: null, sub: null, msg: "" };
+export const noAuthUser = { username: "Visitor", email: null, sub: null, msg: "" };
 
 const AuthenticationProvider = props => {
   const [loginState, setLoginState] = useState(LoginState.Unauthenticated);

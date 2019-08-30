@@ -19,3 +19,13 @@ export const getGroups = (query = "") => {
             return error
         });
 }
+
+export const getMatches = (query = "") => {
+    return APIclient.get(`getmatches${query}`)
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}

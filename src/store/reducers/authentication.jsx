@@ -3,7 +3,6 @@ import * as actionTypes from "../actions/actionTypes";
 
 var defaultAuthState = {
   username: "Visitor",
-  role: "visitor",
   email: null,
   authentication: false,
   msg: ""
@@ -13,7 +12,6 @@ const userToken = authChecker();
 if (userToken) {
   baseState = {
     username: userToken.username,
-    role: userToken.role,
     email: userToken.email,
     authentication: true,
     msg: null
@@ -40,14 +38,12 @@ export const LoginReducer = (state = baseState, action) => {
     case actionTypes.LOGIN_SUCCESS:
       console.log("LoginReducer (SUCCESS): "+ JSON.stringify(action));
       newstate.username = action.value.username;
-      newstate.role = action.value.role;
       newstate.email = action.value.email;
       newstate.msg = action.value.msg;
       newstate.sub = action.value.sub;
       return newstate;
     case actionTypes.LOGIN_ERROR:
       newstate.username = action.value.username;
-      newstate.role = action.value.role;
       newstate.email = action.value.email;
       newstate.msg = action.value.msg;
       newstate.sub = action.value.sub;

@@ -1,6 +1,4 @@
-import React from "react";
-import { connect } from 'react-redux'; 
-import Largematch from "../components/Largematch/Largematch";
+import React, { useState, useEffect } from "react";
 import Matchtable from "../components/Matchtable/Matchtable";
 import MatchtableMobile from "../components/Matchtable/MatchtableMobile";
 // reactstrap components
@@ -8,51 +6,33 @@ import {
   Row,
   Col
 } from "reactstrap";
+import { getMatches } from "../_service/api-public-func";
 
-// Amit kapunk a store-ból
-const mapStateToProps = (state, match) => {
-  return {
-    bettingmodal: state.Modals.value
-  }
-}
-
-class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedmatch: {}
+const Home = () => {
+  const [matchlist, setMatchlist] = useState([]);
+  useEffect(() => {
+    const loadMatches = async () => {
+      const resultPromise = await getMatches("?active=0");
+      setMatchlist(resultPromise.data);
     };
-  }
 
-  betting = match => {
-    this.setState({
-      selectedmatch: match
-    });
-  };
+    loadMatches();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  render() {
     return (
       <>
         <div className="content">
-          <h2>Mai mérkőzések</h2>
-          <Row>
-            <Col lg="4">
-              <Largematch />
-            </Col>
-            <Col lg="4">
-              <Largematch />
-            </Col>
-            <Col lg="4">
-              <Largematch />
-            </Col>
-          </Row>
-          <h2>További mérkőzések</h2>
+          <h3>Legközelebbi mérkőzések</h3>
           <Row>
             <Col lg="12" md="12">
-              <Matchtable />
+              {
+                matchlist.length > 0 ? <Matchtable list={matchlist} /> : <p>Mérkőzések betöltése....</p>
+              }
+              
             </Col>
           </Row>
-          <h2>Mobil nézet</h2>
+          <h3>Lejátszott mérkőzések</h3>
           <Row>
             <Col lg="12">
               <MatchtableMobile />
@@ -61,7 +41,7 @@ class Home extends React.Component {
         </div>
       </>
     );
-  }
+  
 }
 
-export default connect(mapStateToProps)(Home);
+export default Home;

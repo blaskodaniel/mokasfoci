@@ -134,7 +134,7 @@ const UserProfile = () => {
                       src={require("assets/img/default-avatar.png")}
                     />
                     <h5 className="title">
-                      {profildata.name ? profildata.name : profildata.username} ({profildata.role})
+                      {profildata.name ? profildata.name : profildata.username} (role)
                     </h5>
                   </a>
                   <p className="description">

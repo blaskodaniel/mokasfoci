@@ -1,14 +1,42 @@
+h3, .h3 {
+  margin-bottom: 17px;
+}
+
 .form-group .form-control,
 .input-group .form-control {
-  padding: 8px 18px 8px 12px; }
+  padding: 8px 18px 8px 12px;
+}
 
 select.form-control option {
-    height: calc(2.25rem + 2px);
-    padding: 0.5rem 0.7rem;
-    font-size: 0.875rem;
-    line-height: 1.42857;
-    color: white;
-    background-color: rgb(40, 41, 61);
-    background-clip: padding-box;
-    border: 1px solid #cad1d7;
+  height: calc(2.25rem + 2px);
+  padding: 0.5rem 0.7rem;
+  font-size: 0.875rem;
+  line-height: 1.42857;
+  color: white;
+  background-color: rgb(40, 41, 61);
+  background-clip: padding-box;
+  border: 1px solid #cad1d7;
+}
+
+.table-responsive {
+  overflow: hidden;
+}
+
+tr.bettingtablerow:hover {
+  background-color: rgb(50, 63, 82);
+  cursor: pointer;
+}
+
+tr.monthtablerow {
+  background: #476322;
+}
+
+@media only screen and (max-width: 600px) {
+  h3,
+  .h3 {
+    font-size: 1rem;
+  }
+  table.tablesorter {
+    font-size: smaller;
+  }
 }
