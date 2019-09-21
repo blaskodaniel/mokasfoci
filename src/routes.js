@@ -2,64 +2,64 @@ import Home from "views/Home.jsx";
 import AdminUsermanager from "views/Admin-usermanager.jsx";
 import MyBets from "views/MyBets.jsx";
 import Notifications from "views/Notifications.jsx";
-import TableList from "views/TableList.jsx";
 import Typography from "views/Typography.jsx";
 import UserProfile from "views/UserProfile.jsx";
+import Toplist from "./views/Toplist";
 
 var routes = [
   {
-    path: "merkozesek",
-    name: "Mérkőzések",
-    type: ["player"],
+    path: "fooldal",
+    name: "Főoldal",
     icon: "tim-icons icon-chart-pie-36",
     component: Home,
+    visible: true,
     layout: "/"
   },
   {
     path: "usermanager",
     name: "Usermanager",
-    type: ["admin"],
     icon: "nc-icon nc-multiple-11",
+    visible: false,
     component: AdminUsermanager,
     layout: "/"
   },
   {
     path: "fogadasiam",
     name: "Fogadásaim",
-    type: ["player"],
     icon: "tim-icons icon-pin",
+    visible: true,
     component: MyBets,
     layout: "/"
   },
   {
     path: "notifications",
     name: "Notifications",
-    type: ["player"],
     icon: "tim-icons icon-bell-55",
+    visible: false,
     component: Notifications,
     layout: "/"
   },
   {
     path: "profil",
     name: "User Profile",
-    type: ["player"],
     icon: "tim-icons icon-single-02",
+    visible: true,
     component: UserProfile,
     layout: "/"
   },
   {
-    path: "tables",
-    name: "Table List",
-    type: ["player"],
+    path: "toplist",
+    name: "Toplista",
     icon: "tim-icons icon-puzzle-10",
-    component: TableList,
+    visible: true,
+    component: Toplist,
     layout: "/"
   },
   {
     path: "typography",
     name: "Typography",
-    type: ["player"],
     icon: "tim-icons icon-align-center",
+    visible: false,
     component: Typography,
     layout: "/"
   }

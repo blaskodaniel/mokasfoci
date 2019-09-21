@@ -12,7 +12,6 @@ import "assets/css/nucleo-outline-icons.css";
 import "assets/css/overwrite.css";
 import AuthenticationProvider from "./context/AuthenticationContext";
 import routes from "routes.js";
-import AdminAreaProvider from "./context/AdminAreaContext";
 import SharedProvider from "./context/SharedContect";
 
 const store = configStore();
@@ -23,43 +22,19 @@ ReactDOM.render(
     <Router history={hist}>
       <AuthenticationProvider>
         <SharedProvider>
-          <AdminAreaProvider>
-            <Switch>
-              {
-                routes.map((route, key) => {
-                  if (route.type.includes("admin")) {
-                    return (
-                      <Route
-                        path={route.layout + route.path}
-                        component={AdminLayout}
-                        key={key}
-                      />
-                    );
-                  } else {
-                    return null;
-                  }
-                })
-              }
-            </Switch>
-          </AdminAreaProvider>
           <Switch>
-            <Route exact path="/" render={() => (<Redirect to="/merkozesek" />)} />
-            <Route path="/login" render={() => (<Redirect to="/merkozesek" />)} />
-            <Route path="/registration" render={() => (<Redirect to="/merkozesek" />)} />
+            <Route exact path="/" render={() => (<Redirect to="/fooldal" />)} />
+            <Route path="/login" render={() => (<Redirect to="/fooldal" />)} />
+            <Route path="/registration" render={() => (<Redirect to="/fooldal" />)} />
             {
               routes.map((route, key) => {
-                if (route.type.includes("player")) {
-                  return (
-                    <Route
-                      path={route.layout + route.path}
-                      component={AdminLayout}
-                      key={key}
-                    />
-                  );
-                } else {
-                  return null;
-                }
-
+                return route.visible ? (
+                  <Route
+                    path={route.layout + route.path}
+                    component={AdminLayout}
+                    key={key}
+                  />
+                ): null;
               })
             }
             <Route path="*" component={() => "404 Not found"} />

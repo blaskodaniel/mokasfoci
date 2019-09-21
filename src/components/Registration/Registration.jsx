@@ -39,7 +39,7 @@ class Registration extends Component {
     if(this.state.email && this.state.password && this.state.name){
         this.props.setlogin(LoginState.Pending);
         this.props.onRegister(
-          AuthActions.Registration(this.state.email, this.state.password)
+          AuthActions.Registration(this.state.email, this.state.password, this.state.name)
         );
     }
   };

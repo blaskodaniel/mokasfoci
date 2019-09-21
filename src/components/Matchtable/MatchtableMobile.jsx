@@ -1,145 +1,115 @@
-import React from "react";
+import React, {useEffect, useState, useContext} from "react";
+import moment from 'moment';
 import { Card, Row, Col, CardBody } from "reactstrap";
+import { getCouponsByUserId } from "../../_service/api-func";
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 
-class MatchtableMobile extends React.Component {
-  render() {
-    return (
-      <Card>
-        <CardBody>
-          <Row className="theadrow">
-            <Col xs="6">
-              <p>Mérkőzés</p>
-            </Col>
-            <Col xs="6">
-              <Row>
-                <Col className="text-center" xs="4">
-                  <p>1</p>
-                </Col>
-                <Col className="text-center" xs="4">
-                  <p>X</p>
-                </Col>
-                <Col className="text-center" xs="4">
-                  <p>2</p>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row style={{ padding: "7px" }}>
-            <Col xs="6">
-              <Row>
-                <Col xs="9">
-                  <p>Argentína</p>
-                </Col>
-                <Col xs="3">
-                  <p>0</p>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs="9">
-                  <p>Lengyelország</p>
-                </Col>
-                <Col xs="3">
-                  <p>0</p>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs="12">
-                  <p className="datetime">Július 12. 14:00</p>
-                </Col>
-              </Row>
-            </Col>
-            <Col xs="6">
-              <Row>
-                <Col
-                  className="d-flex justify-content-center align-items-center"
-                  style={{
-                    height: "50px",
-                    borderRight: "1px solid rgba(134, 134, 148, 0.3)"
-                  }}
-                  xs="4"
-                >
-                  <span>1.33</span>
-                </Col>
-                <Col
-                  className="d-flex justify-content-center align-items-center"
-                  style={{
-                    height: "50px",
-                    borderRight: "1px solid rgba(134, 134, 148, 0.3)"
-                  }}
-                  xs="4"
-                >
-                  <span>3.75</span>
-                </Col>
-                <Col
-                  className="d-flex justify-content-center align-items-center"
-                  style={{ height: "50px" }}
-                  xs="4"
-                >
-                  <span>9.00</span>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row style={{ padding: "7px" }}>
-            <Col xs="6">
-              <Row>
-                <Col xs="9">
-                  <p>Argentína</p>
-                </Col>
-                <Col xs="3">
-                  <p>0</p>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs="9">
-                  <p>Lengyelország</p>
-                </Col>
-                <Col xs="3">
-                  <p>0</p>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs="12">
-                  <p className="datetime">Július 12. 14:00</p>
-                </Col>
-              </Row>
-            </Col>
-            <Col xs="6">
-              <Row>
-                <Col
-                  className="d-flex justify-content-center align-items-center"
-                  style={{
-                    height: "50px",
-                    borderRight: "1px solid rgba(134, 134, 148, 0.3)"
-                  }}
-                  xs="4"
-                >
-                  <span>1.33</span>
-                </Col>
-                <Col
-                  className="d-flex justify-content-center align-items-center"
-                  style={{
-                    height: "50px",
-                    borderRight: "1px solid rgba(134, 134, 148, 0.3)"
-                  }}
-                  xs="4"
-                >
-                  <span>3.75</span>
-                </Col>
-                <Col
-                  className="d-flex justify-content-center align-items-center"
-                  style={{ height: "50px" }}
-                  xs="4"
-                >
-                  <span>9.00</span>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </CardBody>
-      </Card>
-    );
-  }
-}
+const MatchtableMobile = ({ list }) => {
+  const currentUser = useContext(AuthenticationContext);
+  const [coupons, setCoupons] = useState([])
+
+  useEffect(() => {
+    const loadCoupons = async () => {
+      const resultPromise = await getCouponsByUserId(currentUser.user.sub);
+      setCoupons(resultPromise.data);
+    };
+
+    loadCoupons();
+    // TODO: CLEANUP!!!!
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <Card>
+      <CardBody>
+        <Row className="theadrow">
+          <Col xs="6">
+            <p className="mb0">Mérkőzés</p>
+          </Col>
+          <Col xs="6">
+            <Row>
+              <Col className="text-center" xs="4">
+                <p className="mb0">1</p>
+              </Col>
+              <Col className="text-center" xs="4">
+                <p className="mb0">X</p>
+              </Col>
+              <Col className="text-center" xs="4">
+                <p className="mb0">2</p>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        {list.length > 0
+          ? list.map(m => {
+              let mybet = coupons.filter(c=>c.matchid._id === m._id)
+              return (
+                <Row key={m._id} style={{ padding: "7px" }} className="tablesorter">
+                  <Col xs="6">
+                    <Row>
+                      <Col xs="9">
+                        <p>{m.teamA.name}</p>
+                      </Col>
+                      <Col xs="3">
+                        <p>{m.goalA}</p>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs="9">
+                        <p>{m.teamB.name}</p>
+                      </Col>
+                      <Col xs="3">
+                        <p>{m.goalB}</p>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs="12">
+                        <p className="datetime">{moment(m.date).format("MMMM Do dddd")}</p>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col xs="6">
+                    <Row>
+                      <Col
+                        className="d-flex justify-content-center align-items-center"
+                        style={{
+                          height: "50px",
+                          borderRight: "1px solid rgba(134, 134, 148, 0.3)"
+                        }}
+                        xs="4"
+                      >
+                        <span className={m.outcome === "1" ? "colorwhite" : ""}>{m.oddsAwin}</span>
+                        <span className={mybet.length > 0 ? (mybet[0].outcome === "1" ? "mytippspan" : "hidden") : "hidden"}>Tipped</span>
+                      </Col>
+                      <Col
+                        className="d-flex justify-content-center align-items-center"
+                        style={{
+                          height: "50px",
+                          borderRight: "1px solid rgba(134, 134, 148, 0.3)"
+                        }}
+                        xs="4"
+                      >
+                        <span className={m.outcome === "x" ? "colorwhite" : ""}>{m.oddsDraw}</span>
+                        <span className={mybet.length > 0 ? (mybet[0].outcome === "x" ? "mytippspan" : "hidden") : "hidden"}>Tipped</span>
+                      </Col>
+                      <Col
+                        className="d-flex justify-content-center align-items-center"
+                        style={{ height: "50px" }}
+                        xs="4"
+                      >
+                        <span className={m.outcome === "2" ? "colorwhite" : ""}>{m.oddsBwin}</span>
+                        <span className={mybet.length > 0 ? (mybet[0].outcome === "2" ? "mytippspan" : "hidden") : "hidden"}>Tipped</span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              );
+            })
+          : null}
+      </CardBody>
+    </Card>
+  );
+};
 
 export default MatchtableMobile;

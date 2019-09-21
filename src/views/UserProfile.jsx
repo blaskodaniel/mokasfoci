@@ -31,6 +31,7 @@ const UserProfile = () => {
   const [groupwithteams, setGroupwithteams] = useState([]);
 
   useEffect(() => {
+    console.log("AuthenticationContext: ",currentUser.userinfo)
     const loadUserProfile = async () => {
       const resultPromise = await loadProfile(currentUser.user.sub);
       setProfildata(resultPromise.data);
@@ -134,11 +135,11 @@ const UserProfile = () => {
                       src={require("assets/img/default-avatar.png")}
                     />
                     <h5 className="title">
-                      {profildata.name ? profildata.name : profildata.username} (role)
+                      {profildata.name ? profildata.name : profildata.username}
                     </h5>
                   </a>
                   <p className="description">
-                    {parseInt(profildata.score, 10)} pont
+                    {parseInt(currentUser.userinfo.score, 10)} pont
                   </p>
                 </div>
                 <div className="card-description" />

@@ -7,15 +7,17 @@ import {AppConfig} from "../application.config";
 import authChecker from "../_helpers/auth-checker"
 import { LoginReducer, RegistrationReducer } from "../store/reducers/authentication";
 import Registration from "../components/Registration/Registration";
+import { loadProfile } from "../_service/api-func";
 
 export const AuthenticationContext = createContext();
 
-export const noAuthUser = { username: "Visitor", email: null, sub: null, msg: "" };
+export const noAuthUser = { username: "Visitor", email: null, sub: null, msg: ""};
 
 const AuthenticationProvider = props => {
   const [loginState, setLoginState] = useState(LoginState.Unauthenticated);
   const [registerState, setRegisterState] = useState(0);
   const [register, registerDispatch] = useThunkReducer(RegistrationReducer, {msg:null});
+  const [userinfo, setUserinfo] = useState({});
   const [user, userDispatch] = useThunkReducer(LoginReducer, noAuthUser, () => {
     const localstr = authChecker();
     console.log("Local storage: "+ JSON.stringify(localstr));
@@ -28,11 +30,16 @@ const AuthenticationProvider = props => {
     window.location.href = "/";
   };
 
+  const loadUserProfile = async (currentUser) => {
+    const resultPromise = await loadProfile(currentUser.sub);
+    setUserinfo(resultPromise.data);
+  };
+
   useEffect(() => {
-    console.log("User: ",user);
-    console.log("loginState: ",loginState);
+    console.log("AuthenticationProvider: ",user);
     if(user.sub !== null && user.email !== null){
       setLoginState(LoginState.Authenticated);
+      loadUserProfile(user);
     }else{
       setLoginState(LoginState.Unauthenticated);
     }
@@ -53,7 +60,7 @@ const AuthenticationProvider = props => {
 
   return (
     <>
-      <AuthenticationContext.Provider value={{ loginstatus: loginState, user, userDispatch, logout }}>
+      <AuthenticationContext.Provider value={{ loginstatus: loginState, user, userinfo, setUserinfo, userDispatch, logout }}>
         {loginState === LoginState.Pending ? <AuthLoader /> : null}
         {loginState === LoginState.Authenticated ? props.children : null}
         {loginState === LoginState.Unauthenticated || loginState === LoginState.Unknown ? (

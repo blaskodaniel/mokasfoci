@@ -74,26 +74,13 @@ class Admin extends React.Component {
   };
   getRoutes = routes => {
     return routes.map((route, key) => {
-      if(this.context.user.role.includes("admin") && route.type.includes("admin")){
-        return (
-          <Route
-            path={route.layout + route.path}
-            component={route.component}
-            key={key}
-          />
-        );
-      } 
-      if(route.type.includes("player")){
-        return (
-          <Route
-            path={route.layout + route.path}
-            component={route.component}
-            key={key}
-          />
-        );
-      }else{
-        return null;
-      }
+      return route.visible ? (
+        <Route
+          path={route.layout + route.path}
+          component={route.component}
+          key={key}
+        />
+      ):null;
       
     });
   };
@@ -153,7 +140,7 @@ class Admin extends React.Component {
               <Footer fluid />
             )}
           </div>
-          <BettingModal initialModalState={this.props.bettingmodal} />
+          {/* <BettingModal initialModalState={this.props.bettingmodal} /> */}
         </div>
         {/* <FixedPlugin
           bgColor={this.state.backgroundColor}

@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import * as moment from "moment";
 import "moment/locale/hu";
 // import _ from "lodash";
 import { Card, CardBody, Table } from "reactstrap";
+import { SharedContext } from "../../context/SharedContect";
 
 const Matchelement = ({ value }) => {
-  console.log("Matchelement");
+  const sharedContext = useContext(SharedContext);
+  const openmsgmod = (match) => {
+    sharedContext.betmodal_setmatch(match);
+    sharedContext.betmodal_toggle();
+  }
   return (
     <>
       {value.map(match => {
         return (
-          <tr key={match._id} className="bettingtablerow">
+          <tr key={match._id} className="bettingtablerow" onClick={()=>openmsgmod(match)}>
             <td>{moment(match.date).format("HH:mm")}</td>
             <td>
               {match.teamA.name} - {match.teamB.name}
@@ -36,10 +41,10 @@ const Matchlist = ({ val }) => {
                 {moment(match.month).calendar(null, {
                   sameDay: "[Ma]",
                   nextDay: "[Holnap]",
-                  nextWeek: "dddd",
+                  nextWeek: "MMMM Do dddd",
                   lastDay: "[Tegnap]",
-                  lastWeek: "[Last] dddd",
-                  sameElse: "MMMM Do"
+                  lastWeek: "MMMM Do dddd",
+                  sameElse: "MMMM Do dddd"
                 })}
               </td>
               <td className="text-center">1</td>
@@ -54,7 +59,7 @@ const Matchlist = ({ val }) => {
   );
 };
 
-const Matchtable = ({list}) => {
+const Matchtable = ({ list }) => {
   const [test, setTest] = useState("dgb");
   moment.locale("hu");
 
@@ -114,8 +119,8 @@ const Matchtable = ({list}) => {
 
   useEffect(() => {
     const loadMatches = () => {
-      setTest("Jaj de jó")
-      console.log("Use effect", test)
+      setTest("Jaj de jó");
+      console.log("Use effect", test);
     };
 
     loadMatches();
@@ -123,19 +128,21 @@ const Matchtable = ({list}) => {
   }, []);
 
   return (
-    <Card>
-      <CardBody>
-        <Table className="tablesorter" responsive>
-          <tbody>
-            {groupedbymonth.map(matchgroup => {
-              return (
-                 <Matchlist key={matchgroup.group} val={matchgroup.data} />
-              );
-            })}
-          </tbody>
-        </Table>
-      </CardBody>
-    </Card>
+    <>
+      <Card>
+        <CardBody>
+          <Table className="tablesorter" responsive>
+            <tbody>
+              {groupedbymonth.map(matchgroup => {
+                return (
+                  <Matchlist key={matchgroup.group} val={matchgroup.data} />
+                );
+              })}
+            </tbody>
+          </Table>
+        </CardBody>
+      </Card>
+    </>
   );
 };
 

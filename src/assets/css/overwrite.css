@@ -1,5 +1,14 @@
-h3, .h3 {
+h3,
+.h3 {
   margin-bottom: 17px;
+}
+
+.hidden{
+  display: none;
+}
+
+.mb0 {
+  margin-bottom: 0;
 }
 
 .form-group .form-control,
@@ -23,12 +32,93 @@ select.form-control option {
 }
 
 tr.bettingtablerow:hover {
-  background-color: rgb(50, 63, 82);
   cursor: pointer;
 }
 
 tr.monthtablerow {
   background: #476322;
+}
+
+.betmodal-content div.modal-content {
+  background-color: #35302e;
+}
+
+.betmodal-content div.modal-body {
+  padding: 20px 15px 20px 15px;
+}
+
+.betmodal-content .modal-body p,
+.betmodal-content .modal-body h1,
+.betmodal-content .modal-body h2,
+.betmodal-content .modal-body h4 {
+  color: white;
+}
+
+.betmodal-content .modal-header .modal-title {
+  color: white;
+}
+
+.betmodal-content div.card {
+  background-color: #35302e;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.betmodal-content .card .card-body {
+  padding: 5px;
+}
+
+.betmodal-content span.form-check-sign {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.betmodal-content input {
+  max-width: 120px;
+  margin: 0 auto;
+  font-size: 16px;
+  text-align: center;
+}
+
+.betmodal-content .betpointpanel {
+  margin-top: 10px;
+}
+
+.mybets .matchdateinfo {
+  display: block;
+  font-size: 10px;
+  text-transform: lowercase;
+  font-style: italic;
+}
+
+.mybets .successtext {
+  color: rgba(79, 255, 95, 0.7) !important;
+}
+
+.mybets .failtext {
+  color: rgb(230, 90, 90) !important;
+}
+
+tr.theadrow {
+  padding: 3px;
+}
+
+tr.theadrow > td {
+  padding: 3px 6px !important;
+}
+
+.mytippspan {
+  color: #339845;
+  font-size: 10px;
+  position: absolute;
+  top: 1px;
+}
+
+.colorwhite{
+  color: white;
+}
+
+.react-confirm-alert-body h1{
+  color: black
 }
 
 @media only screen and (max-width: 600px) {
@@ -37,6 +127,10 @@ tr.monthtablerow {
     font-size: 1rem;
   }
   table.tablesorter {
+    font-size: smaller;
+    overflow-x: scroll;
+  }
+  .tablesorter {
     font-size: smaller;
   }
 }

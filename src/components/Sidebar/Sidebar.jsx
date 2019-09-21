@@ -101,48 +101,25 @@ class Sidebar extends React.Component {
           <Nav>
             {routes.map((prop, key) => {
               if (prop.redirect) return null;
-              if(this.context.user.role.includes("admin") && prop.type.includes("admin")){
-                return (
-                  <li
-                    className={
-                      this.activeRoute(prop.path) +
-                      (prop.pro ? " active-pro" : "")
-                    }
-                    key={key}
+              return prop.visible ? (
+                <li
+                  className={
+                    this.activeRoute(prop.path) +
+                    (prop.pro ? " active-pro" : "")
+                  }
+                  key={key}
+                >
+                  <NavLink
+                    to={prop.layout + prop.path}
+                    className="nav-link"
+                    activeClassName="active"
+                    onClick={this.props.toggleSidebar}
                   >
-                    <NavLink
-                      to={prop.layout + prop.path}
-                      className="nav-link"
-                      activeClassName="active"
-                      onClick={this.props.toggleSidebar}
-                    >
-                      <i className={prop.icon} />
-                      <p>{prop.name}</p>
-                    </NavLink>
-                  </li>
-                );
-              }
-              if(prop.type.includes("player")){
-                return (
-                  <li
-                    className={
-                      this.activeRoute(prop.path) +
-                      (prop.pro ? " active-pro" : "")
-                    }
-                    key={key}
-                  >
-                    <NavLink
-                      to={prop.layout + prop.path}
-                      className="nav-link"
-                      activeClassName="active"
-                      onClick={this.props.toggleSidebar}
-                    >
-                      <i className={prop.icon} />
-                      <p>{prop.name}</p>
-                    </NavLink>
-                  </li>
-                );
-              }
+                    <i className={prop.icon} />
+                    <p>{prop.name}</p>
+                  </NavLink>
+                </li>
+              ):null;
   
             })}
           </Nav>
