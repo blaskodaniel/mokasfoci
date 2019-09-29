@@ -4,5 +4,6 @@ export const AppConfig = {
     logotext: "Mókás Fogadás",
     gamename: "EB 2019",
     gamestart: "2020-06-12",
-    gameend: "2020-07-12"
+    gameend: "2020-07-12",
+    version: "1.11"
 }
