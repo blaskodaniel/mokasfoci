@@ -57,6 +57,7 @@ class Sidebar extends React.Component {
           </a>
         );
         logoText = (
+          <>
           <a
             href={logo.outterLink}
             className="simple-text logo-normal"
@@ -65,6 +66,8 @@ class Sidebar extends React.Component {
           >
             {logo.text}
           </a>
+          <span className="gamename">{logo.subtext}</span>
+          </>
         );
       } else {
         logoImg = (
@@ -101,7 +104,7 @@ class Sidebar extends React.Component {
           <Nav>
             {routes.map((prop, key) => {
               if (prop.redirect) return null;
-              return prop.visible ? (
+              return prop.visible && !prop.hiddenlink ? (
                 <li
                   className={
                     this.activeRoute(prop.path) +

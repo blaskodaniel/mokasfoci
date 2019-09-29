@@ -1,30 +1,79 @@
 import React, { useState, useEffect, useContext } from "react";
 import * as moment from "moment";
 import "moment/locale/hu";
-// import _ from "lodash";
 import { Card, CardBody, Table } from "reactstrap";
 import { SharedContext } from "../../context/SharedContect";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFutbol } from '@fortawesome/free-solid-svg-icons'
+import routes from "../../routes";
+
+const footballicon = <FontAwesomeIcon icon={faFutbol} />
 
 const Matchelement = ({ value }) => {
   const sharedContext = useContext(SharedContext);
-  const openmsgmod = (match) => {
+  const openmsgmod = match => {
     sharedContext.betmodal_setmatch(match);
     sharedContext.betmodal_toggle();
-  }
+  };
+  const runningmatchlink = routes.filter(x => x.id === "merkozes");
   return (
     <>
       {value.map(match => {
-        return (
-          <tr key={match._id} className="bettingtablerow" onClick={()=>openmsgmod(match)}>
-            <td>{moment(match.date).format("HH:mm")}</td>
-            <td>
-              {match.teamA.name} - {match.teamB.name}
-            </td>
-            <td className="text-center">{match.oddsAwin}</td>
-            <td className="text-center">{match.oddsDraw}</td>
-            <td className="text-center">{match.oddsBwin}</td>
-          </tr>
-        );
+        if (match.active === 1) {
+          return (
+            <tr
+              key={match._id}
+              className="bettingtablerow runmatch"
+            >
+              <td>{moment(match.date).format("HH:mm")}</td>
+              <td>
+                <span className="footballicon">{footballicon}</span>
+                <Link to={runningmatchlink[0].path + "/" + match._id}>
+                    {match.teamA.name} - {match.teamB.name}
+                </Link>
+              </td>
+              <td className="text-center">{match.oddsAwin}</td>
+              <td className="text-center">{match.oddsDraw}</td>
+              <td className="text-center">{match.oddsBwin}</td>
+            </tr>
+          );
+        } else if (match.active === 2) {
+          return (
+            <tr
+              key={match._id}
+              className="bettingtablerow endmatch"
+            >
+              <td>{moment(match.date).format("HH:mm")}</td>
+              <td>
+                <Link to={runningmatchlink[0].path + "/" + match._id}>
+                    {match.teamA.name} - {match.teamB.name}
+                </Link>
+                <span>  (vége)</span>
+              </td>
+              <td className="text-center">{match.oddsAwin}</td>
+              <td className="text-center">{match.oddsDraw}</td>
+              <td className="text-center">{match.oddsBwin}</td>
+            </tr>
+          );
+        }
+        else{
+          return (
+            <tr
+              key={match._id}
+              className="bettingtablerow"
+              onClick={() => openmsgmod(match)}
+            >
+              <td>{moment(match.date).format("HH:mm")}</td>
+              <td>
+                    {match.teamA.name} - {match.teamB.name}
+              </td>
+              <td className="text-center">{match.oddsAwin}</td>
+              <td className="text-center">{match.oddsDraw}</td>
+              <td className="text-center">{match.oddsBwin}</td>
+            </tr>
+          );
+        }
       })}
     </>
   );
@@ -105,6 +154,7 @@ const Matchtable = ({ list }) => {
     let groupbymonth = groupbyfunc(list, 1); // groupby month
     groupbymonth.forEach(item => {
       let groupbyday = groupbyfunc(item.data, 2);
+      groupbyday.sort((x,c)=> new Date(x.month)-new Date(c.month))
       item.data = groupbyday;
     });
 

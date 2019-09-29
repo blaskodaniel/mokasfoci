@@ -1,7 +1,7 @@
 import React from "react";
 import {AuthenticationContext} from "../../context/AuthenticationContext";
 import classNames from "classnames";
-
+import { Link } from "react-router-dom";
 // reactstrap components
 import {
   Button,
@@ -70,6 +70,8 @@ class AdminNavbar extends React.Component {
     });
   };
   render() {
+    const { routes } = this.props; 
+    const profilLink = routes.filter(x=>x.id === "profil")
     return (
       <>
         <Navbar
@@ -113,7 +115,7 @@ class AdminNavbar extends React.Component {
             </button>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <Nav className="ml-auto" navbar>
-                <InputGroup className="search-bar">
+                <InputGroup className="search-bar hidden">
                   <Button
                     color="link"
                     data-target="#searchModal"
@@ -125,7 +127,7 @@ class AdminNavbar extends React.Component {
                     <span className="d-lg-none d-md-block">Search</span>
                   </Button>
                 </InputGroup>
-                <UncontrolledDropdown nav>
+                <UncontrolledDropdown nav className="hidden">
                   <DropdownToggle
                     caret
                     color="default"
@@ -180,10 +182,9 @@ class AdminNavbar extends React.Component {
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
                     <NavLink tag="li">
-                      <DropdownItem className="nav-item">Profile</DropdownItem>
-                    </NavLink>
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">Settings</DropdownItem>
+                      <DropdownItem className="nav-item">
+                        <Link className="profilemenu" to={profilLink[0].path}>{profilLink[0].name}</Link>
+                      </DropdownItem>
                     </NavLink>
                     <DropdownItem divider tag="li" />
                     <NavLink tag="li">

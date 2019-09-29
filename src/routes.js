@@ -1,66 +1,81 @@
 import Home from "views/Home.jsx";
-import AdminUsermanager from "views/Admin-usermanager.jsx";
+import AllMatches from "views/AllMatches.jsx";
+import AllEndMatches from "views/AllEndMatches.jsx";
 import MyBets from "views/MyBets.jsx";
-import Notifications from "views/Notifications.jsx";
-import Typography from "views/Typography.jsx";
 import UserProfile from "views/UserProfile.jsx";
 import Toplist from "./views/Toplist";
+import CurrentMatchInfo from "./views/CurrentMatchInfo";
 
 var routes = [
   {
+    id: "fooldal",
     path: "fooldal",
     name: "Főoldal",
-    icon: "tim-icons icon-chart-pie-36",
+    icon: "tim-icons icon-sound-wave",
     component: Home,
     visible: true,
+    hiddenlink: false,
     layout: "/"
   },
   {
-    path: "usermanager",
-    name: "Usermanager",
-    icon: "nc-icon nc-multiple-11",
-    visible: false,
-    component: AdminUsermanager,
+    id: "merkozesek",
+    path: "merkozesek",
+    name: "merkozesek",
+    icon: "tim-icons icon-user-run",
+    visible: true,
+    hiddenlink: false,
+    component: AllMatches,
     layout: "/"
   },
   {
+    id: "lejatszott",
+    path: "lejatszott",
+    name: "lejatszott",
+    icon: "tim-icons icon-lock-circle",
+    visible: true,
+    hiddenlink: false,
+    component: AllEndMatches,
+    layout: "/"
+  },
+  {
+    id: "fogadasiam",
     path: "fogadasiam",
     name: "Fogadásaim",
-    icon: "tim-icons icon-pin",
+    icon: "tim-icons icon-single-copy-04",
     visible: true,
+    hiddenlink: false,
     component: MyBets,
     layout: "/"
   },
   {
-    path: "notifications",
-    name: "Notifications",
-    icon: "tim-icons icon-bell-55",
-    visible: false,
-    component: Notifications,
-    layout: "/"
-  },
-  {
+    id: "profil",
     path: "profil",
-    name: "User Profile",
+    name: "Profilom",
     icon: "tim-icons icon-single-02",
     visible: true,
+    hiddenlink: false,
     component: UserProfile,
     layout: "/"
   },
   {
+    id: "toplist",
     path: "toplist",
     name: "Toplista",
-    icon: "tim-icons icon-puzzle-10",
+    icon: "tim-icons icon-bullet-list-67",
     visible: true,
+    hiddenlink: false,
     component: Toplist,
     layout: "/"
   },
   {
-    path: "typography",
-    name: "Typography",
+    id: "merkozes",
+    path: "merkozes",
+    name: "Futó mérkőzés",
     icon: "tim-icons icon-align-center",
-    visible: false,
-    component: Typography,
+    visible: true,
+    hiddenlink: true,
+    param: "/:matchid",
+    component: CurrentMatchInfo,
     layout: "/"
   }
 ];

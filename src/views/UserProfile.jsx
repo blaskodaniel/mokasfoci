@@ -1,5 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import Notify from "react-notification-alert";
+import moment from "moment";
+import {AppConfig} from "../application.config";
 import { loadProfile, saveProfile } from "../_service/api-func";
 import { getTeams, getGroups } from "../_service/api-public-func";
 import { AuthenticationContext } from "../context/AuthenticationContext";
@@ -87,6 +89,11 @@ const UserProfile = () => {
       const saveresult = await saveProfile(profildata);
       if (saveresult) {
         openNotify("Mentés sikeres!", "success");
+        // Update favorite team id in context
+        currentUser.setUserinfo({
+          ...currentUser.userinfo,
+          teamid: profildata.teamid
+        });
       }
     } catch (e) {
       console.log("ERROR:", e);
@@ -98,22 +105,6 @@ const UserProfile = () => {
     const { name, value } = e.target;
     setProfildata({ ...profildata, [name]: value });
   };
-
-  // Group winner submit handler
-  const handleGroupWinSubmit = async e => {
-    e.preventDefault();
-    const sendedObj = { ...groupwinbet, _id: profildata._id};
-    console.log("handleGroupWinSubmit",groupwinbet);
-    try {
-      const saveresult = await saveProfile(groupwinbet);
-      if (saveresult) {
-        openNotify("Mentés sikeres!", "success");
-      }
-    } catch (e) {
-      console.log("ERROR:", e);
-      openNotify("Hiba történt a profil mentése során", "error");
-    }
-  }
 
   return (
     <>
@@ -202,7 +193,7 @@ const UserProfile = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col className="pr-md-1" md="6">
+                    {/* <Col className="pr-md-1" md="6">
                       <FormGroup>
                         <label>Azonosítóm</label>
                         <Input
@@ -211,11 +202,12 @@ const UserProfile = () => {
                           type="text"
                         />
                       </FormGroup>
-                    </Col>
-                    <Col className="pl-md-1" md="6">
+                    </Col> */}
+                    <Col md="12">
                       <FormGroup>
                         <label>Kedvenc csapatom</label>
-                        <Input type="select" className="form-control" value={profildata.teamid} name="teamid" onChange={handleInputChange}>
+                        <Input type="select" disabled={moment().isBefore(AppConfig.gamestart) ? "":true} className="form-control" value={profildata.teamid} name="teamid" onChange={handleInputChange}>
+                          {typeof profildata.teamid === "undefined" ? <option value="0">Kérlek válassz...</option> : ""}
                           {teamsdata.map(team => {
                             return (
                               <option key={team._id} value={team._id}>
@@ -251,6 +243,7 @@ const UserProfile = () => {
                           <FormGroup>
                             <label>{group.name} csoport</label>
                             <select className="form-control" value={profildata[group.name]} name={group.name} onChange={handleInputChange}>
+                              {typeof profildata[group.name] === "undefined" ? <option value="0">Kérlek válassz...</option> : ""}
                               {group.teams.map(team => {
                                 return (
                                   <option key={team._id} value={team._id}>
@@ -267,7 +260,7 @@ const UserProfile = () => {
                 </CardBody>
                 <CardFooter>
                   <Button className="btn-fill" color="primary" type="submit">
-                    Küldés
+                    Mentés
                   </Button>
                 </CardFooter>
               </Card>

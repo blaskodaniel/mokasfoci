@@ -1,15 +1,18 @@
 import React from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Route, Switch, Redirect } from "react-router-dom";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
-import {AuthenticationContext, LoginState} from "../../context/AuthenticationContext";
+import {
+  AuthenticationContext,
+  LoginState
+} from "../../context/AuthenticationContext";
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
-import BettingModal from "components/Modal/BettingModal.jsx";
+import { AppConfig } from "../../application.config";
 // import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
 import routes from "routes.js";
@@ -20,11 +23,11 @@ var ps;
 
 // Amit kapunk a store-ból
 const mapStateToProps = (state, match) => {
-  console.log("ReduxStore: " + JSON.stringify(state))
+  console.log("ReduxStore: " + JSON.stringify(state));
   return {
     bettingmodal: state.Modals.value
-  }
-}
+  };
+};
 
 class Admin extends React.Component {
   static contextType = AuthenticationContext;
@@ -74,13 +77,23 @@ class Admin extends React.Component {
   };
   getRoutes = routes => {
     return routes.map((route, key) => {
-      return route.visible ? (
-        <Route
-          path={route.layout + route.path}
-          component={route.component}
-          key={key}
-        />
-      ):null;
+      if (route.hiddenlink) {
+        return (
+          <Route
+            path={route.layout + route.path + route.param}
+            component={route.component}
+            key={key}
+          />
+        );
+      }else{
+        return route.visible ? (
+          <Route
+            path={route.layout + route.path}
+            component={route.component}
+            key={key}
+          />
+        ) : null;
+      }
       
     });
   };
@@ -100,9 +113,11 @@ class Admin extends React.Component {
     return "";
   };
   render() {
-    const {loginstatus} = this.context;
+    const { loginstatus } = this.context;
     if (loginstatus === LoginState.Unauthenticated) {
-      console.log("loginstate:"+loginstatus+"; Átirányítás a Login page-re");
+      console.log(
+        "loginstate:" + loginstatus + "; Átirányítás a Login page-re"
+      );
       return (
         <Redirect
           to={{ pathname: "/login", state: { from: this.props.location } }}
@@ -117,8 +132,9 @@ class Admin extends React.Component {
             routes={routes}
             bgColor={this.state.backgroundColor}
             logo={{
-              outterLink: "https://www.creative-tim.com/",
-              text: "Mókás Fogadás",
+              outterLink: "https://mokasfoci.hu/",
+              text: AppConfig.logotext,
+              subtext: AppConfig.gamename,
               imgSrc: logo
             }}
             toggleSidebar={this.toggleSidebar}
@@ -133,6 +149,7 @@ class Admin extends React.Component {
               brandText={this.getBrandText(this.props.location.pathname)}
               toggleSidebar={this.toggleSidebar}
               sidebarOpened={this.state.sidebarOpened}
+              routes={routes}
             />
             <Switch>{this.getRoutes(routes)}</Switch>
             {// we don't want the Footer to be rendered on map page

@@ -8,8 +8,12 @@ import classNames from "classnames";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import moment from "moment";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFrown } from '@fortawesome/free-solid-svg-icons'
+import { faCogs } from '@fortawesome/free-solid-svg-icons'
 import Fab from "@material-ui/core/Fab";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Tooltip from '@material-ui/core/Tooltip';
 
 // reactstrap components
 import {
@@ -26,6 +30,9 @@ import {
 import { getCouponsByUserId, deleteCoupon } from "../_service/api-func";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 import { getTeams } from "../_service/api-public-func";
+
+const faFrownicon = <FontAwesomeIcon icon={faFrown} />
+const faCogsicon = <FontAwesomeIcon icon={faCogs} />
 
 const useStyles = makeStyles({
   card: {
@@ -88,6 +95,16 @@ const useStyles = makeStyles({
     backgroundColor: "#4789afb5",
     color: "white",
     fontSize: "11px"
+  },
+  infospanproc: {
+    position: "absolute",
+    right: "0px",
+    width: "100px",
+    padding: "3px 0px 2px 7px",
+    top: "15px",
+    backgroundColor: "#5247afb5",
+    color: "white",
+    fontSize: "11px"
   }
 });
 
@@ -113,6 +130,32 @@ const MyBets = () => {
       console.log("Hiba történt a törlés során", err);
     }
   };
+
+  const resultCalc = coupon => {
+    if(coupon.outcome === "1" && coupon.matchid.teamA === currentUser.userinfo.teamid){
+      return (coupon.result*2)
+    }else if(coupon.outcome === "2" && coupon.matchid.teamB === currentUser.userinfo.teamid){
+      return (coupon.result*2)
+    }else{
+      return (coupon.result)
+    }
+  }
+
+  const isFavorite = coupon => {
+    var returnobj = {
+      isfav: false,
+      team: ""
+    }
+    if(coupon.outcome === "1" && coupon.matchid.teamA === currentUser.userinfo.teamid){
+      returnobj.isfav = true
+      returnobj.team = coupon.matchid.teamA
+    }else if(coupon.outcome === "2" && coupon.matchid.teamB === currentUser.userinfo.teamid){
+      returnobj.isfav = true
+      returnobj.team = coupon.matchid.teamB
+    }
+
+    return returnobj
+  }
 
   const opeconfirm = coupon => {
     confirmAlert({
@@ -156,10 +199,10 @@ const MyBets = () => {
     let filtered = cp;
     switch (filter) {
       case "won":
-        filtered = cp.success && cp.success === true;
+        filtered = typeof cp.success !== "undefined" && cp.success === true;
         break;
       case "lost":
-        filtered = cp.success && cp.success === false;
+        filtered = typeof cp.success !== "undefined" && cp.success === false;
         break;
       case "notplay":
         filtered = cp.matchid.active === 0;
@@ -178,7 +221,7 @@ const MyBets = () => {
       case 1:
         return `most játszák`;
       case 2:
-        if (match.matchid.goalA && match.matchid.goalB) {
+        if (typeof match.matchid.goalA !== "undefined" && typeof match.matchid.goalB !== "undefined") {
           return `${match.matchid.goalA} - ${match.matchid.goalB}`;
         } else {
           return "";
@@ -305,7 +348,7 @@ const MyBets = () => {
                     <thead className="text-primary">
                       <tr>
                         <th>Mérkőzés</th>
-                        <th className="text-center">#</th>
+                        <th className="text-center">Status</th>
                         <th className="text-center">Eredmény</th>
                         <th className="text-center">Tipp/Odds</th>
                         <th className="text-center">Tét</th>
@@ -328,7 +371,13 @@ const MyBets = () => {
                             return (
                               <tr key={cp._id}>
                                 <td>
-                                  {Ateamaname.name} - {Bteamaname.name}
+                                  {isFavorite(cp).isfav && cp.matchid.teamA === isFavorite(cp).team ? 
+                                    <><span className="doublescore">{Ateamaname.name} </span> - <span>{Bteamaname.name}</span></>
+                                    : 
+                                    isFavorite(cp).isfav && cp.matchid.teamB === isFavorite(cp).team ? 
+                                    <><span>{Ateamaname.name} </span> - <span className="doublescore">{Bteamaname.name}</span></> 
+                                      : <span>{Ateamaname.name} - {Bteamaname.name}</span>} 
+                                    
                                   <span className="matchdateinfo">
                                     {cp.matchid.active === 0
                                       ? "(" +
@@ -340,11 +389,24 @@ const MyBets = () => {
                                   </span>
                                 </td>
                                 <td className="text-center">
-                                  {cp.success && cp.success === true ? (
+                                  {typeof cp.success !== "undefined" && cp.success === false ? 
+                                      <span className="failicon">{faFrownicon}</span> 
+                                      : 
+                                      ""
+                                  }
+                                  {typeof cp.success !== "undefined" && cp.success === true ? (
                                     <i className="tim-icons icon-money-coins successtext"></i>
-                                  ) : (
+                                  ) : 
                                     ""
-                                  )}
+                                  }
+                                  {typeof cp.success === "undefined" && cp.matchid.active === 2 ? (
+                                    <><Tooltip title="Feldolgozás alatt..."><span className="processing">{faCogsicon}</span></Tooltip></>
+                                  ) : 
+                                    ""
+                                  }
+                                  {isFavorite(cp).isfav ? 
+                                    <i className="tim-icons icon-heart-2 successtext"></i> 
+                                    : ""}
                                 </td>
                                 <td className="text-center">
                                   {matchStatus(cp)}
@@ -353,7 +415,7 @@ const MyBets = () => {
                                   {cp.outcome} / {cp.odds}
                                 </td>
                                 <td className="text-center">{cp.bet}</td>
-                                <td className="text-center">{cp.result}</td>
+                                <td className="text-center">{resultCalc(cp)}</td>
                                 <td className="text-center">
                                   {cp.matchid.active === 0 ? (
                                     <button
@@ -405,6 +467,11 @@ const MyBets = () => {
                     {cp.matchid.active === 0
                       ? (<span className={classes.infospantime}>{moment(cp.matchid.date).format("MMM Do, ddd HH:mm")}</span>)
                       : ""}
+                      {typeof cp.success === "undefined" && cp.matchid.active === 2 ? (
+                          <span className={classes.infospanproc}>{faCogsicon} Feldolozás alatt...</span>
+                      ) : 
+                        ""
+                      }
                     <CardContent className={classes.cardcontent}>
                       <div>
                         <Row>
@@ -432,10 +499,17 @@ const MyBets = () => {
                           <Col xs="5">TÉT:</Col>
                           <Col xs="7">{cp.bet} pont</Col>
                         </Row>
+                        {isFavorite(cp).isfav ? 
+                          <Row className={classes.cprow}>
+                            <Col xs="12">+ kedvenc csapat szorzó</Col>
+                          </Row>
+                        : null
+                        }
+                        
                         <hr className={classes.hr} />
                         <Row className={classes.cprowbig}>
                           <Col xs="5">NYEREMÉNY:</Col>
-                          <Col xs="7">{cp.result} pont</Col>
+                          <Col xs="7">{isFavorite(cp).isfav ? cp.result*2 : cp.result} pont</Col>
                         </Row>
                       </div>
                     </CardContent>

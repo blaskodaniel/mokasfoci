@@ -3,12 +3,52 @@ h3,
   margin-bottom: 17px;
 }
 
-.hidden{
+.modal-backdrop.show {
+  opacity: 0.66;
+}
+
+.righteous {
+  font-family: "Righteous", cursive;
+}
+
+.cutivemono {
+  font-family: "Cutive Mono", monospace;
+}
+a.profilemenu {
+  color: #9a9a9a !important;
+}
+
+.hidden {
   display: none;
 }
 
 .mb0 {
   margin-bottom: 0;
+}
+
+.jc-e {
+  justify-content: end;
+}
+
+.sidebar .nav li > a,
+.off-canvas-sidebar .nav li > a {
+  font-size: 0.72475rem;
+}
+
+.fixed-plugin {
+  top: 77px;
+  width: 100px;
+  padding: 3px;
+  position: absolute;
+}
+
+span.gamename {
+  color: #1d1e2e;
+  position: absolute;
+  top: 40px;
+  left: 96px;
+  font-family: "Righteous", cursive;
+  font-size: 13px;
 }
 
 .form-group .form-control,
@@ -43,6 +83,11 @@ tr.monthtablerow {
   background-color: #35302e;
 }
 
+.betmodal-content span.doublescore {
+  color: #19dc43;
+  font-style: italic;
+}
+
 .betmodal-content div.modal-body {
   padding: 20px 15px 20px 15px;
 }
@@ -50,7 +95,8 @@ tr.monthtablerow {
 .betmodal-content .modal-body p,
 .betmodal-content .modal-body h1,
 .betmodal-content .modal-body h2,
-.betmodal-content .modal-body h4 {
+.betmodal-content .modal-body h4,
+.betmodal-content input {
   color: white;
 }
 
@@ -74,13 +120,21 @@ tr.monthtablerow {
 
 .betmodal-content input {
   max-width: 120px;
-  margin: 0 auto;
   font-size: 16px;
   text-align: center;
 }
 
 .betmodal-content .betpointpanel {
   margin-top: 10px;
+}
+
+.betmodal-content .modal-footer {
+  width: 100%;
+}
+
+.betmodal-content .form-inline .form-check {
+  justify-content: end;
+  margin-left: 10px;
 }
 
 .mybets .matchdateinfo {
@@ -90,8 +144,21 @@ tr.monthtablerow {
   font-style: italic;
 }
 
+.mybets span.doublescore {
+  color: #19dc43;
+}
+
 .mybets .successtext {
   color: rgba(79, 255, 95, 0.7) !important;
+}
+
+.mybets span.processing{
+  font-size: 13px;
+}
+
+
+.mybets span.failicon svg{
+  color: #ca1c1c;
 }
 
 .mybets .failtext {
@@ -113,12 +180,53 @@ tr.theadrow > td {
   top: 1px;
 }
 
-.colorwhite{
+.colorwhite {
   color: white;
 }
 
-.react-confirm-alert-body h1{
-  color: black
+.react-confirm-alert-body h1 {
+  color: black;
+}
+
+.form-inline .form-group {
+  justify-content: center;
+}
+
+p.odds {
+  margin-top: -10px;
+}
+
+span.favoriteteamspan {
+  font-size: 10px;
+  color: red;
+}
+
+div.runmatchchip {
+  height: 18px;
+  background-color: #ff0000;
+}
+
+div.runmatchchip span {
+  font-size: 12px;
+}
+
+tr.endmatch span{
+  font-size: 10px;
+}
+
+tr.runmatch {
+  background-color: #c50000a3;
+}
+
+tr.runmatch a {
+  color: #00f56d;
+  font-weight: 400;
+}
+
+span.footballicon svg{
+  height: 10px;
+  margin-bottom: 2px;
+  margin-right: 2px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -126,11 +234,24 @@ tr.theadrow > td {
   .h3 {
     font-size: 1rem;
   }
+  p.odds {
+    font-size: 0.7rem;
+    margin-top: -10px;
+  }
   table.tablesorter {
     font-size: smaller;
     overflow-x: scroll;
   }
   .tablesorter {
     font-size: smaller;
+  }
+  .betmodal-content input {
+    margin: 0 auto;
+  }
+  div.runmatchchip {
+    height: 15px;
+  }
+  div.runmatchchip span {
+    font-size: 10px;
   }
 }

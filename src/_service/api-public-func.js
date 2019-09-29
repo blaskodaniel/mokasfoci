@@ -1,5 +1,6 @@
 import {APIclient} from './axios-instance';
 import moment from 'moment';
+import { AppConfig } from '../application.config';
 
 export const getTeams = (query = "") => {
     return APIclient.get(`getteam${query}`)
@@ -31,8 +32,8 @@ export const getMatches = (query = "") => {
         });
 }
 
-export const getMatchesByDay = (day = moment().format("YYYY-MM-DD")) => {
-    return APIclient.post(`getmatchesbyday`,{"day":day})
+export const getMatchesByDay = (day = moment().format("YYYY-MM-DD"), to = 1) => {
+    return APIclient.post(`getmatchesbyday`,{"day":day, "to": to})
         .then(data => {
             return data;
         }).catch(function (error) {
@@ -53,6 +54,16 @@ export const getMatchesFromDay = (day = moment().format("YYYY-MM-DD")) => {
 
 export const getMatchesToDay = (day = moment().format("YYYY-MM-DD")) => {
     return APIclient.post(`getmatchestoday`,{"day":day})
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+
+export const getMatchesFromTo = (from = moment().format("YYYY-MM-DD"), to = moment().format(AppConfig.gameend)) => {
+    return APIclient.post(`getmatchesfromto`,{"from":from, "to": to})
         .then(data => {
             return data;
         }).catch(function (error) {
