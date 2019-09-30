@@ -63,3 +63,13 @@ export const userbets = (matchid) => {
             return error
         });
 }
+
+export const sendissue = (userid,msg) => {
+    return APItokenclient.post(`sendissue`,{userid: userid, msg: msg})
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}

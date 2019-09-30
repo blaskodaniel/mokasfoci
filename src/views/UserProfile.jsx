@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import Notify from "react-notification-alert";
 import moment from "moment";
 import {AppConfig} from "../application.config";
-import { loadProfile, saveProfile } from "../_service/api-func";
+import { loadProfile, saveProfile, sendissue } from "../_service/api-func";
 import { getTeams, getGroups } from "../_service/api-public-func";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 // reactstrap components
@@ -27,9 +27,9 @@ const UserProfile = () => {
   const notify = useRef({});
   const currentUser = useContext(AuthenticationContext);
   const [profildata, setProfildata] = useState({});
+  const [comment, setComment] = useState("");
   const [teamsdata, setTeamsdata] = useState([]);
   const [groupsdata, setGroupsdata] = useState([]);
-  const [groupwinbet, setGroupwinbet] = useState([]);
   const [groupwithteams, setGroupwithteams] = useState([]);
 
   useEffect(() => {
@@ -105,6 +105,25 @@ const UserProfile = () => {
     const { name, value } = e.target;
     setProfildata({ ...profildata, [name]: value });
   };
+
+  const handleTextareaChange = e => {
+    const { value } = e.target;
+    setComment(value);
+  };
+
+  const sendIssue = async () => {
+    try{
+      const issresp = await sendissue(currentUser.user.sub,comment)
+      if(issresp.status){
+        openNotify("Észrevételed elküldve","success")
+        setComment("");
+      }else{
+        throw new Error("Hiba a küldés során")
+      }
+    }catch(err){
+      openNotify("Hiba történt a küldés során","error")
+    }
+  }
 
   return (
     <>
@@ -279,6 +298,9 @@ const UserProfile = () => {
                           cols="80"
                           placeholder="írd meg észrevételeidet..."
                           rows="4"
+                          name="msg"
+                          value={comment}
+                          onChange={handleTextareaChange}
                           type="textarea"
                         />
                       </FormGroup>
@@ -287,7 +309,7 @@ const UserProfile = () => {
                 </Form>
               </CardBody>
               <CardFooter>
-                <Button className="btn-fill" color="primary" type="submit">
+                <Button className="btn-fill" color="primary" type="button" onClick={sendIssue}>
                   Küldés
                 </Button>
               </CardFooter>

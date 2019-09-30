@@ -5,5 +5,5 @@ export const AppConfig = {
     gamename: "EB 2019",
     gamestart: "2020-06-12",
     gameend: "2020-07-12",
-    version: "1.11"
+    version: "1.12"
 }
