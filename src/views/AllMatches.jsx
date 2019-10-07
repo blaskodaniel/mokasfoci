@@ -1,25 +1,29 @@
 import React, {useState,useEffect} from "react";
 import Matchtable from "../components/Matchtable/Matchtable";
+import moment from 'moment';
 import {
   Row,
   Col
 } from "reactstrap";
-import { getMatches } from "../_service/api-public-func";
+import { getMatches, getMatchesByDay } from "../_service/api-public-func";
 import ScorePointer from "../components/ScorePointer/ScorePointer";
+import { AppConfig } from "../application.config";
 
 const AllMatches = () => {
     const [matchlist, setMatchlist] = useState([0]);
-    const [matchlistReq, setmatchlistReq] = useState(true);
+    const [matchlistReqprogress, setmatchlistReqprogress] = useState(true);
     
     useEffect(() => {
       const loadMatches = async () => {
-        const resultPromise = await getMatches("?active=0");
-        if (resultPromise.message !== "Network Error" && resultPromise.data) {
+        const start = moment(AppConfig.gamestart, "YYYY-MM-DD");
+        const end = moment(AppConfig.gameend, "YYYY-MM-DD");
+        const gameDayscount = moment.duration(end.diff(start)).asDays();
+        console.log(gameDayscount)
+        const resultPromise = await getMatchesByDay(moment().format("YYYY-MM-DD"),gameDayscount);
+        if (resultPromise.message !== "Network Error" && typeof resultPromise.data !== "undefined") {
           setMatchlist(resultPromise.data);
-          setmatchlistReq(true);
-        } else {
-          setmatchlistReq(false);
         }
+        setmatchlistReqprogress(false);
       };
       loadMatches()
     }, [])
@@ -30,17 +34,13 @@ const AllMatches = () => {
       <h3>Hátralévő mérkőzések</h3>
         <Row>
           <Col lg="12" md="12">
-            {matchlist[0] !== 0 ? (
-              matchlist.length === 0 ? (
-                "Nincs több mérkőzés"
-              ) : (
-                <Matchtable list={matchlist} />
-              )
-            ) : matchlistReq ? (
-              <p>Mérkőzések betöltése....</p>
-            ) : (
-              <p>Szerver hiba. Kérlek próbálkozz később.</p>
-            )}
+          {matchlistReqprogress ? 
+              <p>Mérkőzések betöltése....</p> 
+              : 
+              matchlist[0] === 0 ? <p>Szerver nem válaszol. Kérlek próbálkozz később.</p> 
+                : matchlist.length > 0 ?  <Matchtable list={matchlist} /> :
+                <p>Ma és holnap nem lesznek mérkőzések</p>
+            }
           </Col>
         </Row>
         <ScorePointer />

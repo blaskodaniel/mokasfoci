@@ -1,10 +1,18 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import Notify from "react-notification-alert";
 import moment from "moment";
-import {AppConfig} from "../application.config";
-import { loadProfile, saveProfile, sendissue } from "../_service/api-func";
+import { AppConfig } from "../application.config";
+import NumberFormat from "react-number-format";
+import {
+  loadProfile,
+  saveProfile,
+  sendissue,
+  setavatar
+} from "../_service/api-func";
 import { getTeams, getGroups } from "../_service/api-public-func";
 import { AuthenticationContext } from "../context/AuthenticationContext";
+import useAvatarModal from "../hooks/useAvatarModal";
+import ReactTooltip from "react-tooltip";
 // reactstrap components
 import {
   Button,
@@ -19,6 +27,8 @@ import {
   Row,
   Col
 } from "reactstrap";
+import AvatarModal from "../components/Modal/AvatarModal";
+import { async } from "q";
 
 /**
  * User profile component
@@ -27,13 +37,18 @@ const UserProfile = () => {
   const notify = useRef({});
   const currentUser = useContext(AuthenticationContext);
   const [profildata, setProfildata] = useState({});
+  const { avatarmodal_isShowing, avatarmodal_toggle } = useAvatarModal();
   const [comment, setComment] = useState("");
+  const [settingmenu, setSettingmenu] = useState(false);
   const [teamsdata, setTeamsdata] = useState([]);
   const [groupsdata, setGroupsdata] = useState([]);
   const [groupwithteams, setGroupwithteams] = useState([]);
+  const tooltip_netto =
+    "50,000 - (veszteség) + (netto nyeremény) - (nem tippelt mérkőzések)";
+  const tooltip_brutto = "50,000 - (összess tét) + (összess brutto nyeremény)";
 
   useEffect(() => {
-    console.log("AuthenticationContext: ",currentUser.userinfo)
+    console.log("AuthenticationContext: ", currentUser.userinfo);
     const loadUserProfile = async () => {
       const resultPromise = await loadProfile(currentUser.user.sub);
       setProfildata(resultPromise.data);
@@ -92,7 +107,8 @@ const UserProfile = () => {
         // Update favorite team id in context
         currentUser.setUserinfo({
           ...currentUser.userinfo,
-          teamid: profildata.teamid
+          teamid: profildata.teamid,
+          name: profildata.name
         });
       }
     } catch (e) {
@@ -112,25 +128,61 @@ const UserProfile = () => {
   };
 
   const sendIssue = async () => {
-    try{
-      const issresp = await sendissue(currentUser.user.sub,comment)
-      if(issresp.status){
-        openNotify("Észrevételed elküldve","success")
+    try {
+      const issresp = await sendissue(currentUser.user.sub, comment);
+      if (issresp.status) {
+        openNotify("Észrevételed elküldve", "success");
         setComment("");
-      }else{
-        throw new Error("Hiba a küldés során")
+      } else {
+        throw new Error("Hiba a küldés során");
       }
-    }catch(err){
-      openNotify("Hiba történt a küldés során","error")
+    } catch (err) {
+      openNotify("Hiba történt a küldés során", "error");
     }
-  }
+  };
+
+  const saveavatar = async avatarname => {
+    const saveresp = await setavatar(avatarname);
+    if (saveresp.status) {
+      currentUser.setUserinfo({
+        ...currentUser.userinfo,
+        avatar: avatarname
+      });
+      setProfildata({ ...profildata, avatar: avatarname });
+      avatarmodal_toggle();
+    }
+  };
 
   return (
     <>
-      <div className="content">
+      <div className="content profile">
         <Row>
           <Col md="4">
             <Card className="card-user">
+              <CardHeader>
+                <div className="dropdown fr">
+                  <button
+                    type="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    onClick={() => setSettingmenu(!settingmenu)}
+                    className="btn-icon dropdown-toggle btn btn-link"
+                  >
+                    <i className="tim-icons icon-settings-gear-63 setting"></i>
+                  </button>
+                  <div
+                    role="menu"
+                    aria-labelledby="dropdownMenuLink"
+                    aria-hidden="true"
+                    className={settingmenu ? "dropdown-menu dropdown-menu-right settingmenu show" : "dropdown-menu dropdown-menu-right settingmenu"}
+                  >
+                    <a href="#pablo" className="dropdown-item" onClick={() => {avatarmodal_toggle();setSettingmenu(false)}}>
+                      Avatar cseréje
+                    </a>
+                  </div>
+                </div>
+              </CardHeader>
               <CardBody>
                 <CardText />
                 <div className="author">
@@ -140,19 +192,67 @@ const UserProfile = () => {
                   <div className="block block-four" />
                   <a href="#pablo" onClick={e => e.preventDefault()}>
                     <img
-                      alt="..."
+                      alt="assets/img/default-avatar.png"
                       className="avatar"
-                      src={require("assets/img/default-avatar.png")}
+                      src={
+                        process.env.PUBLIC_URL + "avatars/" + profildata.avatar
+                      }
                     />
-                    <h5 className="title">
+                    <h5 className="title f17">
                       {profildata.name ? profildata.name : profildata.username}
                     </h5>
                   </a>
-                  <p className="description">
-                    {parseInt(currentUser.userinfo.score, 10)} pont
-                  </p>
+                  <p className="description"></p>
                 </div>
-                <div className="card-description" />
+                <div className="card-description">
+                  <ul className="list-inline widget-chart m-t-20 text-center">
+                    <li className="widgetdesc">
+                      <h4>
+                        <NumberFormat
+                          value={parseInt(currentUser.userinfo.nettoscore, 10)}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          renderText={value => (
+                            <span
+                              effect="solid"
+                              data-multiline="false"
+                              data-tip={tooltip_netto}
+                            >
+                              <b>{value}</b>
+                            </span>
+                          )}
+                        />
+                      </h4>
+                      <p className="text-muted m-b-0">Nettó pont</p>
+                    </li>
+                    <li className="widgetdesc">
+                      <h4>
+                        <b>{currentUser.userinfo.notbetcount}</b>
+                      </h4>
+                      <p className="text-muted m-b-0">Nem tippelt</p>
+                    </li>
+                    <li className="widgetdesc">
+                      <h4>
+                        <NumberFormat
+                          value={parseInt(currentUser.userinfo.score, 10)}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          renderText={value => (
+                            <span
+                              effect="solid"
+                              data-multiline="false"
+                              data-tip={tooltip_brutto}
+                            >
+                              <b>{value}</b>
+                            </span>
+                          )}
+                        />
+                      </h4>
+                      <p className="text-muted m-b-0">Bruttó pont</p>
+                    </li>
+                  </ul>
+                </div>
+                <ReactTooltip />
               </CardBody>
               <CardFooter>
                 {/* <div className="button-container">
@@ -177,7 +277,7 @@ const UserProfile = () => {
                 </CardHeader>
                 <CardBody>
                   <Row>
-                    <Col className="pr-md-1" md="5">
+                    <Col className="pr-md-1" md="6">
                       <FormGroup>
                         <label>Nevem</label>
                         <Input
@@ -188,24 +288,14 @@ const UserProfile = () => {
                         />
                       </FormGroup>
                     </Col>
-                    <Col className="px-md-1" md="3">
-                      <FormGroup>
-                        <label>Nick nevem</label>
-                        <Input
-                          defaultValue={profildata.username}
-                          onChange={handleInputChange}
-                          name="username"
-                          type="text"
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col className="pl-md-1" md="4">
+                    <Col className="pl-md-1" md="6">
                       <FormGroup>
                         <label htmlFor="exampleInputEmail1">Email címem</label>
                         <Input
                           defaultValue={profildata.email}
                           onChange={handleInputChange}
                           name="email"
+                          disabled
                           type="email"
                         />
                       </FormGroup>
@@ -225,8 +315,21 @@ const UserProfile = () => {
                     <Col md="12">
                       <FormGroup>
                         <label>Kedvenc csapatom</label>
-                        <Input type="select" disabled={moment().isBefore(AppConfig.gamestart) ? "":true} className="form-control" value={profildata.teamid} name="teamid" onChange={handleInputChange}>
-                          {typeof profildata.teamid === "undefined" ? <option value="0">Kérlek válassz...</option> : ""}
+                        <Input
+                          type="select"
+                          disabled={
+                            moment().isBefore(AppConfig.gamestart) ? "" : true
+                          }
+                          className="form-control"
+                          value={profildata.teamid}
+                          name="teamid"
+                          onChange={handleInputChange}
+                        >
+                          {typeof profildata.teamid === "undefined" ? (
+                            <option value="0">Kérlek válassz...</option>
+                          ) : (
+                            ""
+                          )}
                           {teamsdata.map(team => {
                             return (
                               <option key={team._id} value={team._id}>
@@ -249,7 +352,7 @@ const UserProfile = () => {
             <Form onSubmit={handleProfilSubmit}>
               <Card>
                 <CardHeader>
-                  <h5 className="title">Csoportelső tippjeid</h5>
+                  <h5 className="title">Csoportelső tippjeim</h5>
                 </CardHeader>
                 <CardBody>
                   <Row className="d-flex flex-row flex-wrap justify-content-start">
@@ -258,11 +361,21 @@ const UserProfile = () => {
                         <Col
                           key={group._id}
                           className="px-3"
-                          style={{ minWidth: "225px" }}>
+                          style={{ minWidth: "225px" }}
+                        >
                           <FormGroup>
                             <label>{group.name} csoport</label>
-                            <select className="form-control" value={profildata[group.name]} name={group.name} onChange={handleInputChange}>
-                              {typeof profildata[group.name] === "undefined" ? <option value="0">Kérlek válassz...</option> : ""}
+                            <select
+                              className="form-control"
+                              value={profildata[group.name]}
+                              name={group.name}
+                              onChange={handleInputChange}
+                            >
+                              {typeof profildata[group.name] === "undefined" ? (
+                                <option value="0">Kérlek válassz...</option>
+                              ) : (
+                                ""
+                              )}
                               {group.teams.map(team => {
                                 return (
                                   <option key={team._id} value={team._id}>
@@ -309,7 +422,12 @@ const UserProfile = () => {
                 </Form>
               </CardBody>
               <CardFooter>
-                <Button className="btn-fill" color="primary" type="button" onClick={sendIssue}>
+                <Button
+                  className="btn-fill"
+                  color="primary"
+                  type="button"
+                  onClick={sendIssue}
+                >
                   Küldés
                 </Button>
               </CardFooter>
@@ -318,6 +436,11 @@ const UserProfile = () => {
         </Row>
       </div>
       <Notify ref={notify} />
+      <AvatarModal
+        isShowing={avatarmodal_isShowing}
+        hide={avatarmodal_toggle}
+        savefunc={avatarname => saveavatar(avatarname)}
+      />
     </>
   );
 };

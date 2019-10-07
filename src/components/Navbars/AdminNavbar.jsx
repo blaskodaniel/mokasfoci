@@ -74,7 +74,7 @@ class AdminNavbar extends React.Component {
     const profilLink = routes.filter(x=>x.id === "profil")
     return (
       <>
-        <Navbar
+        <Navbar id="navbar"
           className={classNames("navbar-absolute", this.state.color)}
           expand="lg"
         >
@@ -166,7 +166,7 @@ class AdminNavbar extends React.Component {
                     </NavLink>
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                <UncontrolledDropdown nav>
+                <UncontrolledDropdown nav className="direction">
                   <DropdownToggle
                     caret
                     color="default"
@@ -175,10 +175,11 @@ class AdminNavbar extends React.Component {
                     onClick={e => e.preventDefault()}
                   >
                     <div className="photo">
-                      <img alt="..." src={require("assets/img/anime3.png")} />
+                      <img alt="..." src={process.env.PUBLIC_URL + "avatars/"+this.context.userinfo.avatar} />
                     </div>
                     <b className="caret d-none d-lg-block d-xl-block" />
-                    <p className="d-lg-none">Log out</p>
+                    <p className="d-lg-none">{this.context.userinfo.name}</p>
+                    <p className="profilename">{this.context.userinfo.name}</p>
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
                     <NavLink tag="li">
@@ -188,7 +189,7 @@ class AdminNavbar extends React.Component {
                     </NavLink>
                     <DropdownItem divider tag="li" />
                     <NavLink tag="li">
-                      <DropdownItem className="nav-item" onClick={this.context.logout}>Log out</DropdownItem>
+                      <DropdownItem className="nav-item" onClick={this.context.logout}>Kilépés</DropdownItem>
                     </NavLink>
                   </DropdownMenu>
                 </UncontrolledDropdown>

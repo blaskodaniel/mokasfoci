@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Card, Row, Col, CardBody } from "reactstrap";
 import { getCouponsByUserId } from "../../_service/api-func";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
+import { MatchTypes } from "../../application.config";
 
 const MatchtableMobile = ({ list }) => {
   const currentUser = useContext(AuthenticationContext);
@@ -45,7 +46,7 @@ const MatchtableMobile = ({ list }) => {
           ? list.map(m => {
               let mybet = coupons.filter(c=>c.matchid._id === m._id)
               return (
-                <Row key={m._id} style={{ padding: "7px" }} className="tablesorter">
+                <Row key={m._id} style={{ padding: "7px", borderBottom: "1px solid #0000003d" }} className="tablesorter">
                   <Col xs="6">
                     <Row>
                       <Col xs="9">
@@ -65,7 +66,7 @@ const MatchtableMobile = ({ list }) => {
                     </Row>
                     <Row>
                       <Col xs="12">
-                        <p className="datetime">{moment(m.date).format("MMMM Do dddd")}</p>
+                        <p className="datetime">{!isNaN(m.type) ? MatchTypes[parseInt(m.type)] : ""}{typeof m.comment !== "undefined" ? " | "+m.comment : ""}</p>
                       </Col>
                     </Row>
                   </Col>

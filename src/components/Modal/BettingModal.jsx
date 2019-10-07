@@ -10,6 +10,7 @@ import {
   Input,
   FormGroup
 } from "reactstrap";
+import NumberFormat from 'react-number-format';
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
@@ -121,12 +122,6 @@ const BettModal = ({ isShowing, hide, match }) => {
                     </p>
                   </Grid>
                   <Grid item xs={12}>
-                    <p className="cutivemono">
-                      <span className="mr-2">Pontod:</span>{"  "}
-                      {currentUser.userinfo.score}
-                    </p>
-                  </Grid>
-                  <Grid item xs={12}>
                     <p>
                       <span className="cutivemono">Tipped:</span>{" "}
                     </p>
@@ -217,12 +212,16 @@ const BettModal = ({ isShowing, hide, match }) => {
                   <Grid item xs={12} className="mt-3">
                     <h4 className="text-center">
                       Nyereményed:&nbsp;&nbsp;{""}
-                      {Math.round(profildata.amount * bet.odds * 100) / 100}{" "}
+                      <NumberFormat value={Math.round(profildata.amount * bet.odds * 100) / 100} 
+                      displayType={'text'} thousandSeparator={true} renderText={value => value} />
                       
                       <span className="text-center doublescore">
-                      {currentUser.userinfo.teamid && currentUser.userinfo.teamid === bet.teamid ? 
-                        "×2 = "+(Math.round(profildata.amount * bet.odds * 100) / 100)*2:""}
-                    </span>
+                      {currentUser.userinfo.teamid === match.teamA._id || currentUser.userinfo.teamid === match.teamB._id ? 
+                        <NumberFormat value={(Math.round(profildata.amount * bet.odds * 100) / 100)*2} 
+                        displayType={'text'} thousandSeparator={true} renderText={value => <span> ×2 = {value}</span>} />
+                        :
+                        ""}
+                      </span>
                     </h4>
                   </Grid>
                 </Grid>

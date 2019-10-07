@@ -73,3 +73,13 @@ export const sendissue = (userid,msg) => {
             return error
         });
 }
+
+export const setavatar = (avatarname) => {
+    return APItokenclient.patch(`setavatar`,{avatar: avatarname})
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}

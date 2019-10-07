@@ -3,6 +3,14 @@ h3,
   margin-bottom: 17px;
 }
 
+.fr {
+  float: right;
+}
+
+.f17 {
+  font-size: 17px;
+}
+
 .modal-backdrop.show {
   opacity: 0.66;
 }
@@ -15,7 +23,7 @@ h3,
   font-family: "Cutive Mono", monospace;
 }
 a.profilemenu {
-  color: #9a9a9a !important;
+  color: #130000 !important;
 }
 
 .hidden {
@@ -28,6 +36,17 @@ a.profilemenu {
 
 .jc-e {
   justify-content: end;
+}
+
+.profilename {
+  display: inline;
+  margin-left: 4px;
+  margin-right: 46px;
+}
+
+#navbar li.direction {
+  display: flex;
+  justify-content: center;
 }
 
 .sidebar .nav li > a,
@@ -152,12 +171,11 @@ tr.monthtablerow {
   color: rgba(79, 255, 95, 0.7) !important;
 }
 
-.mybets span.processing{
+.mybets span.processing {
   font-size: 13px;
 }
 
-
-.mybets span.failicon svg{
+.mybets span.failicon svg {
   color: #ca1c1c;
 }
 
@@ -210,7 +228,11 @@ div.runmatchchip span {
   font-size: 12px;
 }
 
-tr.endmatch span{
+.linethrough {
+  text-decoration: line-through;
+}
+
+tr.endmatch span {
   font-size: 10px;
 }
 
@@ -223,16 +245,73 @@ tr.runmatch a {
   font-weight: 400;
 }
 
-span.footballicon svg{
+span.footballicon svg {
   height: 10px;
   margin-bottom: 2px;
   margin-right: 2px;
+}
+
+.mybets span.footballicon svg {
+  height: 12px;
+  margin-bottom: 2px;
+  margin-right: 2px;
+  color: #e2b22b;
+}
+
+.profile li.widgetdesc {
+  width: 31.5%;
+  display: inline-block;
+  padding: 0;
+}
+
+.profile .card-user .avatar {
+  border: 0;
+}
+
+.profile i.setting {
+  z-index: 10000;
+  color: #27293d;
+}
+
+.profile i.setting::after {
+  z-index: 10000;
+  color: #27293d;
+}
+
+.profile div.settingmenu{
+  margin-top: 18px;
+}
+
+.profile div.show{
+  visibility: visible;
+  opacity: 1;
+}
+
+.avatarModal .modal-content .modal-footer {
+  justify-content: space-between;
+}
+
+.avatarModal .modal-content {
+  background-color: #35302e;
+  border: 1px solid #774747;
+}
+
+.avatarModal .modal-content .modal-header .modal-title {
+  color: #fdfdfd;
+}
+
+.avatarModal .modal-footer button {
+  color: #fff;
+  background-color: #3f51b5;
 }
 
 @media only screen and (max-width: 600px) {
   h3,
   .h3 {
     font-size: 1rem;
+  }
+  p.profilename {
+    display: none !important;
   }
   p.odds {
     font-size: 0.7rem;

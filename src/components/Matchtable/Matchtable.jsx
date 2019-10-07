@@ -19,7 +19,7 @@ const Matchelement = ({ value }) => {
   const runningmatchlink = routes.filter(x => x.id === "merkozes");
   return (
     <>
-      {value.map(match => {
+      {value.length === 0 ? <tr><td colSpan="4">Nincsenek mérkőzések</td></tr> : value.map(match => {
         if (match.active === 1) {
           return (
             <tr
@@ -80,9 +80,19 @@ const Matchelement = ({ value }) => {
 };
 
 const Matchlist = ({ val }) => {
+  let isTodayMatch = false
+  val.forEach(x=>{
+    if(moment(x.month).isSame(moment().format(), 'day')){
+      isTodayMatch = true
+    }
+  })
+  let __matchlist = val;
+  if(!isTodayMatch){
+    __matchlist = [{group: "-1",month: moment().format("YYYY-MM-DD HH:mm"),data: []}, ...__matchlist]
+  }
   return (
     <>
-      {val.map(match => {
+      {__matchlist.map(match => {
         return (
           <React.Fragment key={match.group}>
             <tr className="theadrow">
@@ -96,9 +106,9 @@ const Matchlist = ({ val }) => {
                   sameElse: "MMMM Do dddd"
                 })}
               </td>
-              <td className="text-center">1</td>
-              <td className="text-center">X</td>
-              <td className="text-center">2</td>
+              {match.data.length > 0 ? <td className="text-center">1</td>:<td></td>}
+              {match.data.length > 0 ? <td className="text-center">X</td>:<td></td>}
+              {match.data.length > 0 ? <td className="text-center">2</td>:<td></td>}
             </tr>
             <Matchelement value={match.data} />
           </React.Fragment>
@@ -109,7 +119,6 @@ const Matchlist = ({ val }) => {
 };
 
 const Matchtable = ({ list }) => {
-  const [test, setTest] = useState("dgb");
   moment.locale("hu");
 
   const sortByDate = (list, type) => {
@@ -166,16 +175,6 @@ const Matchtable = ({ list }) => {
 
   const sortedlist = sortByDate(list, "asc");
   const groupedbymonth = groupByMonth(sortedlist);
-
-  useEffect(() => {
-    const loadMatches = () => {
-      setTest("Jaj de jó");
-      console.log("Use effect", test);
-    };
-
-    loadMatches();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>

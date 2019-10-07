@@ -81,3 +81,13 @@ export const getPlayers = () => {
             return error
         });
 }
+
+export const getAvatars = () => {
+    return APIclient.get(`getavatars`)
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
