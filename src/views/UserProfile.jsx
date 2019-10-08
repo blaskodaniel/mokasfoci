@@ -12,7 +12,6 @@ import {
 import { getTeams, getGroups } from "../_service/api-public-func";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 import useAvatarModal from "../hooks/useAvatarModal";
-import ReactTooltip from "react-tooltip";
 // reactstrap components
 import {
   Button,
@@ -21,6 +20,10 @@ import {
   CardBody,
   CardFooter,
   CardText,
+  DropdownItem,
+  DropdownToggle,
+  DropdownMenu,
+  UncontrolledDropdown,
   FormGroup,
   Form,
   Input,
@@ -28,7 +31,6 @@ import {
   Col
 } from "reactstrap";
 import AvatarModal from "../components/Modal/AvatarModal";
-import { async } from "q";
 
 /**
  * User profile component
@@ -39,13 +41,9 @@ const UserProfile = () => {
   const [profildata, setProfildata] = useState({});
   const { avatarmodal_isShowing, avatarmodal_toggle } = useAvatarModal();
   const [comment, setComment] = useState("");
-  const [settingmenu, setSettingmenu] = useState(false);
   const [teamsdata, setTeamsdata] = useState([]);
   const [groupsdata, setGroupsdata] = useState([]);
   const [groupwithteams, setGroupwithteams] = useState([]);
-  const tooltip_netto =
-    "50,000 - (veszteség) + (netto nyeremény) - (nem tippelt mérkőzések)";
-  const tooltip_brutto = "50,000 - (összess tét) + (összess brutto nyeremény)";
 
   useEffect(() => {
     console.log("AuthenticationContext: ", currentUser.userinfo);
@@ -150,6 +148,7 @@ const UserProfile = () => {
       });
       setProfildata({ ...profildata, avatar: avatarname });
       avatarmodal_toggle();
+      openNotify("Mentés sikeres", "success")
     }
   };
 
@@ -160,28 +159,25 @@ const UserProfile = () => {
           <Col md="4">
             <Card className="card-user">
               <CardHeader>
-                <div className="dropdown fr">
-                  <button
-                    type="button"
+                <UncontrolledDropdown className="fr zi1">
+                  <DropdownToggle
+                    caret
+                    className="btn-icon"
+                    color="link"
                     data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    onClick={() => setSettingmenu(!settingmenu)}
-                    className="btn-icon dropdown-toggle btn btn-link"
+                    type="button"
                   >
-                    <i className="tim-icons icon-settings-gear-63 setting"></i>
-                  </button>
-                  <div
-                    role="menu"
-                    aria-labelledby="dropdownMenuLink"
-                    aria-hidden="true"
-                    className={settingmenu ? "dropdown-menu dropdown-menu-right settingmenu show" : "dropdown-menu dropdown-menu-right settingmenu"}
-                  >
-                    <a href="#pablo" className="dropdown-item" onClick={() => {avatarmodal_toggle();setSettingmenu(false)}}>
+                    <i className="tim-icons icon-settings-gear-63" />
+                  </DropdownToggle>
+                  <DropdownMenu aria-labelledby="dropdownMenuLink" right>
+                    <DropdownItem
+                      href="#pablo"
+                      onClick={() => {avatarmodal_toggle()}}
+                    >
                       Avatar cseréje
-                    </a>
-                  </div>
-                </div>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </CardHeader>
               <CardBody>
                 <CardText />
@@ -216,7 +212,6 @@ const UserProfile = () => {
                             <span
                               effect="solid"
                               data-multiline="false"
-                              data-tip={tooltip_netto}
                             >
                               <b>{value}</b>
                             </span>
@@ -241,7 +236,6 @@ const UserProfile = () => {
                             <span
                               effect="solid"
                               data-multiline="false"
-                              data-tip={tooltip_brutto}
                             >
                               <b>{value}</b>
                             </span>
@@ -252,7 +246,6 @@ const UserProfile = () => {
                     </li>
                   </ul>
                 </div>
-                <ReactTooltip />
               </CardBody>
               <CardFooter>
                 {/* <div className="button-container">

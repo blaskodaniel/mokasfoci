@@ -52,7 +52,7 @@ const BettModal = ({ isShowing, hide, match }) => {
       if (saveresult.data) {
         if (saveresult.status === 201 && saveresult.data.status) {
           sharedcontext.openNotify(
-            "Szelvényedet létrehoztuk. Sok szerencsét!",
+            "Szelvényed sikeresen létrjött!",
             "success"
           );
           currentUser.setUserinfo({

@@ -1,16 +1,28 @@
 import React, { useState, useEffect, useContext } from "react";
 import * as moment from "moment";
 import "moment/locale/hu";
+import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardBody, Table } from "reactstrap";
 import { SharedContext } from "../../context/SharedContect";
 import { Link } from "react-router-dom";
+import Avatar from '@material-ui/core/Avatar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFutbol } from '@fortawesome/free-solid-svg-icons'
 import routes from "../../routes";
 
 const footballicon = <FontAwesomeIcon icon={faFutbol} />
 
+const useStyles = makeStyles({
+  avatar: {
+    margin: "0px 5px",
+    width: "10px",
+    height: "10px",
+    display: "inline-flex"
+  }
+});
+
 const Matchelement = ({ value }) => {
+  const classes = useStyles();
   const sharedContext = useContext(SharedContext);
   const openmsgmod = match => {
     sharedContext.betmodal_setmatch(match);
@@ -30,7 +42,11 @@ const Matchelement = ({ value }) => {
               <td>
                 <span className="footballicon">{footballicon}</span>
                 <Link to={runningmatchlink[0].path + "/" + match._id}>
-                    {match.teamA.name} - {match.teamB.name}
+                  {match.teamA.name}
+                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamA.flag} className={classes.avatar} /> 
+                  - 
+                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamB.flag} className={classes.avatar} />
+                  {match.teamB.name}
                 </Link>
               </td>
               <td className="text-center">{match.oddsAwin}</td>
@@ -47,7 +63,11 @@ const Matchelement = ({ value }) => {
               <td>{moment(match.date).format("HH:mm")}</td>
               <td>
                 <Link to={runningmatchlink[0].path + "/" + match._id}>
-                    {match.teamA.name} - {match.teamB.name}
+                  {match.teamA.name}
+                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamA.flag} className={classes.avatar} /> 
+                  - 
+                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamB.flag} className={classes.avatar} />
+                  {match.teamB.name}
                 </Link>
                 <span>  (vége)</span>
               </td>
@@ -66,7 +86,11 @@ const Matchelement = ({ value }) => {
             >
               <td>{moment(match.date).format("HH:mm")}</td>
               <td>
-                    {match.teamA.name} - {match.teamB.name}
+                  {match.teamA.name}
+                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamA.flag} className={classes.avatar} /> 
+                  - 
+                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamB.flag} className={classes.avatar} />
+                  {match.teamB.name}
               </td>
               <td className="text-center">{match.oddsAwin}</td>
               <td className="text-center">{match.oddsDraw}</td>

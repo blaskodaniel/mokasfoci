@@ -459,7 +459,7 @@ const MyBets = () => {
                               </tr>
                             );
                           })
-                        : null}
+                        : <tr><td colSpan="7">Még nincsenek szelvényeid</td></tr>}
                     </tbody>
                   </Table>
                 </CardBody>
@@ -565,7 +565,7 @@ const MyBets = () => {
                   </Card>
                 );
               })
-            : null}
+            : <p>Még nincsenek szelvényeid</p>}
         </div>
         <ScorePointer />
       </>

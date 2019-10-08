@@ -13,6 +13,11 @@ const useStyles = makeStyles({
       cursor: "pointer"
     },
     margin: 10
+  },
+  prevavatar: {
+    width: "60px",
+    height: "60px",
+    margin: 10
   }
 });
 
@@ -61,7 +66,7 @@ const AvatarModal = ({ isShowing, hide, savefunc }) => {
               <Avatar
                 alt={avatar}
                 src={process.env.PUBLIC_URL + "avatars/" + avatar}
-                className={classes.avatar}
+                className={classes.prevavatar}
               />
               <Button onClick={() => savefunc(avatar)}>Mentés</Button>
             </ModalFooter>

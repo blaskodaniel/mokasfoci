@@ -11,6 +11,10 @@ h3,
   font-size: 17px;
 }
 
+.zi1{
+  z-index: 1;
+}
+
 .modal-backdrop.show {
   opacity: 0.66;
 }
@@ -266,25 +270,6 @@ span.footballicon svg {
 
 .profile .card-user .avatar {
   border: 0;
-}
-
-.profile i.setting {
-  z-index: 10000;
-  color: #27293d;
-}
-
-.profile i.setting::after {
-  z-index: 10000;
-  color: #27293d;
-}
-
-.profile div.settingmenu{
-  margin-top: 18px;
-}
-
-.profile div.show{
-  visibility: visible;
-  opacity: 1;
 }
 
 .avatarModal .modal-content .modal-footer {
