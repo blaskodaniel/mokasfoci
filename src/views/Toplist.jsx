@@ -68,7 +68,7 @@ const Toplist = () => {
           <Col md="12">
             <Card>
               <CardHeader>
-                <CardTitle tag="h4">Ranglista</CardTitle>
+                <CardTitle tag="h4">Toplista</CardTitle>
               </CardHeader>
               <CardBody>
                 <Table className="tablesorter" responsive>

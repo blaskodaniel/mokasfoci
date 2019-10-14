@@ -5,6 +5,10 @@
     top:15%;
 }
 
+.alert.alert-with-icon {
+  padding-left: 20px !important;
+}
+
 .registrationcontainer input, .registrationcontainer input:focus{
     color: white;
     background-color: #2c3844;

@@ -10,15 +10,17 @@ import {
   Input,
   FormGroup
 } from "reactstrap";
-import NumberFormat from 'react-number-format';
-import Button from '@material-ui/core/Button';
+import NumberFormat from "react-number-format";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
-import InputAdornment from '@material-ui/core/InputAdornment';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import MenuItem from "@material-ui/core/MenuItem";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { createCoupon } from "../../_service/api-func";
 import { SharedContext } from "../../context/SharedContect";
+import { AppConfig } from "../../application.config";
 
 const BettModal = ({ isShowing, hide, match }) => {
   const currentUser = useContext(AuthenticationContext);
@@ -26,7 +28,11 @@ const BettModal = ({ isShowing, hide, match }) => {
   const [profildata, setProfildata] = useState({ amount: 1000 });
   const [modalshowing, setModalshowing] = useState(isShowing);
   const [coupon, setCoupon] = useState({});
-  const [bet, setBet] = useState({ odds: match.oddsDraw, outcome: "x", teamid: 0 });
+  const [bet, setBet] = useState({
+    odds: match.oddsDraw,
+    outcome: "x",
+    teamid: 0
+  });
   const handleInputChange = e => {
     const { name, value } = e.target;
     if (value < 10000) {
@@ -38,12 +44,8 @@ const BettModal = ({ isShowing, hide, match }) => {
     e.preventDefault();
     const newcoupon = {
       bet: profildata.amount,
-      odds: bet.odds,
-      result: Math.round(profildata.amount * bet.odds * 100) / 100,
       outcome: bet.outcome,
-      matchid: match._id,
-      teamA: match.teamA._id,
-      teamB: match.teamB._id
+      matchid: match._id
     };
     setCoupon(newcoupon);
     console.log(newcoupon);
@@ -51,10 +53,7 @@ const BettModal = ({ isShowing, hide, match }) => {
       const saveresult = await createCoupon(newcoupon);
       if (saveresult.data) {
         if (saveresult.status === 201 && saveresult.data.status) {
-          sharedcontext.openNotify(
-            "Szelvényed sikeresen létrjött!",
-            "success"
-          );
+          sharedcontext.openNotify("Szelvényed sikeresen létrjött!", "success");
           currentUser.setUserinfo({
             ...currentUser.userinfo,
             score: currentUser.userinfo.score - profildata.amount
@@ -80,6 +79,13 @@ const BettModal = ({ isShowing, hide, match }) => {
               "Erre a mérkőzésre már fogadtál korábban! Egy mérkőzésre csak egyszer fogadhatsz",
               "danger"
             );
+          } else {
+            sharedcontext.openNotify(
+              "A szelvényed mentése során nem várt hiba történt (code:" +
+                saveresult.response.data.code +
+                ")",
+              "danger"
+            );
           }
         }
       }
@@ -90,9 +96,23 @@ const BettModal = ({ isShowing, hide, match }) => {
   };
 
   const handleRadioChange = e => {
-    console.log(currentUser.userinfo.teamid)
+    console.log(currentUser.userinfo.teamid);
     const { dataset, value } = e.target;
     setBet({ odds: value, outcome: dataset.outcome, teamid: dataset.teamid });
+  };
+
+  const betList = () => {
+    let returnHTML = [];
+    for (let i = AppConfig.minbet; i < AppConfig.maxbet + 1; i++) {
+      if (i % 100 === 0) {
+        returnHTML.push(
+          <MenuItem key={i} className="white" value={i}>
+            {i}
+          </MenuItem>
+        );
+      }
+    }
+    return returnHTML;
   };
 
   return (
@@ -117,10 +137,17 @@ const BettModal = ({ isShowing, hide, match }) => {
                   </Grid>
                   <Grid className="mt-2" item xs={12}>
                     <p className="cutivemono">
-                      <span className="mr-2">Mérkőzés:</span>{"  "}
+                      <span className="mr-2">Mérkőzés:</span>
+                      {"  "}
                       {match.teamA.name} - {match.teamB.name}
                     </p>
                   </Grid>
+                  {currentUser.userinfo.teamid &&
+                  currentUser.userinfo.teamid === match.teamB._id ? (
+                    <Grid item xs={12}>
+                      <span className="favoriteteam">kedvenc csapatod játszik</span>
+                    </Grid>
+                  ) : null}
                   <Grid item xs={12}>
                     <p>
                       <span className="cutivemono">Tipped:</span>{" "}
@@ -140,8 +167,12 @@ const BettModal = ({ isShowing, hide, match }) => {
                         <span className="form-check-sign">
                           {" "}
                           ({match.oddsAwin}){" "}
-                          <span className="doublescore">{currentUser.userinfo.teamid && currentUser.userinfo.teamid === match.teamA._id ? 
-                            " (kedvenc csapat)": ""}</span>
+                          <span className="doublescore">
+                            {currentUser.userinfo.teamid &&
+                            currentUser.userinfo.teamid === match.teamA._id
+                              ? " (kedvenc csapat)"
+                              : ""}
+                          </span>
                         </span>
                       </Label>
                     </FormGroup>
@@ -179,48 +210,61 @@ const BettModal = ({ isShowing, hide, match }) => {
                         <span className="form-check-sign">
                           {" "}
                           ({match.oddsBwin}){" "}
-                          <span className="doublescore">{currentUser.userinfo.teamid && currentUser.userinfo.teamid === match.teamB._id ? 
-                          " (kedvenc csapat)": ""}</span>
                         </span>
                       </Label>
                     </FormGroup>
                   </Grid>
-                  <Grid item xs={12} className="mt-2">
-                    <p>
-                      <span className="cutivemono">Feltett pont:</span>{" "}
-                    </p>
+                  <Grid item xs={12} className="mt-2 df jc-c">
                     <TextField
                       id="amount"
                       name="amount"
                       variant="filled"
-                      className="white"
+                      select
+                      className="betTextField"
                       error={true}
                       value={profildata.amount}
                       onChange={handleInputChange}
                       margin="dense"
                       hiddenLabel
                       InputProps={{
-                        inputProps: {
-                          "aria-label": "Feltett pont"
-                        },
                         startAdornment: (
-                          <InputAdornment position="start">Pont:</InputAdornment>
+                          <InputAdornment position="start">Tét</InputAdornment>
                         )
                       }}
-                    />
+                    >
+                      {betList()}
+                    </TextField>
                   </Grid>
                   <Grid item xs={12} className="mt-3">
                     <h4 className="text-center">
                       Nyereményed:&nbsp;&nbsp;{""}
-                      <NumberFormat value={Math.round(profildata.amount * bet.odds * 100) / 100} 
-                      displayType={'text'} thousandSeparator={true} renderText={value => value} />
-                      
+                      <NumberFormat
+                        value={
+                          Math.round(profildata.amount * bet.odds * 100) /
+                                100 -
+                              profildata.amount
+                        }
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        renderText={value => <span>{value}</span>}
+                      />
                       <span className="text-center doublescore">
-                      {currentUser.userinfo.teamid === match.teamA._id || currentUser.userinfo.teamid === match.teamB._id ? 
-                        <NumberFormat value={(Math.round(profildata.amount * bet.odds * 100) / 100)*2} 
-                        displayType={'text'} thousandSeparator={true} renderText={value => <span> ×2 = {value}</span>} />
-                        :
-                        ""}
+                        {currentUser.userinfo.teamid === match.teamA._id ||
+                        currentUser.userinfo.teamid === match.teamB._id ? (
+                          <NumberFormat
+                            value={
+                              (Math.round(profildata.amount * bet.odds * 100) /
+                                100 -
+                                profildata.amount) *
+                              2
+                            }
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            renderText={value => <span> +x2 = {value}</span>}
+                          />
+                        ) : (
+                          ""
+                        )}
                       </span>
                     </h4>
                   </Grid>
@@ -232,7 +276,12 @@ const BettModal = ({ isShowing, hide, match }) => {
             <Button variant="contained" size="small" onClick={hide}>
               Mégsem
             </Button>{" "}
-            <Button variant="contained" size="small" color="primary" type="submit">
+            <Button
+              variant="contained"
+              size="small"
+              color="primary"
+              type="submit"
+            >
               Fogadok
             </Button>
           </ModalFooter>

@@ -1,25 +1,29 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import * as moment from "moment";
 import "moment/locale/hu";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Card, CardBody, Table } from "reactstrap";
 import { SharedContext } from "../../context/SharedContect";
 import { Link } from "react-router-dom";
-import Avatar from '@material-ui/core/Avatar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFutbol } from '@fortawesome/free-solid-svg-icons'
+import Avatar from "@material-ui/core/Avatar";
 import routes from "../../routes";
 
-const footballicon = <FontAwesomeIcon icon={faFutbol} />
-
-const useStyles = makeStyles({
-  avatar: {
-    margin: "0px 5px",
-    width: "10px",
-    height: "10px",
-    display: "inline-flex"
-  }
-});
+const useStyles = makeStyles(theme =>
+  createStyles({
+    avatar: {
+      margin: "0px 5px",
+      width: "15px",
+      height: "15px",
+      top: "2px",
+      display: "inline-flex",
+      [theme.breakpoints.down("sm")]: {
+        width: "10px",
+        height: "10px",
+        top: 0
+      }
+    }
+  })
+);
 
 const Matchelement = ({ value }) => {
   const classes = useStyles();
@@ -31,88 +35,113 @@ const Matchelement = ({ value }) => {
   const runningmatchlink = routes.filter(x => x.id === "merkozes");
   return (
     <>
-      {value.length === 0 ? <tr><td colSpan="4">Nincsenek mérkőzések</td></tr> : value.map(match => {
-        if (match.active === 1) {
-          return (
-            <tr
-              key={match._id}
-              className="bettingtablerow runmatch"
-            >
-              <td>{moment(match.date).format("HH:mm")}</td>
-              <td>
-                <span className="footballicon">{footballicon}</span>
-                <Link to={runningmatchlink[0].path + "/" + match._id}>
+      {value.length === 0 ? (
+        <tr>
+          <td colSpan="4">Nincsenek mérkőzések</td>
+        </tr>
+      ) : (
+        value.map(match => {
+          if (match.active === 1) {
+            return (
+              <tr key={match._id} className="bettingtablerow runmatch">
+                <td>{moment(match.date).format("HH:mm")}</td>
+                <td>
+                  <Link to={runningmatchlink[0].path + "/" + match._id}>
+                    {match.teamA.name}
+                    <Avatar
+                      alt={match.teamA.flag}
+                      src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                      className={classes.avatar}
+                    />
+                    -
+                    <Avatar
+                      alt={match.teamA.flag}
+                      src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                      className={classes.avatar}
+                    />
+                    {match.teamB.name}
+                  </Link>
+                </td>
+                <td className="text-center">{match.oddsAwin}</td>
+                <td className="text-center">{match.oddsDraw}</td>
+                <td className="text-center">{match.oddsBwin}</td>
+              </tr>
+            );
+          } else if (match.active === 2) {
+            return (
+              <tr key={match._id} className="bettingtablerow endmatch">
+                <td>{moment(match.date).format("HH:mm")}</td>
+                <td>
+                  <Link to={runningmatchlink[0].path + "/" + match._id}>
+                    {match.teamA.name}
+                    <Avatar
+                      alt={match.teamA.flag}
+                      src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                      className={classes.avatar}
+                    />
+                    -
+                    <Avatar
+                      alt={match.teamA.flag}
+                      src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                      className={classes.avatar}
+                    />
+                    {match.teamB.name}
+                  </Link>
+                  <span> (vége)</span>
+                </td>
+                <td className="text-center">{match.oddsAwin}</td>
+                <td className="text-center">{match.oddsDraw}</td>
+                <td className="text-center">{match.oddsBwin}</td>
+              </tr>
+            );
+          } else {
+            return (
+              <tr
+                key={match._id}
+                className="bettingtablerow"
+                onClick={() => openmsgmod(match)}
+              >
+                <td>{moment(match.date).format("HH:mm")}</td>
+                <td>
                   {match.teamA.name}
-                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamA.flag} className={classes.avatar} /> 
-                  - 
-                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamB.flag} className={classes.avatar} />
+                  <Avatar
+                    alt={match.teamA.flag}
+                    src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                    className={classes.avatar}
+                  />
+                  -
+                  <Avatar
+                    alt={match.teamA.flag}
+                    src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                    className={classes.avatar}
+                  />
                   {match.teamB.name}
-                </Link>
-              </td>
-              <td className="text-center">{match.oddsAwin}</td>
-              <td className="text-center">{match.oddsDraw}</td>
-              <td className="text-center">{match.oddsBwin}</td>
-            </tr>
-          );
-        } else if (match.active === 2) {
-          return (
-            <tr
-              key={match._id}
-              className="bettingtablerow endmatch"
-            >
-              <td>{moment(match.date).format("HH:mm")}</td>
-              <td>
-                <Link to={runningmatchlink[0].path + "/" + match._id}>
-                  {match.teamA.name}
-                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamA.flag} className={classes.avatar} /> 
-                  - 
-                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamB.flag} className={classes.avatar} />
-                  {match.teamB.name}
-                </Link>
-                <span>  (vége)</span>
-              </td>
-              <td className="text-center">{match.oddsAwin}</td>
-              <td className="text-center">{match.oddsDraw}</td>
-              <td className="text-center">{match.oddsBwin}</td>
-            </tr>
-          );
-        }
-        else{
-          return (
-            <tr
-              key={match._id}
-              className="bettingtablerow"
-              onClick={() => openmsgmod(match)}
-            >
-              <td>{moment(match.date).format("HH:mm")}</td>
-              <td>
-                  {match.teamA.name}
-                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamA.flag} className={classes.avatar} /> 
-                  - 
-                  <Avatar alt={match.teamA.flag} src={process.env.PUBLIC_URL + "flags/"+match.teamB.flag} className={classes.avatar} />
-                  {match.teamB.name}
-              </td>
-              <td className="text-center">{match.oddsAwin}</td>
-              <td className="text-center">{match.oddsDraw}</td>
-              <td className="text-center">{match.oddsBwin}</td>
-            </tr>
-          );
-        }
-      })}
+                </td>
+                <td className="text-center">{match.oddsAwin}</td>
+                <td className="text-center">{match.oddsDraw}</td>
+                <td className="text-center">{match.oddsBwin}</td>
+              </tr>
+            );
+          }
+        })
+      )}
     </>
   );
 };
 
-const Matchlist = ({ val }) => {
-  let isTodayMatch = false
-  val.forEach(x=>{
-    if(moment(x.month).isSame(moment().format(), 'day')){
-      isTodayMatch = true
+const Matchlist = ({ val, addtodayrow }) => {
+  let isTodayMatch = false;
+  val.forEach(x => {
+    if (moment(x.month).isSame(moment().format(), "day")) {
+      isTodayMatch = true;
     }
-  })
+  });
   let __matchlist = val;
-  if(!isTodayMatch){
-    __matchlist = [{group: "-1",month: moment().format("YYYY-MM-DD HH:mm"),data: []}, ...__matchlist]
+  if (!isTodayMatch && addtodayrow) {
+    __matchlist = [
+      { group: "-1", month: moment().format("YYYY-MM-DD HH:mm"), data: [] },
+      ...__matchlist
+    ];
   }
   return (
     <>
@@ -130,9 +159,21 @@ const Matchlist = ({ val }) => {
                   sameElse: "MMMM Do dddd"
                 })}
               </td>
-              {match.data.length > 0 ? <td className="text-center">1</td>:<td></td>}
-              {match.data.length > 0 ? <td className="text-center">X</td>:<td></td>}
-              {match.data.length > 0 ? <td className="text-center">2</td>:<td></td>}
+              {match.data.length > 0 ? (
+                <td className="text-center">1</td>
+              ) : (
+                <td></td>
+              )}
+              {match.data.length > 0 ? (
+                <td className="text-center">X</td>
+              ) : (
+                <td></td>
+              )}
+              {match.data.length > 0 ? (
+                <td className="text-center">2</td>
+              ) : (
+                <td></td>
+              )}
             </tr>
             <Matchelement value={match.data} />
           </React.Fragment>
@@ -143,6 +184,8 @@ const Matchlist = ({ val }) => {
 };
 
 const Matchtable = ({ list }) => {
+  let ADDtodayRow = true;
+  let counter = 0;
   moment.locale("hu");
 
   const sortByDate = (list, type) => {
@@ -187,7 +230,7 @@ const Matchtable = ({ list }) => {
     let groupbymonth = groupbyfunc(list, 1); // groupby month
     groupbymonth.forEach(item => {
       let groupbyday = groupbyfunc(item.data, 2);
-      groupbyday.sort((x,c)=> new Date(x.month)-new Date(c.month))
+      groupbyday.sort((x, c) => new Date(x.month) - new Date(c.month));
       item.data = groupbyday;
     });
 
@@ -207,8 +250,12 @@ const Matchtable = ({ list }) => {
           <Table className="tablesorter" responsive>
             <tbody>
               {groupedbymonth.map(matchgroup => {
+                counter++;
+                if(counter > 1){
+                  ADDtodayRow = false;
+                }
                 return (
-                  <Matchlist key={matchgroup.group} val={matchgroup.data} />
+                  <Matchlist key={matchgroup.group} val={matchgroup.data} addtodayrow={ADDtodayRow} />
                 );
               })}
             </tbody>

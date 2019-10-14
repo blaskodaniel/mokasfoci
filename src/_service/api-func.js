@@ -83,3 +83,14 @@ export const setavatar = (avatarname) => {
             return error
         });
 }
+
+export const loadTransactions = (userid) => {
+    return APItokenclient.post(`loadtransactions`,{userid: userid})
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+

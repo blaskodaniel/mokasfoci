@@ -86,6 +86,7 @@ const CurrentMatchInfo = ({ match }) => {
                       <th className="text-center">Tipp</th>
                       <th className="text-center">Feltett pont</th>
                       <th className="text-center">Nyeremény</th>
+                      <th className="text-center">Nettó nyeremény</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -103,8 +104,13 @@ const CurrentMatchInfo = ({ match }) => {
                               <td className="text-center">{cp.bet}</td>
                               <td className="text-center">
                                 {isFavoriteBetting(cp).is
-                                  ? <span>{cp.result * 2}</span>
-                                  : cp.result}
+                                  ? <span>{(cp.bet*cp.odds) * 2}</span>
+                                  : (cp.bet*cp.odds)}
+                              </td>
+                              <td className="text-center">
+                                {isFavoriteBetting(cp).is
+                                  ? <span>{((cp.bet*cp.odds) * 2)-cp.bet}</span>
+                                  : (cp.bet*cp.odds)-cp.bet}
                               </td>
                             </tr>
                           );

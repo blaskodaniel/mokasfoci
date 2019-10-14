@@ -11,8 +11,40 @@ h3,
   font-size: 17px;
 }
 
-.zi1{
+.zi1 {
   z-index: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.mb0 {
+  margin-bottom: 0;
+}
+
+.df {
+  display: flex;
+}
+
+.jc-e {
+  justify-content: end;
+}
+
+.jc-c {
+  justify-content: center;
+}
+
+.m0 {
+  margin: 0;
+}
+
+.react-confirm-alert-body {
+  width: 340px;
+}
+
+.react-confirm-alert-overlay {
+  background: rgba(193, 35, 35, 0.79);
 }
 
 .modal-backdrop.show {
@@ -28,18 +60,6 @@ h3,
 }
 a.profilemenu {
   color: #130000 !important;
-}
-
-.hidden {
-  display: none;
-}
-
-.mb0 {
-  margin-bottom: 0;
-}
-
-.jc-e {
-  justify-content: end;
 }
 
 .profilename {
@@ -106,9 +126,30 @@ tr.monthtablerow {
   background-color: #35302e;
 }
 
+.betmodal-content #select-amount {
+  color: white;
+}
+
+.betmodal-content .betTextField {
+  min-width: 250px;
+  text-align: center;
+}
+
 .betmodal-content span.doublescore {
-  color: #19dc43;
+  color: #19dc3a;
   font-style: italic;
+  font-size: medium;
+}
+
+.betmodal-content span.favoriteteam {
+  color: #4fc329;
+  font-size: small;
+  text-transform: uppercase;
+}
+
+.betmodal-content div.nettoscore {
+  text-align: center;
+  text-transform: lowercase;
 }
 
 .betmodal-content div.modal-body {
@@ -290,6 +331,25 @@ span.footballicon svg {
   background-color: #3f51b5;
 }
 
+.mybetsmobile {
+  display: flex;
+  flex-flow: column;
+}
+
+.mybetsmobile div.card {
+  margin-bottom: 10px;
+}
+
+.mybetsmobile div.mobileFilter {
+  /* float: left; */
+  align-self: flex-start;
+  margin-bottom: 12px;
+}
+
+.sidebar .nav li > a, .off-canvas-sidebar .nav li > a{
+  padding: 5px 8px;
+}
+
 @media only screen and (max-width: 600px) {
   h3,
   .h3 {
@@ -306,8 +366,8 @@ span.footballicon svg {
     font-size: smaller;
     overflow-x: scroll;
   }
-  .tablesorter {
-    font-size: smaller;
+  .tablesorter th {
+    font-size: smaller !important;
   }
   .betmodal-content input {
     margin: 0 auto;

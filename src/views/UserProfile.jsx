@@ -190,9 +190,7 @@ const UserProfile = () => {
                     <img
                       alt="assets/img/default-avatar.png"
                       className="avatar"
-                      src={
-                        process.env.PUBLIC_URL + "avatars/" + profildata.avatar
-                      }
+                      src={"/avatars/" + profildata.avatar}
                     />
                     <h5 className="title f17">
                       {profildata.name ? profildata.name : profildata.username}
@@ -362,6 +360,9 @@ const UserProfile = () => {
                               className="form-control"
                               value={profildata[group.name]}
                               name={group.name}
+                              disabled={
+                                moment().isBefore(AppConfig.gamestart) ? "" : true
+                              }
                               onChange={handleInputChange}
                             >
                               {typeof profildata[group.name] === "undefined" ? (
@@ -383,11 +384,14 @@ const UserProfile = () => {
                     })}
                   </Row>
                 </CardBody>
-                <CardFooter>
-                  <Button className="btn-fill" color="primary" type="submit">
-                    Mentés
-                  </Button>
-                </CardFooter>
+                {
+                  moment().isBefore(AppConfig.gamestart) ? (<CardFooter>
+                    <Button className="btn-fill"
+                    color="primary" type="submit">
+                      Mentés
+                    </Button>
+                  </CardFooter>) : null
+                }
               </Card>
             </Form>
             <Card>

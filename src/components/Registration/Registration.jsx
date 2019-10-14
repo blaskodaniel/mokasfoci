@@ -5,7 +5,23 @@ import { Link } from "react-router-dom";
 import * as AuthActions from "../../store/actions/authentication";
 import { Button, Form, FormGroup, Label, Input,FormFeedback } from "reactstrap";
 import { LoginState } from "../../context/AuthenticationContext";
+import NotificationAlert from 'react-notification-alert';
 import "./Registration.css";
+
+var options = {};
+options = {
+    place: 'tc',
+    message: (
+        <div>
+            <div>
+                <h3>Sikeres regisztráció!</h3><p>Most már bejelentkezhetsz.</p>
+            </div>
+        </div>
+    ),
+    type: "success",
+    icon: "now-ui-icons ui-1_bell-53",
+    autoDismiss: 5
+}
 
 // Amit beküldünk a store-ba
 const mapDispatchToProps = dispatch => {
@@ -25,6 +41,10 @@ class Registration extends Component {
       name: "",
       submitted: false
     };
+  }
+
+  notiFY(){
+    this.refs.notify.notificationAlert(options);
   }
 
   handleChange = e => {
@@ -47,7 +67,7 @@ class Registration extends Component {
   render() {
     const { regstate, setregstate, msg } = this.props;
     if (regstate === 1) {
-      alert("Sikeres regisztráció! Most már bejelentkezhetsz!");
+      this.notiFY()
       setregstate(0);
     }
     if (msg.msg !== 0 && msg.msg !== null && regstate === 2) {
@@ -56,6 +76,7 @@ class Registration extends Component {
     }
     return (
       <div className="d-flex flex-column justify-content-center align-items-center h-100">
+        <NotificationAlert ref="notify" />
         <div className="registrationcontainer fadeIn animated">
           <div className="logo mb-3">
             <div className="col-md-12 text-center text-white">

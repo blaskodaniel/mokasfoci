@@ -3,10 +3,12 @@ export const AppConfig = {
     JWTtokenname: "token",
     favorite_odds: 2,
     logotext: "Mókás Fogadás",
-    gamename: "EB 2019",
+    minbet: 200,
+    maxbet: 2000,
+    gamename: "EB 2020",
     gamestart: "2020-06-12",
     gameend: "2020-07-12",
-    version: "1.19"
+    version: "1.24"
 }
 
-export const MatchTypes = ["1.csoportkör","2.csoportkör","3.csoportkör","Nyolcaddöntő","Negyeddöntő","Elődöntő","A 3. helyért","Döntő"]
+export const MatchTypes = ["1.csoportkör", "2.csoportkör", "3.csoportkör", "Nyolcaddöntő", "Negyeddöntő", "Elődöntő", "A 3. helyért", "Döntő"]

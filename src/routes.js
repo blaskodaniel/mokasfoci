@@ -5,6 +5,7 @@ import MyBets from "views/MyBets.jsx";
 import UserProfile from "views/UserProfile.jsx";
 import Toplist from "./views/Toplist";
 import CurrentMatchInfo from "./views/CurrentMatchInfo";
+import Transactions from "./views/Transactions";
 
 var routes = [
   {
@@ -65,6 +66,16 @@ var routes = [
     visible: true,
     hiddenlink: false,
     component: Toplist,
+    layout: "/"
+  },
+  {
+    id: "transactions",
+    path: "transactions",
+    name: "Tranzakciók",
+    icon: "tim-icons icon-coins",
+    visible: true,
+    hiddenlink: false,
+    component: Transactions,
     layout: "/"
   },
   {
