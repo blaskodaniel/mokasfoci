@@ -293,16 +293,6 @@ const UserProfile = () => {
                     </Col>
                   </Row>
                   <Row>
-                    {/* <Col className="pr-md-1" md="6">
-                      <FormGroup>
-                        <label>Azonosítóm</label>
-                        <Input
-                          disabled
-                          defaultValue={profildata._id}
-                          type="text"
-                        />
-                      </FormGroup>
-                    </Col> */}
                     <Col md="12">
                       <FormGroup>
                         <label>Kedvenc csapatom</label>
@@ -343,9 +333,39 @@ const UserProfile = () => {
             <Form onSubmit={handleProfilSubmit}>
               <Card>
                 <CardHeader>
-                  <h5 className="title">Csoportelső tippjeim</h5>
+                  <h5 className="title">Csoportelsők és a bajnok</h5>
                 </CardHeader>
                 <CardBody>
+                  <Row>
+                  <Col md="12">
+                    <FormGroup>
+                        <label>Bajnok csapat tipp</label>
+                        <Input
+                          type="select"
+                          disabled={
+                            moment().isBefore(AppConfig.gamestart) ? "" : true
+                          }
+                          className="form-control"
+                          value={profildata.winteamid}
+                          name="winteamid"
+                          onChange={handleInputChange}
+                        >
+                          {typeof profildata.winteamid === "undefined" ? (
+                            <option value="0">Kérlek válassz...</option>
+                          ) : (
+                            ""
+                          )}
+                          {teamsdata.map(team => {
+                            return (
+                              <option key={team._id} value={team._id}>
+                                {team.name}
+                              </option>
+                            );
+                          })}
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                  </Row>
                   <Row className="d-flex flex-row flex-wrap justify-content-start">
                     {groupwithteams.map(group => {
                       return (

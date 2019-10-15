@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import uuidv1 from "uuid/v1";
+import NumberFormat from "react-number-format";
 // reactstrap components
 import {
   Card,
@@ -101,16 +102,41 @@ const CurrentMatchInfo = ({ match }) => {
                                   : ""}
                               </td>
                               <td className="text-center">{cp.outcome}</td>
-                              <td className="text-center">{cp.bet}</td>
                               <td className="text-center">
-                                {isFavoriteBetting(cp).is
-                                  ? <span>{(cp.bet*cp.odds) * 2}</span>
-                                  : (cp.bet*cp.odds)}
+                                <NumberFormat
+                                  value={Math.round(cp.bet)}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                  renderText={value => value}
+                                />
                               </td>
                               <td className="text-center">
                                 {isFavoriteBetting(cp).is
-                                  ? <span>{((cp.bet*cp.odds) * 2)-cp.bet}</span>
-                                  : (cp.bet*cp.odds)-cp.bet}
+                                  ? <NumberFormat
+                                  value={Math.round((cp.bet*cp.odds) * 2)}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                  renderText={value => <span>{value}</span>}
+                                />
+                                  : <NumberFormat
+                                  value={Math.round(cp.bet*cp.odds)}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                  renderText={value => value }/>
+                                  }
+                              </td>
+                              <td className="text-center">
+                                {isFavoriteBetting(cp).is
+                                  ? <NumberFormat
+                                  value={Math.round(((cp.bet*cp.odds) * 2)-cp.bet)}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                  renderText={value => <span>{value}</span> }/> 
+                                  : <NumberFormat
+                                  value={Math.round((cp.bet*cp.odds)-cp.bet)}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                  renderText={value => value }/>}
                               </td>
                             </tr>
                           );

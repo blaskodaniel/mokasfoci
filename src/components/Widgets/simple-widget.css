@@ -1,0 +1,42 @@
+.widget_container div.widget_text {
+  padding: 5px 10px 5px 20px;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #bebec4;
+  text-overflow: ellipsis;
+}
+
+.widget_container div.widget_amount {
+  font-size: 24px;
+  line-height: 33px;
+  font-weight: 600;
+}
+
+.widget_container span.widget_text {
+  font-size: small;
+}
+
+.widget_container div.widget_amount::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  height: 65px;
+  margin-top: 10px;
+}
+
+.widget_container {
+  margin-bottom: 10px;
+  padding: 5px 10px 5px 20px;
+  border: 1px solid #27293d;
+  color: #dbe3ea;
+}
+
+@media only screen and (max-width: 600px) {
+  .widget_container div.widget_amount {
+    font-size: 24px;
+  }
+  .widget_container span.widget_text {
+    font-size: 11px;
+  }
+}

@@ -346,9 +346,21 @@ span.footballicon svg {
   margin-bottom: 12px;
 }
 
-.sidebar .nav li > a, .off-canvas-sidebar .nav li > a{
+.sidebar .nav li > a,
+.off-canvas-sidebar .nav li > a {
   padding: 5px 8px;
 }
+
+.transactionlist span.lost {
+  font-size: medium;
+  color: #d42929;
+}
+
+.transactionlist span.win {
+  font-size: medium;
+  color: #1fbf33;
+}
+
 
 @media only screen and (max-width: 600px) {
   h3,
