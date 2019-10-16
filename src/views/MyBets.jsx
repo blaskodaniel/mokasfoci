@@ -47,6 +47,13 @@ const useStyles = makeStyles({
     width: 35,
     height: 35
   },
+  deletefab:{
+    position: "absolute",
+    bottom: "25px",
+    right: "15px",
+    width: 35,
+    height: 35
+  },
   cardaction: {
     justifyContent: "flex-end"
   },
@@ -209,7 +216,9 @@ const MyBets = () => {
   useEffect(() => {
     const loadCoupons = async () => {
       const resultPromise = await getCouponsByUserId(currentUser.user.sub);
-      setCoupons(resultPromise.data);
+      let res = resultPromise.data;
+      res.sort((x, y) => new Date(x.date) - new Date(y.date));
+      setCoupons(res);
     };
 
     loadCoupons();
@@ -715,7 +724,7 @@ const MyBets = () => {
                     {cp.matchid.active === 0 && cp.status === 0 ? (
                       <Fab
                         aria-label="delete"
-                        className={classes.fab}
+                        className={classes.deletefab}
                         onClick={() => {
                           opeconfirm(cp);
                         }}

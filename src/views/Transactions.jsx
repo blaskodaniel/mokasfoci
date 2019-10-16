@@ -76,7 +76,7 @@ const Transactions = () => {
                   <tbody>
                     {transaction.length === 0 ? (
                       <tr>
-                        <td colSpan="3">Még nem volt tranzakciód</td>
+                        <td colSpan="3">Nincsen levonásod/jóváírásod</td>
                       </tr>
                     ) : (
                       transaction.map((p, index) => {

@@ -19,11 +19,20 @@ const Toplist = () => {
   const [sortdesc_nettoscore, setsortdesc_nettoscore] = useState(false);
   const [sortdesc_name, setsortdesc_name] = useState(false);
 
+  const medalSort = (list) => {
+    list.forEach((x,y)=>{
+      x.rate = (y+1)
+    });
+    console.log(list)
+    return list
+  }
+
   useEffect(() => {
     const loadlist = async () => {
       const resultPromise = await getPlayers();
       sort(resultPromise.data).desc(u => u.nettoscore);
-      setPlayers(resultPromise.data);
+      const extendedList = medalSort(resultPromise.data);
+      setPlayers(extendedList);
     };
     loadlist();
   }, []);
@@ -63,7 +72,7 @@ const Toplist = () => {
 
   return (
     <>
-      <div className="content">
+      <div className="content toplist">
         <Row>
           <Col md="12">
             <Card>
@@ -74,7 +83,7 @@ const Toplist = () => {
                 <Table className="tablesorter" responsive>
                   <thead className="text-primary">
                     <tr>
-                      <th>#</th>
+                      <th className="text-center">#</th>
                       <th
                         onClick={() => {
                           switchSort("name");
@@ -90,28 +99,31 @@ const Toplist = () => {
                       >
                         Pont <i className="fa fa-fw fa-sort"></i>
                       </th>
-                      <th
+                      <th></th>
+                      {/*<th
                         className="text-center"
                         onClick={() => {
                           switchSort("score");
                         }}
                       >
                         Bruttó pont <i className="fa fa-fw fa-sort"></i>
-                      </th>
+                      </th> */}
                     </tr>
                   </thead>
                   <tbody>
                     {players.map((p, index) => {
                       return (
                         <tr key={p.id}>
+                          <td className="text-center">
+                            {p.rate}
+                          </td>
                           <td>
                             <img
                               className="photo"
                               alt="..."
-                              src={process.env.PUBLIC_URL + "avatars/"+p.avatar}
-                            />
+                              src={"/avatars/"+p.avatar}
+                            />{p.name}
                           </td>
-                          <td>{p.name}</td>
                           <td className="text-center">
                             <NumberFormat
                               value={parseInt(p.nettoscore, 10)}
@@ -119,14 +131,28 @@ const Toplist = () => {
                               thousandSeparator={true}
                               renderText={value => <b>{value}</b>}
                             />
-                          </td>
-                          <td className="text-center">
                             <NumberFormat
                               value={parseInt(p.score, 10)}
                               displayType={"text"}
                               thousandSeparator={true}
-                              renderText={value => <b>{value}</b>}
+                              renderText={value => <span className="brpoint">{value}</span>}
                             />
+                          </td>
+                          <td>
+                            {p.rate === 1 ? <img
+                              className="photo medal"
+                              alt="..."
+                              src={"/icons/cup.png"}
+                            /> : p.rate === 2 ? <img
+                            className="photo medal"
+                            alt="..."
+                            src={"/icons/silvermedal.png"}
+                          /> : ""}
+                          {p.rate === 3 ? <img
+                              className="photo medal"
+                              alt="..."
+                              src={"/icons/bronze-medal.png"}
+                            /> : ""}
                           </td>
                         </tr>
                       );
