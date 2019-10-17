@@ -66,7 +66,11 @@ const MatchtableMobile = ({ list }) => {
                     </Row>
                     <Row>
                       <Col xs="12">
-                        <p className="datetime">{!isNaN(m.type) ? MatchTypes[parseInt(m.type)] : ""}{typeof m.comment !== "undefined" ? " | "+m.comment : ""}</p>
+                        <p className="datetime">
+                          {moment(m.date).format("MMM Do, ddd HH:mm")}
+                          {!isNaN(m.type) ? " | "+MatchTypes[parseInt(m.type)] : ""}
+                          {typeof m.comment !== "undefined" ? " | "+m.comment : ""}
+                        </p>
                       </Col>
                     </Row>
                   </Col>

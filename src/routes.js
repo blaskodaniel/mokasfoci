@@ -6,6 +6,7 @@ import UserProfile from "views/UserProfile.jsx";
 import Toplist from "./views/Toplist";
 import CurrentMatchInfo from "./views/CurrentMatchInfo";
 import Transactions from "./views/Transactions";
+import Statistics from "./views/Statistics";
 
 var routes = [
   {
@@ -76,6 +77,16 @@ var routes = [
     visible: true,
     hiddenlink: false,
     component: Transactions,
+    layout: "/"
+  },
+  {
+    id: "statistics",
+    path: "statisztika",
+    name: "Statisztika",
+    icon: "tim-icons icon-chart-bar-32",
+    visible: true,
+    hiddenlink: false,
+    component: Statistics,
     layout: "/"
   },
   {

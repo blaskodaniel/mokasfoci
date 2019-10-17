@@ -136,9 +136,7 @@ const BettModal = ({ isShowing, hide, match }) => {
                     <Divider variant="middle" />
                   </Grid>
                   <Grid className="mt-2" item xs={12}>
-                    <p className="cutivemono">
-                      <span className="mr-2">Mérkőzés:</span>
-                      {"  "}
+                    <p className="text-center f17 matchname">
                       {match.teamA.name} - {match.teamB.name}
                     </p>
                   </Grid>
@@ -153,7 +151,8 @@ const BettModal = ({ isShowing, hide, match }) => {
                       <span className="cutivemono">Tipped:</span>{" "}
                     </p>
                     <FormGroup check inline className="form-check-radio jc-e">
-                      <Label className="form-check-label">
+                      <Label className={currentUser.userinfo.teamid &&
+                            currentUser.userinfo.teamid === match.teamA._id ? "successtext form-check-label":"form-check-label"}>
                         <Input
                           type="radio"
                           name="odds"
@@ -167,11 +166,8 @@ const BettModal = ({ isShowing, hide, match }) => {
                         <span className="form-check-sign">
                           {" "}
                           ({match.oddsAwin}){" "}
-                          <span className="doublescore">
-                            {currentUser.userinfo.teamid &&
-                            currentUser.userinfo.teamid === match.teamA._id
-                              ? " (kedvenc csapat)"
-                              : ""}
+                          <span className={currentUser.userinfo.teamid &&
+                            currentUser.userinfo.teamid === match.teamA._id ? "successtext doublescore":"doublescore"}>
                           </span>
                         </span>
                       </Label>

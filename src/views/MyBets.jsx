@@ -217,8 +217,13 @@ const MyBets = () => {
     const loadCoupons = async () => {
       const resultPromise = await getCouponsByUserId(currentUser.user.sub);
       let res = resultPromise.data;
-      res.sort((x, y) => new Date(x.date) - new Date(y.date));
-      setCoupons(res);
+      let coupon_run = res.filter((x,y)=>x.status === 0)
+      coupon_run.sort((x, y) => new Date(x.matchid.date) - new Date(y.matchid.date))
+      let coupon_other = res.filter((x,y)=>x.status > 0)
+      coupon_other.sort((x, y) => new Date(y.matchid.date) - new Date(x.matchid.date));
+      //res.sort((x, y) => new Date(y.matchid.date) - new Date(x.matchid.date));
+      const allc = [...coupon_run, ...coupon_other];
+      setCoupons(allc);
     };
 
     loadCoupons();
@@ -421,7 +426,7 @@ const MyBets = () => {
                                 )}
 
                                 <span className="matchdateinfo">
-                                  {cp.matchid.active === 0
+                                  {cp.matchid.active === 0 || cp.matchid.active === 1 || cp.matchid.active === 2
                                     ? "(" +
                                       moment(cp.matchid.date).format(
                                         "MMM Do, ddd HH:mm"

@@ -39,6 +39,10 @@ h3,
   margin: 0;
 }
 
+label.successtext{
+  color: #19dc3a;
+}
+
 .react-confirm-alert-body {
   width: 340px;
 }
@@ -124,6 +128,11 @@ tr.monthtablerow {
 
 .betmodal-content div.modal-content {
   background-color: #35302e;
+}
+
+.betmodal-content .matchname {
+  font-weight: 100;
+  text-transform: uppercase;
 }
 
 .betmodal-content #select-amount {
@@ -404,7 +413,7 @@ span.footballicon svg {
   .transactionlist .table > tbody > tr > td {
     max-width: 100px;
   }
-  .toplist .table > tbody > tr > td img.medal{
+  .toplist .table > tbody > tr > td img.medal {
     width: 20px;
     height: 20px;
   }
