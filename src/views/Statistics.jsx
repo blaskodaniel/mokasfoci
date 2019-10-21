@@ -1,78 +1,64 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Line, Bar } from "react-chartjs-2";
-import LineChart from "../components/Charts/LineChart";
-import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
-import {
-  chartExample1,
-  chartExample2,
-  chartExample3,
-  chartExample4
-} from "variables/charts.jsx";
-import { getCouponsByUserId } from "../_service/api-func";
-import { AuthenticationContext } from "../context/AuthenticationContext";
+import React, { useState, useEffect} from "react";
+import { userstat } from "../_service/api-func";
+import Row from "reactstrap/lib/Row";
+import Col from "reactstrap/lib/Col";
+import PieChart from "../components/Charts/PieChart";
 
 const Statistics = () => {
-  const currentUser = useContext(AuthenticationContext);
-  const [coupons, setCoupons] = useState(null);
-
-  const preProcessing = list => {
-    let resultobj = {
-      bet: {
-        dataset: [],
-        xaxis: []
-      },
-      wins:{
-        dataset: [],
-        xaxis: []
-      }
-    };
-    list.forEach(x => {
-      resultobj.bet.dataset.push(x.bet);
-      resultobj.bet.xaxis.push(x.teamA.name + "-" + x.teamB.name);
-      if(x.success && x.status === 2){
-        resultobj.wins.dataset.push(Math.round((x.bet*x.odds)-x.bet));
-        resultobj.wins.xaxis.push(x.teamA.name + "-" + x.teamB.name);
-      }
-    });
-
-    return resultobj;
-  };
+  const [piecoupons, setPiecoupons] = useState(null);
+  const [depexp, setDepexp] = useState(null);
 
   useEffect(() => {
-    const loadCoupons = async () => {
-      const resultPromise = await getCouponsByUserId(currentUser.user.sub);
-      let res = resultPromise.data;
-      res.sort((x, y) => new Date(x.matchid.date) - new Date(y.matchid.date));
-      const chartdata = preProcessing(res);
-      setCoupons(chartdata);
+    const getuserstat = async () => {
+      const resultPromise = await userstat();
+      setPiecoupons([{
+        id: "Nyertes",
+        label: "Nyertes szelvény",
+        value: resultPromise.data.coupons.win,
+        color: "hsl(114, 70%, 50%)"
+      },
+      {
+        id: "Vesztes",
+        label: "Vesztes szelvény",
+        value: resultPromise.data.coupons.lost,
+        color: "hsl(1, 70%, 50%)"
+      },
+      {
+        id: "Játékban",
+        label: "Még játékban",
+        value: resultPromise.data.coupons.run,
+        color: "#8790a7 "
+      }]);
+      setDepexp([{
+        id: "Nyeremény",
+        label: "Nyeremény",
+        value: resultPromise.data.depexp.deposit,
+        color: "#1dc339"
+      },
+      {
+        id: "Veszteség",
+        label: "Veszteség",
+        value: resultPromise.data.depexp.expense,
+        color: "hsl(1, 70%, 50%)"
+      }])
     };
-
-    loadCoupons();
+    
+    getuserstat();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <div className="content">
-        {coupons !== null ? (
-          <LineChart
-            dataset={coupons.bet.dataset}
-            xaxis={coupons.bet.xaxis}
-            title={"Tétjeid"}
-          />
-        ) : (
-          ""
-        )}
-        {coupons !== null ? (
-          <LineChart
-            dataset={coupons.wins.dataset}
-            xaxis={coupons.wins.xaxis}
-            title={"Nyereményeid"}
-          />
-        ) : (
-          ""
-        )}
         <Row>
+          <Col xs="12" sm="12" md="12" lg="4">
+            {piecoupons !== null ? <PieChart data={piecoupons} title="Szelvények állapota" /> : ""}
+          </Col>
+          <Col xs="12" sm="12" md="12" lg="4">
+            {depexp !== null ? <PieChart data={depexp} title="Nyeremény/veszteség" /> : ""}
+          </Col>
+        </Row>
+        {/* <Row>
           <Col xs="12">
             <Card className="card-chart">
               <CardHeader>
@@ -150,7 +136,7 @@ const Statistics = () => {
               </CardBody>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
       </div>
     </>
   );

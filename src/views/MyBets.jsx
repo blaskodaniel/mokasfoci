@@ -34,6 +34,7 @@ import {
 import { getCouponsByUserId, deleteCoupon } from "../_service/api-func";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 import { AppConfig } from "../application.config";
+import { SharedContext } from "../context/SharedContect";
 
 const faFrownicon = <FontAwesomeIcon icon={faFrown} />;
 const faCogsicon = <FontAwesomeIcon icon={faCogs} />;
@@ -135,6 +136,7 @@ const MyBets = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
   const currentUser = useContext(AuthenticationContext);
+  const sharedcontext = useContext(SharedContext);
   const [filter, setFilter] = useState("all");
   const [coupons, setCoupons] = useState([]);
 
@@ -146,6 +148,7 @@ const MyBets = () => {
         ...currentUser.userinfo,
         score: currentUser.userinfo.score + coupon.bet
       });
+      sharedcontext.setUsercoupons([...newlist])
       setCoupons(newlist);
     } catch (err) {
       console.log("Hiba történt a törlés során", err);

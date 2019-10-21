@@ -39,7 +39,7 @@ h3,
   margin: 0;
 }
 
-label.successtext{
+label.successtext {
   color: #19dc3a;
 }
 
@@ -245,6 +245,10 @@ tr.theadrow > td {
   padding: 3px 6px !important;
 }
 
+tr.alreadybetbg{
+  background: #211c2f7a
+}
+
 .mytippspan {
   color: #339845;
   font-size: 10px;
@@ -387,6 +391,13 @@ span.footballicon svg {
   .h3 {
     font-size: 1rem;
   }
+  h2,
+  .h2 {
+    font-size: 1.3rem;
+  }
+  .teamname{
+    font-size: 12px;
+  }
   p.profilename {
     display: none !important;
   }
@@ -416,5 +427,8 @@ span.footballicon svg {
   .toplist .table > tbody > tr > td img.medal {
     width: 20px;
     height: 20px;
+  }
+  .widgetdesc p{
+    font-size: 11px;
   }
 }

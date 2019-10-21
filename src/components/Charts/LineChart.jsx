@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Line } from "react-chartjs-2";
-import { chart_options } from "./_options";
+import { line_chart_options } from "./_options";
 import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 
 const LineChart = ({ dataset, xaxis, title }) => {
@@ -47,14 +47,14 @@ const LineChart = ({ dataset, xaxis, title }) => {
         <Card className="card-chart">
           <CardHeader>
             <Row>
-              <Col className="text-left" sm="6">
+              <Col className="text-left" xs="12">
                 <CardTitle tag="h2">{title}</CardTitle>
               </Col>
             </Row>
           </CardHeader>
           <CardBody>
             <div className="chart-area">
-              <Line ref={chart} data={data.chartdata} options={chart_options} />
+              <Line ref={chart} data={data.chartdata} options={line_chart_options} />
             </div>
           </CardBody>
         </Card>

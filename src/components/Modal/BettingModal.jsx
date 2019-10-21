@@ -58,6 +58,9 @@ const BettModal = ({ isShowing, hide, match }) => {
             ...currentUser.userinfo,
             score: currentUser.userinfo.score - profildata.amount
           });
+          sharedcontext.setUsercoupons([
+            ...sharedcontext.usercoupons, saveresult.data.coupon
+          ])
           hide();
         }
       } else {

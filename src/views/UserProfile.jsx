@@ -240,7 +240,7 @@ const UserProfile = () => {
                           )}
                         />
                       </h4>
-                      <p className="text-muted m-b-0">Bruttó pont</p>
+                      <p className="text-muted m-b-0">Felhasználható</p>
                     </li>
                   </ul>
                 </div>

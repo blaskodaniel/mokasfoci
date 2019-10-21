@@ -21,6 +21,10 @@ const useStyles = makeStyles(theme =>
         height: "10px",
         top: 0
       }
+    },
+    alreadybet:{
+      background: "#2086f74a",
+      textAlign: "center"
     }
   })
 );
@@ -41,6 +45,7 @@ const Matchelement = ({ value }) => {
         </tr>
       ) : (
         value.map(match => {
+          // Current running match
           if (match.active === 1) {
             return (
               <tr key={match._id} className="bettingtablerow runmatch">
@@ -68,6 +73,7 @@ const Matchelement = ({ value }) => {
               </tr>
             );
           } else if (match.active === 2) {
+            // End match
             return (
               <tr key={match._id} className="bettingtablerow endmatch">
                 <td>{moment(match.date).format("HH:mm")}</td>
@@ -95,11 +101,13 @@ const Matchelement = ({ value }) => {
               </tr>
             );
           } else {
+            // it hasn't been played yet 
+            const isAlreadyBetting = sharedContext.usercoupons.find(x=>x.matchid._id.toString() === match._id.toString());
             return (
               <tr
                 key={match._id}
-                className="bettingtablerow"
-                onClick={() => openmsgmod(match)}
+                className={typeof isAlreadyBetting !== "undefined" ? "alreadybetbg bettingtablerow" : "bettingtablerow"}
+                onClick={() => typeof isAlreadyBetting !== "undefined" ? null : openmsgmod(match)}
               >
                 <td>{moment(match.date).format("HH:mm")}</td>
                 <td>
@@ -117,9 +125,9 @@ const Matchelement = ({ value }) => {
                   />
                   {match.teamB.name}
                 </td>
-                <td className="text-center">{match.oddsAwin}</td>
-                <td className="text-center">{match.oddsDraw}</td>
-                <td className="text-center">{match.oddsBwin}</td>
+                <td className={typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? classes.alreadybet :"text-center"}>{match.oddsAwin}</td>
+                <td className={typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "x" ? classes.alreadybet :"text-center"}>{match.oddsDraw}</td>
+                <td className={typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "2" ? classes.alreadybet :"text-center"}>{match.oddsBwin}</td>
               </tr>
             );
           }

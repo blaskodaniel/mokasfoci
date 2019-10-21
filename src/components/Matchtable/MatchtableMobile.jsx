@@ -50,7 +50,7 @@ const MatchtableMobile = ({ list }) => {
                   <Col xs="6">
                     <Row>
                       <Col xs="9">
-                        <p>{m.teamA.name}</p>
+                        <p className="teamname">{m.teamA.name}</p>
                       </Col>
                       <Col xs="3">
                         <p>{m.goalA}</p>
@@ -58,7 +58,7 @@ const MatchtableMobile = ({ list }) => {
                     </Row>
                     <Row>
                       <Col xs="9">
-                        <p>{m.teamB.name}</p>
+                        <p className="teamname">{m.teamB.name}</p>
                       </Col>
                       <Col xs="3">
                         <p>{m.goalB}</p>

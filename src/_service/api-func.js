@@ -94,3 +94,13 @@ export const loadTransactions = (userid) => {
         });
 }
 
+export const userstat = () => {
+    return APItokenclient.post(`userstat`)
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+
