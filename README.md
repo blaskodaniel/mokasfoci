@@ -1,4 +1,4 @@
-# Easy Bet Game
+# Mokasfoci (Bet Game)
 
 
 This is a React based bet game application you can play with friends. It communicates with a NodeJs server with MongoDb. This repository contains only client app. 
