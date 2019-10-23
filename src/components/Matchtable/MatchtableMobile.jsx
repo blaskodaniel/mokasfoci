@@ -1,11 +1,11 @@
 import React, {useEffect, useState, useContext} from "react";
 import moment from 'moment';
-import { Card, Row, Col, CardBody } from "reactstrap";
+import { Card, Row, Col, CardBody, CardHeader, CardTitle } from "reactstrap";
 import { getCouponsByUserId } from "../../_service/api-func";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { MatchTypes } from "../../application.config";
 
-const MatchtableMobile = ({ list }) => {
+const MatchtableMobile = ({ list, title }) => {
   const currentUser = useContext(AuthenticationContext);
   const [coupons, setCoupons] = useState([])
 
@@ -23,6 +23,9 @@ const MatchtableMobile = ({ list }) => {
 
   return (
     <Card>
+      <CardHeader>
+          <CardTitle tag="h4">{title}</CardTitle>
+      </CardHeader>
       <CardBody>
         <Row className="theadrow">
           <Col xs="6">

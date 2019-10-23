@@ -1,8 +1,44 @@
-div.main-panel{
+body {
+  /* Location of the image */
   background-image: url("/img/bgimage.jpg");
-  background-attachment: fixed;
-  background-position: center;
+
+  /* Image is centered vertically and horizontally at all times */
+  background-position: center center;
+
+  /* Image doesn't repeat */
   background-repeat: no-repeat;
+
+  /* Makes the image fixed in the viewport so that it doesn't move when 
+     the content height is greater than the image height */
+  background-attachment: fixed;
+
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100%;
+}
+
+.navbar-transparent-lg {
+  background: #0000002e !important;
+}
+
+div.main-panel {
+  background: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 400;
+  color: rgba(33, 30, 30, 0.8);
+}
+
+h4.logintitle {
+  color: rgba(252, 249, 249, 0.8);
 }
 
 h3,
@@ -44,6 +80,15 @@ h3,
 
 .m0 {
   margin: 0;
+}
+
+div.scorebar {
+  text-align: center;
+  position: relative;
+  padding: 4px 24px;
+  background: #00000073;
+  top: 56px;
+  border-top: 1px solid #c3474785;
 }
 
 label.successtext {
@@ -252,8 +297,14 @@ tr.theadrow > td {
   padding: 3px 6px !important;
 }
 
-tr.alreadybetbg{
-  background: #211c2f7a
+tr.alreadybetbg {
+  background: #211c2f7a;
+}
+
+span.alreadybet {
+  padding: 3px;
+  background-color: #2087f880;
+  border-radius: 100px;
 }
 
 .mytippspan {
@@ -394,6 +445,15 @@ span.footballicon svg {
 }
 
 @media only screen and (max-width: 600px) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 400;
+    color: rgba(250, 250, 250, 0.8);
+  }
   h3,
   .h3 {
     font-size: 1rem;
@@ -402,7 +462,10 @@ span.footballicon svg {
   .h2 {
     font-size: 1.3rem;
   }
-  .teamname{
+  body {
+    background: linear-gradient(#1e1e2f, #1e1e24);
+  }
+  .teamname {
     font-size: 12px;
   }
   p.profilename {
@@ -435,7 +498,7 @@ span.footballicon svg {
     width: 20px;
     height: 20px;
   }
-  .widgetdesc p{
+  .widgetdesc p {
     font-size: 11px;
   }
 }

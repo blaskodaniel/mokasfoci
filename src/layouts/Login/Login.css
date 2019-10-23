@@ -1,3 +1,8 @@
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  color: rgba(248, 248, 248, 0.8);
+}
+
 .loginContainer{
     background: rgba(0,0,0,0.6);
     padding: 22px;
@@ -29,6 +34,10 @@
   }
 
   @media only screen and (min-width: 300px) {
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 400;
+      color: rgba(33, 30, 30, 0.8);
+    }
     .loginContainer form{
       min-width: 270px;
     }

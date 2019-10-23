@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from "react";
 import Matchtable from "../components/Matchtable/Matchtable";
+import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 import moment from 'moment';
 import {
   Row,
@@ -9,7 +10,7 @@ import { getMatches, getMatchesByDay } from "../_service/api-public-func";
 import ScorePointer from "../components/ScorePointer/ScorePointer";
 import { AppConfig } from "../application.config";
 
-const AllMatches = () => {
+const AllMatches = (props) => {
     const [matchlist, setMatchlist] = useState([0]);
     const [matchlistReqprogress, setmatchlistReqprogress] = useState(true);
     
@@ -31,23 +32,22 @@ const AllMatches = () => {
     return (
       <>
       <div className="content">
-      <h3>Hátralévő mérkőzések</h3>
         <Row>
           <Col lg="12" md="12">
           {matchlistReqprogress ? 
               <p>Mérkőzések betöltése....</p> 
               : 
               matchlist[0] === 0 ? <p>Szerver nem válaszol. Kérlek próbálkozz később.</p> 
-                : matchlist.length > 0 ?  <Matchtable list={matchlist} /> :
+                : matchlist.length > 0 ?  <Matchtable list={matchlist} title="Hátralévő mérkőzések" /> :
                 <p>Ma és holnap nem lesznek mérkőzések</p>
             }
           </Col>
         </Row>
-        <ScorePointer />
+        {isWidthUp('md', props.width) ? <ScorePointer /> : null}
       </div>
     </>
     );
   
 }
 
-export default AllMatches;
+export default withWidth()(AllMatches);

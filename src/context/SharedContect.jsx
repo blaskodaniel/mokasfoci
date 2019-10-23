@@ -17,6 +17,7 @@ const SharedProvider = props => {
   const [betmodal_match, betmodal_setmatch] = useState({});
   const { msgmodal_isShowing, msgmodal_toggle } = useMsgModal();
   const { betmodal_isShowing, betmodal_toggle } = useBettingModal(false);
+  const [backurl, setBackurl] = useState("");
 
   useEffect(() => {
     const loadCoupons = async () => {
@@ -41,6 +42,8 @@ const SharedProvider = props => {
     <>
       <SharedContext.Provider
         value={{
+          backurl,
+          setBackurl,
           usercoupons,
           setUsercoupons,
           openNotify,

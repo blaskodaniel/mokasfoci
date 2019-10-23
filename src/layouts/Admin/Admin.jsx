@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 import { Route, Switch, Redirect } from "react-router-dom";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
@@ -18,6 +19,7 @@ import { AppConfig } from "../../application.config";
 import routes from "routes.js";
 
 import logo from "assets/img/logo.png";
+import ScoreBar from "../../components/ScorePointer/ScoreBar";
 
 var ps;
 
@@ -151,6 +153,7 @@ class Admin extends React.Component {
               sidebarOpened={this.state.sidebarOpened}
               routes={routes}
             />
+            {isWidthDown('sm', this.props.width) ? <ScoreBar /> : null}
             <Switch>{this.getRoutes(routes)}</Switch>
             {// we don't want the Footer to be rendered on map page
             this.props.location.pathname.indexOf("maps") !== -1 ? null : (
@@ -168,4 +171,4 @@ class Admin extends React.Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Admin));
+export default withRouter(connect(mapStateToProps)(withWidth()(Admin)));

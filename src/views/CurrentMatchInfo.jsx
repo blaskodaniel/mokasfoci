@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import uuidv1 from "uuid/v1";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import NumberFormat from "react-number-format";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 // reactstrap components
 import {
   Card,
@@ -11,10 +13,21 @@ import {
   Row,
   Col
 } from "reactstrap";
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 import { userbets } from "../_service/api-func";
 
-const CurrentMatchInfo = ({ match }) => {
+const useStyles = makeStyles(theme =>
+  createStyles({
+    backlink: {
+      "&:hover":{
+        cursor: "pointer"
+      }
+    }
+  })
+);
+
+const CurrentMatchInfo = ({ match, history }) => {
+  const classes = useStyles(); 
   const [players, setPlayers] = useState([]);
   const [isProgress, setIsProgress] = useState(true);
   const [teamA, setTeamA] = useState({});
@@ -39,7 +52,7 @@ const CurrentMatchInfo = ({ match }) => {
   const isFavoriteBetting = cp => {
     var result = {};
     result.is = false;
-    result.team = null
+    result.team = null;
     if (cp.outcome !== "x") {
       if (
         cp.outcome === "1" &&
@@ -47,7 +60,7 @@ const CurrentMatchInfo = ({ match }) => {
         cp.userid.teamid === cp.matchid.teamA
       ) {
         result.is = true;
-        result.team = teamA
+        result.team = teamA;
       }
       if (
         cp.outcome === "2" &&
@@ -55,7 +68,7 @@ const CurrentMatchInfo = ({ match }) => {
         cp.userid.teamid === cp.matchid.teamB
       ) {
         result.is = true;
-        result.team = teamB
+        result.team = teamB;
       }
     }
     return result;
@@ -69,13 +82,22 @@ const CurrentMatchInfo = ({ match }) => {
             <Card>
               <CardHeader>
                 <Row>
-                  <Col className="text-left" sm="6">
+                  <Col className="text-left" sm="6" xs="8">
                     <CardTitle tag="h3">
                       {teamA.name} - {teamB.name}
                     </CardTitle>
-                    <Typography variant="body2" color="textPrimary" className="odds">
-                      Odds: {matchinfo.oddsAwin} {" / "}{matchinfo.oddsDraw} {" / "}{matchinfo.oddsBwin}
+                    <Typography
+                      variant="body2"
+                      color="textPrimary"
+                      className="odds"
+                    >
+                      Odds: {matchinfo.oddsAwin} {" / "}
+                      {matchinfo.oddsDraw} {" / "}
+                      {matchinfo.oddsBwin}
                     </Typography>
+                  </Col>
+                  <Col className="text-right" sm="6" xs="4">
+                    <span className={classes.backlink} onClick={history.goBack}><ChevronLeftIcon />Vissza</span>
                   </Col>
                 </Row>
               </CardHeader>
@@ -91,57 +113,82 @@ const CurrentMatchInfo = ({ match }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {players.length > 0 && !isProgress
-                      ? players.map(cp => {
-                          return (
-                            <tr key={uuidv1()}>
-                              <td>
+                    {players.length > 0 && !isProgress ? (
+                      players.map(cp => {
+                        return (
+                          <tr key={uuidv1()}>
+                            <td>
                               {cp.userid.name}
-                              {isFavoriteBetting(cp).is
-                                  ? <><br /><span className="favoriteteamspan">(kedvenc csapat)</span></>
-                                  : ""}
-                              </td>
-                              <td className="text-center">{cp.outcome}</td>
-                              <td className="text-center">
+                              {isFavoriteBetting(cp).is ? (
+                                <>
+                                  <br />
+                                  <span className="favoriteteamspan">
+                                    (kedvenc csapat)
+                                  </span>
+                                </>
+                              ) : (
+                                ""
+                              )}
+                            </td>
+                            <td className="text-center">{cp.outcome}</td>
+                            <td className="text-center">
+                              <NumberFormat
+                                value={Math.round(cp.bet)}
+                                displayType={"text"}
+                                thousandSeparator={true}
+                                renderText={value => value}
+                              />
+                            </td>
+                            <td className="text-center">
+                              {isFavoriteBetting(cp).is ? (
                                 <NumberFormat
-                                  value={Math.round(cp.bet)}
-                                  displayType={"text"}
-                                  thousandSeparator={true}
-                                  renderText={value => value}
-                                />
-                              </td>
-                              <td className="text-center">
-                                {isFavoriteBetting(cp).is
-                                  ? <NumberFormat
-                                  value={Math.round((cp.bet*cp.odds) * 2)}
+                                  value={Math.round(cp.bet * cp.odds * 2)}
                                   displayType={"text"}
                                   thousandSeparator={true}
                                   renderText={value => <span>{value}</span>}
                                 />
-                                  : <NumberFormat
-                                  value={Math.round(cp.bet*cp.odds)}
+                              ) : (
+                                <NumberFormat
+                                  value={Math.round(cp.bet * cp.odds)}
                                   displayType={"text"}
                                   thousandSeparator={true}
-                                  renderText={value => value }/>
-                                  }
-                              </td>
-                              <td className="text-center">
-                                {isFavoriteBetting(cp).is
-                                  ? <NumberFormat
-                                  value={Math.round(((cp.bet*cp.odds) * 2)-cp.bet)}
+                                  renderText={value => value}
+                                />
+                              )}
+                            </td>
+                            <td className="text-center">
+                              {isFavoriteBetting(cp).is ? (
+                                <NumberFormat
+                                  value={Math.round(
+                                    cp.bet * cp.odds * 2 - cp.bet
+                                  )}
                                   displayType={"text"}
                                   thousandSeparator={true}
-                                  renderText={value => <span>{value}</span> }/> 
-                                  : <NumberFormat
-                                  value={Math.round((cp.bet*cp.odds)-cp.bet)}
+                                  renderText={value => <span>{value}</span>}
+                                />
+                              ) : (
+                                <NumberFormat
+                                  value={Math.round(cp.bet * cp.odds - cp.bet)}
                                   displayType={"text"}
                                   thousandSeparator={true}
-                                  renderText={value => value }/>}
-                              </td>
-                            </tr>
-                          );
-                        })
-                      : isProgress ? <tr><td colSpan="4">Adatok betöltése....</td></tr> : <tr><td colSpan="4">Erre a mérkőzésre senki nem fogadott</td></tr>}
+                                  renderText={value => value}
+                                />
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : isProgress ? (
+                      <tr>
+                        <td colSpan="4">Adatok betöltése....</td>
+                      </tr>
+                    ) : (
+                      <tr>
+                        <td colSpan="4">
+                          Erre a mérkőzésre senki nem fogadott
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
               </CardBody>

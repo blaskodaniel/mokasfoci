@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import * as moment from "moment";
 import "moment/locale/hu";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-import { Card, CardBody, Table } from "reactstrap";
+import { Card, CardBody, Table, CardTitle, CardHeader } from "reactstrap";
 import { SharedContext } from "../../context/SharedContect";
 import { Link } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
@@ -125,9 +125,15 @@ const Matchelement = ({ value }) => {
                   />
                   {match.teamB.name}
                 </td>
-                <td className={typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? classes.alreadybet :"text-center"}>{match.oddsAwin}</td>
-                <td className={typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "x" ? classes.alreadybet :"text-center"}>{match.oddsDraw}</td>
-                <td className={typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "2" ? classes.alreadybet :"text-center"}>{match.oddsBwin}</td>
+                <td className="text-center">
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? <span className="alreadybet">{match.oddsAwin}</span> : match.oddsAwin}
+                </td>
+                <td className="text-center">
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "x" ? <span className="alreadybet">{match.oddsDraw}</span> : match.oddsDraw}
+                </td>
+                <td className="text-center">
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "2" ? <span className="alreadybet">{match.oddsBwin}</span> : match.oddsBwin}
+                </td>
               </tr>
             );
           }
@@ -191,7 +197,7 @@ const Matchlist = ({ val, addtodayrow }) => {
   );
 };
 
-const Matchtable = ({ list }) => {
+const Matchtable = ({ list, title }) => {
   let ADDtodayRow = true;
   let counter = 0;
   moment.locale("hu");
@@ -254,6 +260,9 @@ const Matchtable = ({ list }) => {
   return (
     <>
       <Card>
+        <CardHeader>
+          <CardTitle tag="h4">{title}</CardTitle>
+        </CardHeader>
         <CardBody>
           <Table className="tablesorter" responsive>
             <tbody>

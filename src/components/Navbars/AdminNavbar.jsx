@@ -23,7 +23,7 @@ class AdminNavbar extends React.Component {
     this.state = {
       collapseOpen: false,
       modalSearch: false,
-      color: "navbar-transparent"
+      color: "navbar-transparent-lg"
     };
   }
   componentDidMount() {
@@ -40,7 +40,7 @@ class AdminNavbar extends React.Component {
       });
     } else {
       this.setState({
-        color: "navbar-transparent"
+        color: "navbar-transparent-lg"
       });
     }
   };
@@ -48,7 +48,7 @@ class AdminNavbar extends React.Component {
   toggleCollapse = () => {
     if (this.state.collapseOpen) {
       this.setState({
-        color: "navbar-transparent"
+        color: "navbar-transparent-lg"
       });
     } else {
       this.setState({

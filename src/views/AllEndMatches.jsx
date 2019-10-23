@@ -27,14 +27,13 @@ const AllEndMatches = () => {
     return (
       <>
       <div className="content">
-      <h3>Lejátszott mérkőzések</h3>
         <Row>
           <Col lg="12">
             {endmatchlist[0] !== 0 ? (
               endmatchlist.length === 0 ? (
                 "Még nem játszottak le egyetlen egy mérkőzást sem"
               ) : (
-                <MatchtableMobile list={endmatchlist} />
+                <MatchtableMobile list={endmatchlist} title="Lejátszott mérkőzések" />
               )
             ) : endmatchlistReq ? (
               <p>Mérkőzések betöltése....</p>

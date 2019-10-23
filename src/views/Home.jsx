@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import Matchtable from "../components/Matchtable/Matchtable";
 import moment from 'moment'
+import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 import MatchtableMobile from "../components/Matchtable/MatchtableMobile";
 // reactstrap components
 import { Row, Col } from "reactstrap";
@@ -15,7 +16,7 @@ import ScorePointer from "../components/ScorePointer/ScorePointer";
 import { getCouponsByUserId } from "../_service/api-func";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 
-const Home = () => {
+const Home = (props) => {
   const userinfo = useContext(AuthenticationContext);
   const [matchlist, setMatchlist] = useState([0]);
   const [endmatchlist, setEndMatchlist] = useState([0]);
@@ -54,34 +55,33 @@ const Home = () => {
   return (
     <>
       <div className="content">
-        <h3>Legközelebbi mérkőzések</h3>
         <Row>
           <Col lg="12" md="12">
             {matchlistReqProgress ? 
               <p>Mérkőzések betöltése....</p> 
               : 
               matchlist[0] === 0 ? <p>Szerver nem válaszol. Kérlek próbálkozz később.</p> 
-                : matchlist.length > 0 ?  <Matchtable list={matchlist} /> :
+                : matchlist.length > 0 ?  <Matchtable list={matchlist} title="Legközelebbi mérkőzések" /> :
                 <p>Ma és holnap nem lesznek mérkőzések</p>
             }
           </Col>
         </Row>
-        <h3>Nemrégiben lejátszott</h3>
         <Row>
           <Col lg="12">
           {endmatchlistReqProgress ? 
               <p>Mérkőzések betöltése....</p> 
               : 
               endmatchlist[0] === 0 ? <p>Szerver nem válaszol. Kérlek próbálkozz később.</p> 
-                : endmatchlist.length > 0 ?  <MatchtableMobile list={endmatchlist} /> :
+                : endmatchlist.length > 0 ?  <MatchtableMobile list={endmatchlist} title="Nemrégiben lejátszott" /> :
                 <p>Nincsenek mérkőzések</p>
             }
           </Col>
         </Row>
       </div>
-      <ScorePointer />
+      {isWidthUp('md', props.width) ? <ScorePointer /> : null}
+      
     </>
   );
 };
 
-export default Home;
+export default withWidth()(Home);

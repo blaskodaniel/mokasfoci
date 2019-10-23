@@ -51,10 +51,10 @@ const Statistics = () => {
     <>
       <div className="content">
         <Row>
-          <Col xs="12" sm="12" md="12" lg="4">
+          <Col xs="12" sm="12" md="6" lg="6">
             {piecoupons !== null ? <PieChart data={piecoupons} title="Szelvények állapota" /> : ""}
           </Col>
-          <Col xs="12" sm="12" md="12" lg="4">
+          <Col xs="12" sm="12" md="6" lg="6">
             {depexp !== null ? <PieChart data={depexp} title="Nyeremény/veszteség" /> : ""}
           </Col>
         </Row>

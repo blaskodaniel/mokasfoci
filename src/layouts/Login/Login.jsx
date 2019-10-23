@@ -66,7 +66,7 @@ class Login extends Component {
         <div className="loginContainer fadeIn animated">
           <div className="logo mb-3">
             <div className="col-md-12 text-center text-white">
-              <h4>Bejelentkezés</h4>
+              <h4 className="logintitle">Bejelentkezés</h4>
             </div>
           </div>
           <Form onSubmit={this.handleSubmit}>

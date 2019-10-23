@@ -6,7 +6,9 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import classNames from "classnames";
 import NumberFormat from "react-number-format";
+import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert"; // Import
+import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +20,7 @@ import ReactTooltip from "react-tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Tooltip from "@material-ui/core/Tooltip";
 import ScorePointer from "../components/ScorePointer/ScorePointer";
+import routes from "../routes";
 
 // reactstrap components
 import {
@@ -128,10 +131,18 @@ const useStyles = makeStyles({
     backgroundColor: "#5247afb5",
     color: "white",
     fontSize: "11px"
+  },
+  moreinfoformatch:{
+    "&:hover":{
+      cursor: "pointer"
+    },
+    color: "#31f59be0",
+    fontSize: "0.9em"
   }
 });
 
-const MyBets = () => {
+const MyBets = (props) => {
+  const runningmatchlink = routes.filter(x => x.id === "merkozes");
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
@@ -437,6 +448,9 @@ const MyBets = () => {
                                       ")"
                                     : ""}
                                 </span>
+                                {cp.matchid.active === 1 || cp.matchid.active === 2 ? 
+                                  <Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + cp.matchid._id}>Mérkőzés részletei</Link>
+                                : null}
                               </td>
                               <td className="text-center">{matchStatus(cp)}</td>
                               <td className="text-center">
@@ -537,7 +551,7 @@ const MyBets = () => {
             </Col>
           </Row>
         </div>
-        <ScorePointer />
+        {isWidthUp('md', props.width) ? <ScorePointer /> : null}
       </>
     );
   } else {
@@ -698,6 +712,12 @@ const MyBets = () => {
                         <Col xs="5">TÉT:</Col>
                         <Col xs="7">{cp.bet} pont</Col>
                       </Row>
+                      {cp.matchid.active === 1 || cp.matchid.active === 2 ? 
+                      <Row className={classes.cprow}>
+                        <Col xs="12">
+                          <Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + cp.matchid._id}>Mérkőzés részletei...</Link>
+                        </Col>
+                      </Row> : null}
                       {isFavorite(cp).isfav ? (
                         <Row className={classes.cprow}>
                           <Col xs="12">
@@ -748,10 +768,9 @@ const MyBets = () => {
             <Card><CardContent><div><Row className="jc-c"><p className="m0">Még nincsenek szelvényeid</p></Row></div></CardContent></Card>
           )}
         </div>
-        <ScorePointer />
       </>
     );
   }
 };
 
-export default MyBets;
+export default withWidth()(MyBets);
