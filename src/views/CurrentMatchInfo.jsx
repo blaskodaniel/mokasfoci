@@ -2,32 +2,76 @@ import React, { useState, useEffect } from "react";
 import uuidv1 from "uuid/v1";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import NumberFormat from "react-number-format";
+import classNames from "classnames";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import Avatar from "@material-ui/core/Avatar";
 // reactstrap components
 import {
   Card,
   CardHeader,
   CardBody,
-  CardTitle,
+  CardFooter,
   Table,
   Row,
   Col
 } from "reactstrap";
-import Typography from "@material-ui/core/Typography";
 import { userbets } from "../_service/api-func";
 
 const useStyles = makeStyles(theme =>
   createStyles({
     backlink: {
-      "&:hover":{
+      color: "white",
+      fontSize: "11px",
+      "&:hover": {
         cursor: "pointer"
       }
+    },
+    backlinkicon: {
+      fontSize: "1.0rem",
+      marginBottom: "1px"
+    },
+    avatar: {
+      margin: "0px 10px",
+      width: "20px",
+      height: "20px",
+      top: "2px",
+      display: "inline-flex",
+      [theme.breakpoints.down("sm")]: {
+        width: "13px",
+        height: "13px",
+        top: 0
+      }
+    },
+    teamname: {
+      display: "inline",
+      fontSize: "1.4rem",
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "0.8rem"
+      },
+      [theme.breakpoints.down(360)]: {
+        display: "none"
+      }
+    },
+    numb: {
+      fontSize: "1.2rem",
+      position: "relative",
+      bottom: 0,
+      padding: "0px 4px",
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "0.8rem"
+      }
+    },
+    wincolortext: {
+      color: "rgba(28, 210, 34, 0.94) !important"
+    },
+    losecolortext: {
+      color: "rgba(226, 92, 52, 0.94) !important"
     }
   })
 );
 
 const CurrentMatchInfo = ({ match, history }) => {
-  const classes = useStyles(); 
+  const classes = useStyles();
   const [players, setPlayers] = useState([]);
   const [isProgress, setIsProgress] = useState(true);
   const [teamA, setTeamA] = useState({});
@@ -74,6 +118,16 @@ const CurrentMatchInfo = ({ match, history }) => {
     return result;
   };
 
+  const isWin = cp => {
+    if (cp.status === 2 && cp.success) {
+      return classes.wincolortext;
+    } else if (cp.status === 2 && !cp.success) {
+      return classes.losecolortext;
+    } else {
+      return "";
+    }
+  };
+
   return (
     <>
       <div className="content currentmatch">
@@ -82,22 +136,53 @@ const CurrentMatchInfo = ({ match, history }) => {
             <Card>
               <CardHeader>
                 <Row>
-                  <Col className="text-left" sm="6" xs="8">
-                    <CardTitle tag="h3">
-                      {teamA.name} - {teamB.name}
-                    </CardTitle>
-                    <Typography
-                      variant="body2"
-                      color="textPrimary"
-                      className="odds"
-                    >
-                      Odds: {matchinfo.oddsAwin} {" / "}
-                      {matchinfo.oddsDraw} {" / "}
-                      {matchinfo.oddsBwin}
-                    </Typography>
+                  <Col className="text-center mt10 mb10" xs="12">
+                    <Row>
+                      <Col xs="6" className="text-right teampadding">
+                        
+                        <Avatar
+                          alt={teamA.flag}
+                          src={"/flags/" + teamA.flag}
+                          className={classes.avatar}
+                        />
+                        <p className={classNames("mr10", classes.teamname)}>{teamA.name}</p>
+                        {matchinfo.active === 2 ? (
+                          <>
+                            <span className={classes.numb}>
+                              {matchinfo.goalA}
+                            </span>{""}
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </Col>
+                      <Col xs="6" className="text-left teampadding">
+                        {matchinfo.active === 2 ? (
+                          <>
+                            <span className={classes.numb}>
+                              {matchinfo.goalB}
+                            </span>{" "}
+                          </>
+                        ) : (
+                          ""
+                        )}
+                        <p className={classNames("ml10", classes.teamname)}>{teamB.name}</p>
+                        <Avatar
+                          alt={teamA.flag}
+                          src={"/flags/" + teamB.flag}
+                          className={classes.avatar}
+                        />
+                        
+                      </Col>
+                    </Row>
+
                   </Col>
-                  <Col className="text-right" sm="6" xs="4">
-                    <span className={classes.backlink} onClick={history.goBack}><ChevronLeftIcon />Vissza</span>
+                  <Col className="text-center" xs="12">
+                    <p className="f11">
+                      <span>{matchinfo.oddsAwin}</span> {" | "}
+                      <span>{matchinfo.oddsDraw}</span> {" | "}
+                      <span>{matchinfo.oddsBwin}</span>
+                    </p>
                   </Col>
                 </Row>
               </CardHeader>
@@ -108,7 +193,6 @@ const CurrentMatchInfo = ({ match, history }) => {
                       <th>Név</th>
                       <th className="text-center">Tipp</th>
                       <th className="text-center">Feltett pont</th>
-                      <th className="text-center">Nyeremény</th>
                       <th className="text-center">Nettó nyeremény</th>
                     </tr>
                   </thead>
@@ -117,7 +201,7 @@ const CurrentMatchInfo = ({ match, history }) => {
                       players.map(cp => {
                         return (
                           <tr key={uuidv1()}>
-                            <td>
+                            <td className={isWin(cp)}>
                               {cp.userid.name}
                               {isFavoriteBetting(cp).is ? (
                                 <>
@@ -138,23 +222,6 @@ const CurrentMatchInfo = ({ match, history }) => {
                                 thousandSeparator={true}
                                 renderText={value => value}
                               />
-                            </td>
-                            <td className="text-center">
-                              {isFavoriteBetting(cp).is ? (
-                                <NumberFormat
-                                  value={Math.round(cp.bet * cp.odds * 2)}
-                                  displayType={"text"}
-                                  thousandSeparator={true}
-                                  renderText={value => <span>{value}</span>}
-                                />
-                              ) : (
-                                <NumberFormat
-                                  value={Math.round(cp.bet * cp.odds)}
-                                  displayType={"text"}
-                                  thousandSeparator={true}
-                                  renderText={value => value}
-                                />
-                              )}
                             </td>
                             <td className="text-center">
                               {isFavoriteBetting(cp).is ? (
@@ -192,6 +259,14 @@ const CurrentMatchInfo = ({ match, history }) => {
                   </tbody>
                 </Table>
               </CardBody>
+              <CardFooter>
+                <Col className="text-right" xs="12">
+                  <span className={classes.backlink} onClick={history.goBack}>
+                    <ChevronLeftIcon className={classes.backlinkicon} />
+                    Vissza
+                  </span>
+                </Col>
+              </CardFooter>
             </Card>
           </Col>
         </Row>

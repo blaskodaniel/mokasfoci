@@ -32,9 +32,15 @@ const useStyles = makeStyles(theme =>
 const Matchelement = ({ value }) => {
   const classes = useStyles();
   const sharedContext = useContext(SharedContext);
-  const openmsgmod = match => {
+  const Bettingmodalopen = (match,mode,coupon=null) => {
+    sharedContext.betmodal_setmode(mode)
+    if(coupon !== null){
+      // If we are in edit mode we have to pass the user coupon 
+      sharedContext.betmodal_setcoupon(coupon)
+    }
     sharedContext.betmodal_setmatch(match);
     sharedContext.betmodal_toggle();
+    
   };
   const runningmatchlink = routes.filter(x => x.id === "merkozes");
   return (
@@ -107,7 +113,7 @@ const Matchelement = ({ value }) => {
               <tr
                 key={match._id}
                 className={typeof isAlreadyBetting !== "undefined" ? "alreadybetbg bettingtablerow" : "bettingtablerow"}
-                onClick={() => typeof isAlreadyBetting !== "undefined" ? null : openmsgmod(match)}
+                onClick={() => typeof isAlreadyBetting !== "undefined" ? Bettingmodalopen(match,"edit",isAlreadyBetting) : Bettingmodalopen(match,"create")}
               >
                 <td>{moment(match.date).format("HH:mm")}</td>
                 <td>

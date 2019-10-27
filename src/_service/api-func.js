@@ -44,6 +44,20 @@ export const deleteCoupon = (coupon) => {
         });
 }
 
+export const modifyCoupon = (couponid, newcoupon) => {
+    return APItokenclient.patch(`coupon/${couponid}`, newcoupon)
+        .then(data => {
+            if (data.status) {
+                return {status: true, data: data};
+            } else {
+                return {status: false, data: null};
+            }
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+
 export const getCouponsByUserId = (userid) => {
     return APItokenclient.get(`coupons/all/${userid}`)
         .then(data => {

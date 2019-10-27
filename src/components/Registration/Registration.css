@@ -1,5 +1,5 @@
 .registrationcontainer{
-    background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.77);
     padding: 22px;
     position: absolute;
     top:15%;
@@ -11,7 +11,7 @@
 
 .registrationcontainer input, .registrationcontainer input:focus{
     color: white;
-    background-color: #2c3844;
+    background-color: #618135;
     border-color: aliceblue;
     border-radius: 0;
     border-bottom: 1;

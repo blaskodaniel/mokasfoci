@@ -15,6 +15,8 @@ const SharedProvider = props => {
   const [usercoupons, setUsercoupons] = useState([]);
   const [msgmodal_text, msgmodal_settext] = useState("");
   const [betmodal_match, betmodal_setmatch] = useState({});
+  const [betmodal_mode, betmodal_setmode] = useState("create");
+  const [betmodal_coupon, betmodal_setcoupon] = useState(null);
   const { msgmodal_isShowing, msgmodal_toggle } = useMsgModal();
   const { betmodal_isShowing, betmodal_toggle } = useBettingModal(false);
   const [backurl, setBackurl] = useState("");
@@ -52,7 +54,9 @@ const SharedProvider = props => {
           msgmodal_settext,
           betmodal_isShowing,
           betmodal_toggle,
-          betmodal_setmatch
+          betmodal_setmatch,
+          betmodal_setmode,
+          betmodal_setcoupon
         }}
       >
         {props.children}
@@ -67,6 +71,8 @@ const SharedProvider = props => {
             isShowing={betmodal_isShowing}
             hide={betmodal_toggle}
             match={betmodal_match}
+            mode={betmodal_mode}
+            editcoupon={betmodal_coupon}
           />
         ) : null}
       </SharedContext.Provider>

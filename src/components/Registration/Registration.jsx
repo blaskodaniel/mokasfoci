@@ -80,7 +80,7 @@ class Registration extends Component {
         <div className="registrationcontainer fadeIn animated">
           <div className="logo mb-3">
             <div className="col-md-12 text-center text-white">
-              <h4>Regisztráció</h4>
+              <h4 style={{color: "rgba(255, 255, 255, 0.8)"}}>Regisztráció</h4>
             </div>
           </div>
           <Form onSubmit={this.handleSubmit}>

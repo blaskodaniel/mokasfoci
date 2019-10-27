@@ -1,26 +1,19 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Matchtable from "../components/Matchtable/Matchtable";
 import moment from 'moment'
-import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import MatchtableMobile from "../components/Matchtable/MatchtableMobile";
 // reactstrap components
 import { Row, Col } from "reactstrap";
 import {
-  getMatches,
   getMatchesByDay,
-  getMatchesFromDay,
   getMatchesFromTo,
-  getMatchesToDay
 } from "../_service/api-public-func";
 import ScorePointer from "../components/ScorePointer/ScorePointer";
-import { getCouponsByUserId } from "../_service/api-func";
-import { AuthenticationContext } from "../context/AuthenticationContext";
 
 const Home = (props) => {
-  const userinfo = useContext(AuthenticationContext);
   const [matchlist, setMatchlist] = useState([0]);
   const [endmatchlist, setEndMatchlist] = useState([0]);
-  const [usercoupons, setUsercoupons] = useState([]);
   const [matchlistReqProgress, setmatchlistReqProgress] = useState(true);
   const [endmatchlistReqProgress, setendmatchlistReqProgress] = useState(true);
 

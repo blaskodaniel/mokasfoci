@@ -1,13 +1,28 @@
 import React, {useEffect, useState, useContext} from "react";
 import moment from 'moment';
+import { makeStyles } from "@material-ui/core/styles";
 import { Card, Row, Col, CardBody, CardHeader, CardTitle } from "reactstrap";
 import { getCouponsByUserId } from "../../_service/api-func";
+import { Link } from "react-router-dom";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 import { MatchTypes } from "../../application.config";
+import routes from "../../routes";
+
+const useStyles = makeStyles({
+  moreinfoformatch:{
+    "&:hover":{
+      cursor: "pointer"
+    },
+    color: "#31f59be0",
+    fontSize: "0.9em"
+  }
+});
 
 const MatchtableMobile = ({ list, title }) => {
+  const classes = useStyles();
   const currentUser = useContext(AuthenticationContext);
   const [coupons, setCoupons] = useState([])
+  const runningmatchlink = routes.filter(x => x.id === "merkozes");
 
   useEffect(() => {
     const loadCoupons = async () => {
@@ -67,15 +82,6 @@ const MatchtableMobile = ({ list, title }) => {
                         <p>{m.goalB}</p>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col xs="12">
-                        <p className="datetime">
-                          {moment(m.date).format("MMM Do, ddd HH:mm")}
-                          {!isNaN(m.type) ? " | "+MatchTypes[parseInt(m.type)] : ""}
-                          {typeof m.comment !== "undefined" ? " | "+m.comment : ""}
-                        </p>
-                      </Col>
-                    </Row>
                   </Col>
                   <Col xs="6">
                     <Row>
@@ -110,6 +116,14 @@ const MatchtableMobile = ({ list, title }) => {
                         <span className={mybet.length > 0 ? (mybet[0].outcome === "2" ? "mytippspan" : "hidden") : "hidden"}>Tipped</span>
                       </Col>
                     </Row>
+                  </Col>
+                  <Col xs="12">
+                        <p className="datetime">
+                          {moment(m.date).format("MMM Do, ddd HH:mm")}
+                          {!isNaN(m.type) ? " | "+MatchTypes[parseInt(m.type)] : ""}
+                          {typeof m.comment !== "undefined" ? " | "+m.comment : ""}
+                          {" "}<Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + m._id}>[Fogadások]</Link>
+                        </p>
                   </Col>
                 </Row>
               );

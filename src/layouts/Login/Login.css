@@ -3,8 +3,16 @@ h1, h2, h3, h4, h5, h6 {
   color: rgba(248, 248, 248, 0.8);
 }
 
+button.loginbtn{
+  background: #6592cb;
+}
+
+button.loginbtn:hover{
+  background: #3886e8;
+}
+
 .loginContainer{
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.77);
     padding: 22px;
     position: absolute;
     top:15%;
@@ -19,6 +27,7 @@ h1, h2, h3, h4, h5, h6 {
     border-right: 0;
     border-top: 0;
     border-left: 0;
+    font-size: 1em;
 }
 
 .loginContainer input::-webkit-input-placeholder { /* Edge */

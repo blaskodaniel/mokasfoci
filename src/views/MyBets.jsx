@@ -18,6 +18,7 @@ import { faFutbol } from "@fortawesome/free-solid-svg-icons";
 import Fab from "@material-ui/core/Fab";
 import ReactTooltip from "react-tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from "@material-ui/core/Tooltip";
 import ScorePointer from "../components/ScorePointer/ScorePointer";
 import routes from "../routes";
@@ -55,6 +56,13 @@ const useStyles = makeStyles({
     position: "absolute",
     bottom: "25px",
     right: "15px",
+    width: 35,
+    height: 35
+  },
+  modfab: {
+    right: "60px",
+    position: "absolute",
+    bottom: "25px",
     width: 35,
     height: 35
   },
@@ -137,7 +145,7 @@ const useStyles = makeStyles({
       cursor: "pointer"
     },
     color: "#31f59be0",
-    fontSize: "0.9em"
+    fontSize: "0.7em"
   }
 });
 
@@ -164,6 +172,17 @@ const MyBets = (props) => {
     } catch (err) {
       console.log("Hiba történt a törlés során", err);
     }
+  };
+
+  const Bettingmodalopen = (match,mode,coupon=null) => {
+    sharedcontext.betmodal_setmode(mode)
+    if(coupon !== null){
+      // If we are in edit mode we have to pass the user coupon 
+      sharedcontext.betmodal_setcoupon(coupon)
+    }
+    sharedcontext.betmodal_setmatch(match);
+    sharedcontext.betmodal_toggle();
+    
   };
 
   const resultCalc = coupon => {
@@ -414,6 +433,10 @@ const MyBets = (props) => {
                           if (!categoryFilter(cp)) {
                             return null;
                           }
+                          const isAlreadyBetting = sharedcontext.usercoupons.find(x=>x.matchid._id.toString() === cp.matchid._id.toString());
+                          const clonematch = {...cp}
+                          clonematch.matchid.teamA = isAlreadyBetting.teamA; 
+                          clonematch.matchid.teamB = isAlreadyBetting.teamB;
                           return (
                             <tr key={cp._id}>
                               <td>
@@ -449,7 +472,7 @@ const MyBets = (props) => {
                                     : ""}
                                 </span>
                                 {cp.matchid.active === 1 || cp.matchid.active === 2 ? 
-                                  <Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + cp.matchid._id}>Mérkőzés részletei</Link>
+                                  <Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + cp.matchid._id}>Ki mire fogadott?</Link>
                                 : null}
                               </td>
                               <td className="text-center">{matchStatus(cp)}</td>
@@ -524,16 +547,28 @@ const MyBets = (props) => {
                               </td>
                               <td className="text-center">
                                 {cp.matchid.active === 0 && cp.status === 0 ? (
-                                  <button
+                                  <>
+                                    <button
                                     type="button"
-                                    title="szelvény törlés"
+                                    title="szelvény módosítása"
                                     className="btn btn-link"
                                     onClick={() => {
-                                      opeconfirm(cp);
+                                      Bettingmodalopen(clonematch.matchid,"edit",cp)
                                     }}
-                                  >
-                                    <i className="tim-icons icon-simple-remove"></i>
-                                  </button>
+                                    >
+                                      <i className="tim-icons icon-pencil"></i>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      title="szelvény törlés"
+                                      className="btn btn-link"
+                                      onClick={() => {
+                                        opeconfirm(cp);
+                                      }}
+                                    >
+                                      <i className="tim-icons icon-simple-remove"></i>
+                                    </button>
+                                  </>
                                 ) : null}
                               </td>
                             </tr>
@@ -652,6 +687,10 @@ const MyBets = (props) => {
           </Row>
           {coupons.length > 0 ? (
             coupons.map(cp => {
+              const isAlreadyBetting = sharedcontext.usercoupons.find(x=>x.matchid._id.toString() === cp.matchid._id.toString());
+              const clonematch = {...cp}
+              clonematch.matchid.teamA = isAlreadyBetting.teamA; 
+              clonematch.matchid.teamB = isAlreadyBetting.teamB;
               if (!categoryFilter(cp)) {
                 return null;
               }
@@ -715,7 +754,7 @@ const MyBets = (props) => {
                       {cp.matchid.active === 1 || cp.matchid.active === 2 ? 
                       <Row className={classes.cprow}>
                         <Col xs="12">
-                          <Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + cp.matchid._id}>Mérkőzés részletei...</Link>
+                          <Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + cp.matchid._id}>Ki mire fogadott?</Link>
                         </Col>
                       </Row> : null}
                       {isFavorite(cp).isfav ? (
@@ -750,6 +789,7 @@ const MyBets = (props) => {
                   </CardContent>
                   <CardActions className={classes.cardaction}>
                     {cp.matchid.active === 0 && cp.status === 0 ? (
+                      <>
                       <Fab
                         aria-label="delete"
                         className={classes.deletefab}
@@ -759,6 +799,16 @@ const MyBets = (props) => {
                       >
                         <DeleteIcon />
                       </Fab>
+                      <Fab
+                      aria-label="modify"
+                      className={classes.modfab}
+                      onClick={() => {
+                        Bettingmodalopen(clonematch.matchid,"edit",cp)
+                      }}
+                    >
+                      <EditIcon />
+                    </Fab>
+                    </>
                     ) : null}
                   </CardActions>
                 </Card>

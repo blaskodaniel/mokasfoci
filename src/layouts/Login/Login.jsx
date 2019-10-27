@@ -66,7 +66,7 @@ class Login extends Component {
         <div className="loginContainer fadeIn animated">
           <div className="logo mb-3">
             <div className="col-md-12 text-center text-white">
-              <h4 className="logintitle">Bejelentkezés</h4>
+              <img src="img/mokasfoci-logo2.png" style={{maxWidth: "200px"}} alt="logo" />
             </div>
           </div>
           <Form onSubmit={this.handleSubmit}>
@@ -99,7 +99,7 @@ class Login extends Component {
               />
               <FormFeedback>Jelszó kötelező</FormFeedback>
             </FormGroup>
-            <Button className="w-100" color="primary">
+            <Button className="w-100 loginbtn" color="primary">
               Bejelentkezés
             </Button>
             <Alert

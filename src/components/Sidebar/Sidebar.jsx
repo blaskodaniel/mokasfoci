@@ -52,7 +52,7 @@ class Sidebar extends React.Component {
             onClick={this.props.toggleSidebar}
           >
             <div className="logo-img">
-              <img src={logo.imgSrc} alt="react-logo" />
+              <img src={logo.imgSrc} style={{maxWidth: "120px"}} alt="mokasfoci-logo" />
             </div>
           </a>
         );
@@ -64,7 +64,7 @@ class Sidebar extends React.Component {
             target="_blank"
             onClick={this.props.toggleSidebar}
           >
-            {logo.text}
+            <img src="/img/mokasfoci-logo2.png" style={{maxWidth: "120px"}} alt="mokasfoci-logo" />
           </a>
           <span className="gamename">{logo.subtext}</span>
           </>

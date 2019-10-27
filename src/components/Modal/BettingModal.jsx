@@ -18,14 +18,14 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuItem from "@material-ui/core/MenuItem";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
-import { createCoupon } from "../../_service/api-func";
+import { createCoupon, modifyCoupon } from "../../_service/api-func";
 import { SharedContext } from "../../context/SharedContect";
 import { AppConfig } from "../../application.config";
 
-const BettModal = ({ isShowing, hide, match }) => {
+const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
   const currentUser = useContext(AuthenticationContext);
   const sharedcontext = useContext(SharedContext);
-  const [profildata, setProfildata] = useState({ amount: 1000 });
+  const [profildata, setProfildata] = useState({ amount: mode === "edit" ? editcoupon.bet : 1000 });
   const [modalshowing, setModalshowing] = useState(isShowing);
   const [coupon, setCoupon] = useState({});
   const [bet, setBet] = useState({
@@ -49,53 +49,78 @@ const BettModal = ({ isShowing, hide, match }) => {
     };
     setCoupon(newcoupon);
     console.log(newcoupon);
-    try {
-      const saveresult = await createCoupon(newcoupon);
-      if (saveresult.data) {
-        if (saveresult.status === 201 && saveresult.data.status) {
-          sharedcontext.openNotify("Szelvényed sikeresen létrjött!", "success");
+    if(mode === "create"){
+      try {
+        const saveresult = await createCoupon(newcoupon);
+        if (saveresult.data) {
+          if (saveresult.status === 201 && saveresult.data.status) {
+            sharedcontext.openNotify("Szelvényed sikeresen létrjött!", "success");
+            currentUser.setUserinfo({
+              ...currentUser.userinfo,
+              score: currentUser.userinfo.score - profildata.amount
+            });
+            sharedcontext.setUsercoupons([
+              ...sharedcontext.usercoupons, saveresult.data.coupon
+            ])
+            hide();
+          }
+        } else {
+          if (saveresult.response.status !== 201) {
+            if (saveresult.response.data.code === 2) {
+              sharedcontext.openNotify(
+                "Ezt a mérkőzést már lejátszották! Erre nem fogadhatsz",
+                "danger"
+              );
+            } else if (saveresult.response.data.code === 1) {
+              sharedcontext.openNotify(
+                "Hiba történt a fogadás mentése során. (errcode: " +
+                  saveresult.response.data.code +
+                  ")",
+                "danger"
+              );
+            } else if (saveresult.response.data.code === 3) {
+              sharedcontext.openNotify(
+                "Erre a mérkőzésre már fogadtál korábban! Egy mérkőzésre csak egyszer fogadhatsz",
+                "danger"
+              );
+            } else {
+              sharedcontext.openNotify(
+                "A szelvényed mentése során nem várt hiba történt (code:" +
+                  saveresult.response.data.code +
+                  ")",
+                "danger"
+              );
+            }
+          }
+        }
+      } catch (e) {
+        console.log("ERROR:", e);
+        sharedcontext.openNotify("Hiba történt a fogadásod során", "danger");
+      }
+    }if(mode === "edit"){
+      try{
+        const saveresult = await modifyCoupon(editcoupon._id, newcoupon);
+        if (saveresult.data.status) {
+          sharedcontext.openNotify("Sikeres módosítás!", "success");
           currentUser.setUserinfo({
             ...currentUser.userinfo,
-            score: currentUser.userinfo.score - profildata.amount
+            score: (currentUser.userinfo.score + editcoupon.bet) - newcoupon.bet
           });
+          let index = sharedcontext.usercoupons.indexOf(editcoupon);
+          if (index !== -1) sharedcontext.usercoupons.splice(index, 1);
+          editcoupon.bet = newcoupon.bet
+          editcoupon.outcome = newcoupon.outcome
           sharedcontext.setUsercoupons([
-            ...sharedcontext.usercoupons, saveresult.data.coupon
+            ...sharedcontext.usercoupons, editcoupon
           ])
           hide();
         }
-      } else {
-        if (saveresult.response.status !== 201) {
-          if (saveresult.response.data.code === 2) {
-            sharedcontext.openNotify(
-              "Ezt a mérkőzést már lejátszották! Erre nem fogadhatsz",
-              "danger"
-            );
-          } else if (saveresult.response.data.code === 1) {
-            sharedcontext.openNotify(
-              "Hiba történt a fogadás mentése során. (errcode: " +
-                saveresult.response.data.code +
-                ")",
-              "danger"
-            );
-          } else if (saveresult.response.data.code === 3) {
-            sharedcontext.openNotify(
-              "Erre a mérkőzésre már fogadtál korábban! Egy mérkőzésre csak egyszer fogadhatsz",
-              "danger"
-            );
-          } else {
-            sharedcontext.openNotify(
-              "A szelvényed mentése során nem várt hiba történt (code:" +
-                saveresult.response.data.code +
-                ")",
-              "danger"
-            );
-          }
-        }
+      }catch(e){
+        console.log("ERROR:", e);
+        sharedcontext.openNotify("Hiba történt a fogadásod módosítása során", "danger");
       }
-    } catch (e) {
-      console.log("ERROR:", e);
-      sharedcontext.openNotify("Hiba történt a fogadásod során", "danger");
     }
+    
   };
 
   const handleRadioChange = e => {
@@ -133,7 +158,7 @@ const BettModal = ({ isShowing, hide, match }) => {
               <CardBody>
                 <Grid container spacing={0}>
                   <Grid item xs={12}>
-                    <h4>Szelvény létrehozása</h4>
+                    <h4>{mode === "create" ? "Szelvény létrehozása":"Szelvény módosítása (beta)"}</h4>
                   </Grid>
                   <Grid item xs={12}>
                     <Divider variant="middle" />
@@ -164,6 +189,7 @@ const BettModal = ({ isShowing, hide, match }) => {
                           data-teamid={match.teamA._id}
                           data-outcome="1"
                           value={match.oddsAwin}
+                          defaultChecked={mode === "edit" && editcoupon.outcome === "1" ? true : false}
                         />
                         {match.teamA.name}
                         <span className="form-check-sign">
@@ -185,7 +211,7 @@ const BettModal = ({ isShowing, hide, match }) => {
                           data-outcome="x"
                           data-teamid={0}
                           value={match.oddsDraw}
-                          defaultChecked
+                          defaultChecked={mode === "edit" && editcoupon.outcome === "x" ? true : mode === "create" ? true : false}
                         />
                         Döntetlen
                         <span className="form-check-sign">
@@ -204,6 +230,7 @@ const BettModal = ({ isShowing, hide, match }) => {
                           data-teamid={match.teamB._id}
                           data-outcome="2"
                           value={match.oddsBwin}
+                          defaultChecked={mode === "edit" && editcoupon.outcome === "2" ? true : false}
                         />
                         {match.teamB.name}
                         <span className="form-check-sign">
@@ -281,7 +308,7 @@ const BettModal = ({ isShowing, hide, match }) => {
               color="primary"
               type="submit"
             >
-              Fogadok
+              {mode === "create" ? "Fogadok":"Módosít"}
             </Button>
           </ModalFooter>
         </Form>

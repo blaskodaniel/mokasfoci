@@ -50,6 +50,10 @@ h3,
   float: right;
 }
 
+.f11 {
+  font-size: 11px;
+}
+
 .f17 {
   font-size: 17px;
 }
@@ -80,6 +84,38 @@ h3,
 
 .m0 {
   margin: 0;
+}
+
+.mr10{
+  margin-right: 10px;
+}
+
+.ml10{
+  margin-left: 10px;
+}
+
+.mb10{
+  margin-bottom: 10px;
+}
+
+.mt10{
+  margin-top: 10px;
+}
+
+.text-left{
+  text-align: left;
+}
+
+.text-right{
+  text-align: right;
+}
+
+.currentmatch table tbody td.wincolor{
+  color: rgba(28, 210, 34, 0.94) !important;
+}
+
+.losecolor{
+  color: rgba(226, 92, 52, 0.94) !important;
 }
 
 div.scorebar {
@@ -144,8 +180,8 @@ a.profilemenu {
 span.gamename {
   color: #1d1e2e;
   position: absolute;
-  top: 40px;
-  left: 96px;
+  top: 43px;
+  left: 70px;
   font-family: "Righteous", cursive;
   font-size: 13px;
 }
@@ -444,6 +480,10 @@ span.footballicon svg {
   font-style: italic;
 }
 
+.currentmatch div.teampadding{
+  padding: 0 5px;
+}
+
 @media only screen and (max-width: 600px) {
   h1,
   h2,
@@ -463,7 +503,7 @@ span.footballicon svg {
     font-size: 1.3rem;
   }
   body {
-    background: linear-gradient(#1e1e2f, #1e1e24);
+    background: #1e1e2f;
   }
   .teamname {
     font-size: 12px;
@@ -500,5 +540,8 @@ span.footballicon svg {
   }
   .widgetdesc p {
     font-size: 11px;
+  }
+  span.gamename {
+    top: 43px;
   }
 }

@@ -31,13 +31,14 @@ import {
   Col
 } from "reactstrap";
 import AvatarModal from "../components/Modal/AvatarModal";
+import { SharedContext } from "../context/SharedContect";
 
 /**
  * User profile component
  */
 const UserProfile = () => {
-  const notify = useRef({});
   const currentUser = useContext(AuthenticationContext);
+  const sharedcontext = useContext(SharedContext);
   const [profildata, setProfildata] = useState({});
   const { avatarmodal_isShowing, avatarmodal_toggle } = useAvatarModal();
   const [comment, setComment] = useState("");
@@ -85,23 +86,13 @@ const UserProfile = () => {
     setGroupwithteams(_groupbyteam);
   }, [teamsdata]);
 
-  const openNotify = (msg, type) => {
-    const option = {
-      place: "tc",
-      message: msg,
-      type: type,
-      autoDismiss: 3
-    };
-    notify.current.notificationAlert(option);
-  };
-
   const handleProfilSubmit = async e => {
     e.preventDefault();
     console.log(profildata);
     try {
       const saveresult = await saveProfile(profildata);
       if (saveresult) {
-        openNotify("Mentés sikeres!", "success");
+        sharedcontext.openNotify("Mentés sikeres!", "success");
         // Update favorite team id in context
         currentUser.setUserinfo({
           ...currentUser.userinfo,
@@ -111,7 +102,7 @@ const UserProfile = () => {
       }
     } catch (e) {
       console.log("ERROR:", e);
-      openNotify("Hiba történt a profil mentése során", "error");
+      sharedcontext.openNotify("Hiba történt a profil mentése során", "error");
     }
   };
 
@@ -129,13 +120,13 @@ const UserProfile = () => {
     try {
       const issresp = await sendissue(currentUser.user.sub, comment);
       if (issresp.status) {
-        openNotify("Észrevételed elküldve", "success");
+        sharedcontext.openNotify("Észrevételed elküldve", "success");
         setComment("");
       } else {
         throw new Error("Hiba a küldés során");
       }
     } catch (err) {
-      openNotify("Hiba történt a küldés során", "error");
+      sharedcontext.openNotify("Hiba történt a küldés során", "error");
     }
   };
 
@@ -148,7 +139,7 @@ const UserProfile = () => {
       });
       setProfildata({ ...profildata, avatar: avatarname });
       avatarmodal_toggle();
-      openNotify("Mentés sikeres", "success")
+      sharedcontext.openNotify("Mentés sikeres", "success")
     }
   };
 
@@ -452,7 +443,6 @@ const UserProfile = () => {
           </Col>
         </Row>
       </div>
-      <Notify ref={notify} />
       <AvatarModal
         isShowing={avatarmodal_isShowing}
         hide={avatarmodal_toggle}

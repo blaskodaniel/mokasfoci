@@ -48,8 +48,8 @@ const PieChart = ({ data, title }) => {
             radialLabelsTextXOffset={6}
             radialLabelsTextColor="#fff"
             radialLabelsLinkOffset={0}
-            radialLabelsLinkDiagonalLength={16}
-            radialLabelsLinkHorizontalLength={24}
+            radialLabelsLinkDiagonalLength={10}
+            radialLabelsLinkHorizontalLength={10}
             radialLabelsLinkStrokeWidth={1}
             radialLabelsLinkColor={{ from: "color" }}
             slicesLabelsSkipAngle={10}

@@ -40,7 +40,7 @@ const Transactions = () => {
   useEffect(() => {
     const loadtrans = async () => {
       const resultPromise = await loadTransactions(currentUser.user.sub);
-      resultPromise.data.sort((x, y) => new Date(x.date) - new Date(y.date))
+      resultPromise.data.sort((x, y) => new Date(y.date) - new Date(x.date))
       setTransaction(resultPromise.data);
       summary(resultPromise.data);
     };
