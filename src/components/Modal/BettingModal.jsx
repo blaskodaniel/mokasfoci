@@ -110,6 +110,7 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
           if (index !== -1) sharedcontext.usercoupons.splice(index, 1);
           editcoupon.bet = newcoupon.bet
           editcoupon.outcome = newcoupon.outcome
+          editcoupon.odds = bet.odds
           sharedcontext.setUsercoupons([
             ...sharedcontext.usercoupons, editcoupon
           ])
