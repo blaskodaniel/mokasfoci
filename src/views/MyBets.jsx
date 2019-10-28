@@ -20,7 +20,6 @@ import ReactTooltip from "react-tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from "@material-ui/core/Tooltip";
-import ScorePointer from "../components/ScorePointer/ScorePointer";
 import routes from "../routes";
 
 // reactstrap components
@@ -586,7 +585,7 @@ const MyBets = (props) => {
             </Col>
           </Row>
         </div>
-        {isWidthUp('md', props.width) ? <ScorePointer /> : null}
+        
       </>
     );
   } else {

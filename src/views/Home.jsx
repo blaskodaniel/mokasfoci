@@ -9,7 +9,6 @@ import {
   getMatchesByDay,
   getMatchesFromTo,
 } from "../_service/api-public-func";
-import ScorePointer from "../components/ScorePointer/ScorePointer";
 
 const Home = (props) => {
   const [matchlist, setMatchlist] = useState([0]);
@@ -71,7 +70,7 @@ const Home = (props) => {
           </Col>
         </Row>
       </div>
-      {isWidthUp('md', props.width) ? <ScorePointer /> : null}
+      
       
     </>
   );

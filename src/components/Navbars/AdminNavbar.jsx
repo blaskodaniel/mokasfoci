@@ -1,7 +1,9 @@
 import React from "react";
+import NumberFormat from 'react-number-format';
 import {AuthenticationContext} from "../../context/AuthenticationContext";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 // reactstrap components
 import {
   Collapse,
@@ -75,6 +77,10 @@ class AdminNavbar extends React.Component {
           expand="lg"
         >
           <Container fluid>
+            {isWidthUp('md', this.props.width) ? 
+                  <div className="navscorediv"><NumberFormat value={this.context.userinfo.nettoscore} displayType={'text'} 
+                  thousandSeparator={true} renderText={value => <span style={{fontWeight: "bold"}}>{value}</span>} /> <NumberFormat value={this.context.userinfo.score} displayType={'text'} 
+                  thousandSeparator={true} renderText={value => <span style={{fontSize:"0.8em"}}> #{value}</span>} /></div> : null}
             <div className="navbar-wrapper">
               <div
                 className={classNames("navbar-toggle d-inline", {
@@ -148,4 +154,4 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+export default withWidth()(AdminNavbar);

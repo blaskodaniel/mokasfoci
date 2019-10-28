@@ -110,6 +110,10 @@ h3,
   text-align: right;
 }
 
+.navbar .navbar-brand{
+  margin-top: 0px;
+}
+
 .currentmatch table tbody td.wincolor{
   color: rgba(28, 210, 34, 0.94) !important;
 }
@@ -338,9 +342,20 @@ tr.alreadybetbg {
 }
 
 span.alreadybet {
-  padding: 3px;
-  background-color: #2087f880;
+  padding: 0;
+  background-color: rgba(32,135,248,.5);
+  width: 35px;
+  display: inline-block;
   border-radius: 100px;
+}
+
+.navscorediv{
+  color: white;
+  font-size: 1em;
+  padding: 2px 8px;
+  background: #27293dad;
+  border-radius: 5px;
+
 }
 
 .mytippspan {

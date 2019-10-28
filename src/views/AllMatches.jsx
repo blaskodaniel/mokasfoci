@@ -7,7 +7,6 @@ import {
   Col
 } from "reactstrap";
 import { getMatches, getMatchesByDay } from "../_service/api-public-func";
-import ScorePointer from "../components/ScorePointer/ScorePointer";
 import { AppConfig } from "../application.config";
 
 const AllMatches = (props) => {
@@ -43,7 +42,7 @@ const AllMatches = (props) => {
             }
           </Col>
         </Row>
-        {isWidthUp('md', props.width) ? <ScorePointer /> : null}
+        
       </div>
     </>
     );
