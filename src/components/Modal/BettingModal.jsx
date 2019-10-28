@@ -29,9 +29,9 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
   const [modalshowing, setModalshowing] = useState(isShowing);
   const [coupon, setCoupon] = useState({});
   const [bet, setBet] = useState({
-    odds: match.oddsDraw,
-    outcome: "x",
-    teamid: 0
+    odds: mode === "edit" ? editcoupon.odds : match.oddsDraw,
+    outcome: mode === "edit" ? editcoupon.outcome : "x",
+    teamid: mode === "edit" ? editcoupon.userid : 0
   });
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -125,8 +125,8 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
   };
 
   const handleRadioChange = e => {
-    console.log(currentUser.userinfo.teamid);
     const { dataset, value } = e.target;
+    console.log("handleRadioChange"+dataset, value);
     setBet({ odds: value, outcome: dataset.outcome, teamid: dataset.teamid });
   };
 

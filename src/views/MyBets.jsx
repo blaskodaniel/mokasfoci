@@ -434,8 +434,11 @@ const MyBets = (props) => {
                           }
                           const isAlreadyBetting = sharedcontext.usercoupons.find(x=>x.matchid._id.toString() === cp.matchid._id.toString());
                           const clonematch = {...cp}
-                          clonematch.matchid.teamA = isAlreadyBetting.teamA; 
-                          clonematch.matchid.teamB = isAlreadyBetting.teamB;
+                          if(typeof isAlreadyBetting !== "undefined"){
+                            clonematch.matchid.teamA = isAlreadyBetting.teamA; 
+                            clonematch.matchid.teamB = isAlreadyBetting.teamB;
+                          }
+                          
                           return (
                             <tr key={cp._id}>
                               <td>
@@ -688,8 +691,10 @@ const MyBets = (props) => {
             coupons.map(cp => {
               const isAlreadyBetting = sharedcontext.usercoupons.find(x=>x.matchid._id.toString() === cp.matchid._id.toString());
               const clonematch = {...cp}
-              clonematch.matchid.teamA = isAlreadyBetting.teamA; 
-              clonematch.matchid.teamB = isAlreadyBetting.teamB;
+              if(typeof isAlreadyBetting !== "undefined"){
+                clonematch.matchid.teamA = isAlreadyBetting.teamA; 
+                clonematch.matchid.teamB = isAlreadyBetting.teamB;
+              }
               if (!categoryFilter(cp)) {
                 return null;
               }

@@ -80,7 +80,7 @@ class AdminNavbar extends React.Component {
             {isWidthUp('md', this.props.width) ? 
                   <div className="navscorediv"><NumberFormat value={this.context.userinfo.nettoscore} displayType={'text'} 
                   thousandSeparator={true} renderText={value => <span style={{fontWeight: "bold"}}>{value}</span>} /> <NumberFormat value={this.context.userinfo.score} displayType={'text'} 
-                  thousandSeparator={true} renderText={value => <span style={{fontSize:"0.8em"}}> #{value}</span>} /></div> : null}
+                  thousandSeparator={true} renderText={value => <span style={{fontSize:"0.8em"}}> /{value}</span>} /></div> : null}
             <div className="navbar-wrapper">
               <div
                 className={classNames("navbar-toggle d-inline", {
