@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     "&:hover":{
       cursor: "pointer"
     },
-    color: "#31f59be0",
+    color: "rgba(255, 255, 255, 0.7)",
     fontSize: "0.9em"
   }
 });
@@ -68,7 +68,7 @@ const MatchtableMobile = ({ list, title }) => {
                   <Col xs="6">
                     <Row>
                       <Col xs="9">
-                        <p className="teamname">{m.teamA.name}</p>
+                        <p className="teamname"><Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + m._id}>{m.teamA.name}</Link></p>
                       </Col>
                       <Col xs="3">
                         <p>{m.goalA}</p>
@@ -76,7 +76,7 @@ const MatchtableMobile = ({ list, title }) => {
                     </Row>
                     <Row>
                       <Col xs="9">
-                        <p className="teamname">{m.teamB.name}</p>
+                        <p className="teamname"><Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + m._id}>{m.teamB.name}</Link></p>
                       </Col>
                       <Col xs="3">
                         <p>{m.goalB}</p>
@@ -122,7 +122,6 @@ const MatchtableMobile = ({ list, title }) => {
                           {moment(m.date).format("MMM Do, ddd HH:mm")}
                           {!isNaN(m.type) ? " | "+MatchTypes[parseInt(m.type)] : ""}
                           {typeof m.comment !== "undefined" ? " | "+m.comment : ""}
-                          {" "}<Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + m._id}>[Fogadások]</Link>
                         </p>
                   </Col>
                 </Row>

@@ -7,6 +7,7 @@ import Toplist from "./views/Toplist";
 import CurrentMatchInfo from "./views/CurrentMatchInfo";
 import Transactions from "./views/Transactions";
 import Statistics from "./views/Statistics";
+import GroupsTable from "./views/GroupsTable";
 
 var routes = [
   {
@@ -27,6 +28,16 @@ var routes = [
     visible: true,
     hiddenlink: false,
     component: AllMatches,
+    layout: "/"
+  },
+  {
+    id: "tabella",
+    path: "tabella",
+    name: "csoportállás",
+    icon: "tim-icons icon-calendar-60",
+    visible: true,
+    hiddenlink: false,
+    component: GroupsTable,
     layout: "/"
   },
   {

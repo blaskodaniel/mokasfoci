@@ -77,18 +77,25 @@ const CurrentMatchInfo = ({ match, history }) => {
   const [teamA, setTeamA] = useState({});
   const [teamB, setTeamB] = useState({});
   const [matchinfo, setMatchinfo] = useState({});
+  const [displayPage, setdisplayPage] = useState(true)
 
   const loadlist = async () => {
-    const resultPromise = await userbets(match.params.matchid);
-    setPlayers(resultPromise.data.coupons);
-    setIsProgress(false);
-    setTeamA(resultPromise.data.teaminfo.teamA);
-    setTeamB(resultPromise.data.teaminfo.teamB);
-    setMatchinfo(resultPromise.data.matchinfo);
+    try{
+      const resultPromise = await userbets(match.params.matchid);
+      setPlayers(resultPromise.data.coupons);
+      setIsProgress(false);
+      setTeamA(resultPromise.data.teaminfo.teamA);
+      setTeamB(resultPromise.data.teaminfo.teamB);
+      setMatchinfo(resultPromise.data.matchinfo);
+    }catch(e){
+      setdisplayPage(false)
+    }
+    
   };
 
   useEffect(() => {
     loadlist();
+    
     // TODO: CLEANUP!!!!
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -128,6 +135,19 @@ const CurrentMatchInfo = ({ match, history }) => {
     }
   };
 
+  if(!displayPage){
+    return(
+      <>
+      <div className="content currentmatch">
+        <Row>
+          <Col md="12">
+            <h2>Ez a mérkőzés még nem kezdődött el! Nézz vissza később</h2>
+          </Col>
+        </Row>
+      </div>
+      </>    
+    )
+  }
   return (
     <>
       <div className="content currentmatch">

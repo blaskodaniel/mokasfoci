@@ -52,6 +52,7 @@ const Matchelement = ({ value }) => {
       ) : (
         value.map(match => {
           // Current running match
+          const isAlreadyBetting = sharedContext.usercoupons.find(x=>x.matchid._id.toString() === match._id.toString());
           if (match.active === 1) {
             return (
               <tr key={match._id} className="bettingtablerow runmatch">
@@ -73,9 +74,15 @@ const Matchelement = ({ value }) => {
                     {match.teamB.name}
                   </Link>
                 </td>
-                <td className="text-center">{match.oddsAwin}</td>
-                <td className="text-center">{match.oddsDraw}</td>
-                <td className="text-center">{match.oddsBwin}</td>
+                <td className="text-center">
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? <span className="alreadybet">{match.oddsAwin}</span> : match.oddsAwin}
+                </td>
+                <td className="text-center">
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "x" ? <span className="alreadybet">{match.oddsDraw}</span> : match.oddsDraw}
+                </td>
+                <td className="text-center">
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "2" ? <span className="alreadybet">{match.oddsBwin}</span> : match.oddsBwin}
+                </td>
               </tr>
             );
           } else if (match.active === 2) {
@@ -99,16 +106,21 @@ const Matchelement = ({ value }) => {
                     />
                     {match.teamB.name}
                   </Link>
-                  <span> (vége)</span>
+                  <span className="finmatch"> (vége)</span>
                 </td>
-                <td className="text-center">{match.oddsAwin}</td>
-                <td className="text-center">{match.oddsDraw}</td>
-                <td className="text-center">{match.oddsBwin}</td>
+                <td className="text-center">
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? <span className="alreadybet">{match.oddsAwin}</span> : match.oddsAwin}
+                </td>
+                <td className="text-center">
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "x" ? <span className="alreadybet">{match.oddsDraw}</span> : match.oddsDraw}
+                </td>
+                <td className="text-center">
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "2" ? <span className="alreadybet">{match.oddsBwin}</span> : match.oddsBwin}
+                </td>
               </tr>
             );
           } else {
             // it hasn't been played yet 
-            const isAlreadyBetting = sharedContext.usercoupons.find(x=>x.matchid._id.toString() === match._id.toString());
             return (
               <tr
                 key={match._id}

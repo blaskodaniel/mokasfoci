@@ -102,6 +102,14 @@ h3,
   margin-top: 10px;
 }
 
+a {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+a:hover{
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .text-left{
   text-align: left;
 }
@@ -337,10 +345,6 @@ tr.theadrow > td {
   padding: 3px 6px !important;
 }
 
-tr.alreadybetbg {
-  background: #211c2f7a;
-}
-
 span.alreadybet {
   padding: 0;
   background-color: rgba(32,135,248,.5);
@@ -399,7 +403,7 @@ div.runmatchchip span {
   text-decoration: line-through;
 }
 
-tr.endmatch span {
+tr.endmatch span.finmatch {
   font-size: 10px;
 }
 
@@ -499,6 +503,18 @@ span.footballicon svg {
   padding: 0 5px;
 }
 
+.groupstable div.cardbodystyle{
+  padding: 0 10px;
+}
+
+.groupstable div.cardstyle{
+  min-width: 340px;
+}
+
+.groupstable table tr td, .groupstable table tr th {
+  padding: 8px 7px;
+}
+
 @media only screen and (max-width: 600px) {
   h1,
   h2,
@@ -558,5 +574,11 @@ span.footballicon svg {
   }
   span.gamename {
     top: 43px;
+  }
+  .groupstable table.tablestyle tr td{
+    font-size: 0.9em;
+  }
+  .groupstable div.cardstyle{
+    min-width: 320px;
   }
 }
