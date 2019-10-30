@@ -65,7 +65,7 @@ const Home = (props) => {
               : 
               endmatchlist[0] === 0 ? <p>Szerver nem válaszol. Kérlek próbálkozz később.</p> 
                 : endmatchlist.length > 0 ?  <MatchtableMobile list={endmatchlist} title="Nemrégiben lejátszott" /> :
-                <p>Nincsenek mérkőzések</p>
+                null
             }
           </Col>
         </Row>

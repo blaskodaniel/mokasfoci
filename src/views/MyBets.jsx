@@ -716,7 +716,7 @@ const MyBets = (props) => {
                   )}
                   {cp.matchid.active === 1 ? (
                     <span className={classes.runningmatch}>
-                      {footballicon} Tart a mérkőzés...
+                      {footballicon} Folyamatban...
                     </span>
                   ) : (
                     ""

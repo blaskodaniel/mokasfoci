@@ -8,7 +8,7 @@ export const AppConfig = {
     gamename: "EB 2020",
     gamestart: "2020-06-12",
     gameend: "2020-07-12",
-    version: "1.41"
+    version: "1.43"
 }
 
 export const MatchTypes = ["1.csoportkör", "2.csoportkör", "3.csoportkör", "Nyolcaddöntő", "Negyeddöntő", "Elődöntő", "A 3. helyért", "Döntő"]

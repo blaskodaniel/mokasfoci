@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 import classNames from "classnames";
 import {
   Card,
@@ -12,6 +13,7 @@ import {
 } from "reactstrap";
 import Avatar from "@material-ui/core/Avatar";
 import { getTeams } from "../_service/api-public-func";
+import TournamentChart from "../components/Charts/TournamentChart"
 
 const useStyles = makeStyles(theme => createStyles({
   avatar: {
@@ -32,7 +34,7 @@ const useStyles = makeStyles(theme => createStyles({
   }
 }));
 
-const GroupsTable = () => {
+const GroupsTable = (props) => {
   const classes = useStyles();
   const [groups, setGroups] = useState([]);
 
@@ -67,7 +69,6 @@ const GroupsTable = () => {
       const _groupedlist = groupbygroupid(resultPromise.data);
       sortTeams(_groupedlist)
       setGroups(_groupedlist);
-      console.log(_groupedlist);
     } catch (e) {
       console.log("HIBA");
     }
@@ -75,13 +76,15 @@ const GroupsTable = () => {
 
   useEffect(() => {
     loadlist();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <div className="content groupstable">
+        {isWidthUp('sm', props.width) ? <Row>
+          <TournamentChart />
+        </Row> : null}
         <Row>
           {groups.map(group => {
             return (
@@ -143,4 +146,4 @@ const GroupsTable = () => {
   );
 };
 
-export default GroupsTable;
+export default withWidth()(GroupsTable);
