@@ -105,6 +105,7 @@ h3,
 button.oddsbtn {
   background: #295d308c;
   color: white;
+  border: 1px solid #256536e8;
 }
 
 button.oddsbtn:hover {

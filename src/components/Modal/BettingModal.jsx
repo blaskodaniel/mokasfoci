@@ -30,7 +30,7 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
   const [modalshowing, setModalshowing] = useState(isShowing);
   const [coupon, setCoupon] = useState({});
   const [bet, setBet] = useState({
-    odds: editcoupon.outcome === "1" ? match.oddsAwin : editcoupon.outcome === "2" ? match.oddsBwin : match.oddsDraw,
+    odds: editcoupon === null ? match.oddsDraw : editcoupon.outcome === "1" ? match.oddsAwin : editcoupon.outcome === "2" ? match.oddsBwin : match.oddsDraw,
     outcome: mode === "edit" ? editcoupon.outcome : "x",
     teamid: mode === "edit" ? editcoupon.userid : 0
   });
@@ -125,10 +125,13 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
     
   };
 
+  const handleOdds = (a,b,c) => {
+    setBet({ odds: b, outcome: a, teamid: c });
+  };
+
   const handleRadioChange = e => {
     const { dataset, value } = e.target;
-    console.log("handleRadioChange"+dataset, value);
-    setBet({ odds: value, outcome: dataset.outcome, teamid: dataset.teamid });
+    //setBet({ odds: value, outcome: dataset.outcome, teamid: dataset.teamid });
   };
 
   const betList = () => {
@@ -180,20 +183,20 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
                     <p>
                       <span className="cutivemono">Oddsok:</span>{" "}
                     </p>
-                    <Grid hidden item xs={12}>
+                    <Grid item xs={12}>
                       <ButtonGroup fullWidth size="small" aria-label="">
-                        <Button className={mode === "edit" && editcoupon.outcome === "1" ? "oddsselected":"oddsbtn"}>
+                        <Button onClick={()=>handleOdds("1",match.oddsAwin,match.teamA._id)} className={bet.outcome === "1" ? "oddsselected":"oddsbtn"}>
                           1 - {match.oddsAwin}
                         </Button>
-                        <Button className={mode === "edit" && editcoupon.outcome === "x" ? "oddsselected":"oddsbtn"}>
+                        <Button onClick={()=>handleOdds("x",match.oddsDraw,0)} className={bet.outcome === "x" ? "oddsselected":"oddsbtn"}>
                           x - {match.oddsDraw}
                         </Button>
-                        <Button className={mode === "edit" && editcoupon.outcome === "2" ? "oddsselected":"oddsbtn"}>
+                        <Button onClick={()=>handleOdds("2",match.oddsBwin,match.teamB._id)} className={bet.outcome === "2" ? "oddsselected":"oddsbtn"}>
                           2 - {match.oddsBwin}
                         </Button>
                       </ButtonGroup>
                     </Grid>
-                    <FormGroup check inline className="form-check-radio jc-e">
+                    <FormGroup hidden check inline className="form-check-radio jc-e">
                       <Label className={currentUser.userinfo.teamid &&
                             currentUser.userinfo.teamid === match.teamA._id ? "successtext form-check-label":"form-check-label"}>
                         <Input
@@ -216,7 +219,7 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
                         </span>
                       </Label>
                     </FormGroup>
-                    <FormGroup check inline className="form-check-radio jc-e">
+                    <FormGroup hidden check inline className="form-check-radio jc-e">
                       <Label className="form-check-label">
                         <Input
                           type="radio"
@@ -235,7 +238,7 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
                         </span>
                       </Label>
                     </FormGroup>
-                    <FormGroup check inline className="form-check-radio jc-e">
+                    <FormGroup hidden check inline className="form-check-radio jc-e">
                       <Label className="form-check-label">
                         <Input
                           type="radio"

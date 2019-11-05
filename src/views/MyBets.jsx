@@ -200,6 +200,9 @@ const MyBets = (props) => {
   };
 
   const warningOdds = (cp) => {
+    if(sharedcontext.settings.alwaysCalculateWithLatestOdds){
+      return ""
+    }
     if(cp.outcome === "x" && cp.matchid.active === 0 && parseFloat(cp.matchid.oddsDraw) > parseFloat(cp.odds)){
       return <span data-tip="Jobb odds ajánlat van" className="betterodswarn">!</span>
     }

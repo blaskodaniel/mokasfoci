@@ -91,3 +91,13 @@ export const getAvatars = () => {
             return error
         });
 }
+
+export const getsettings = () => {
+    return APIclient.get(`downloadSetting`)
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}

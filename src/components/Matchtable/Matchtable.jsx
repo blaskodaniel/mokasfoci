@@ -34,10 +34,7 @@ const Matchelement = ({ value }) => {
   const sharedContext = useContext(SharedContext);
   const Bettingmodalopen = (match,mode,coupon=null) => {
     sharedContext.betmodal_setmode(mode)
-    if(coupon !== null){
-      // If we are in edit mode we have to pass the user coupon 
-      sharedContext.betmodal_setcoupon(coupon)
-    }
+    sharedContext.betmodal_setcoupon(coupon)
     sharedContext.betmodal_setmatch(match);
     sharedContext.betmodal_toggle();
     
@@ -145,7 +142,7 @@ const Matchelement = ({ value }) => {
                 </td>
                 <td className="text-center">
                   {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? 
-                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsAwin) ? 
+                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsAwin) || sharedContext.settings.alwaysCalculateWithLatestOdds ? 
                         <span className="alreadybet">{match.oddsAwin}</span> 
                         :
                         <><span>{match.oddsAwin}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsAwin)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></>
@@ -154,7 +151,7 @@ const Matchelement = ({ value }) => {
                 </td>
                 <td className="text-center">
                   {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "x" ? 
-                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsDraw) ? 
+                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsDraw) || sharedContext.settings.alwaysCalculateWithLatestOdds ? 
                         <span className="alreadybet">{match.oddsDraw}</span> 
                         :
                         <><span>{match.oddsDraw}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsDraw)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></> 
@@ -163,7 +160,7 @@ const Matchelement = ({ value }) => {
                 </td>
                 <td className="text-center">
                   {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "2" ? 
-                      parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsBwin) ? 
+                      parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsBwin) || sharedContext.settings.alwaysCalculateWithLatestOdds ? 
                       <span className="alreadybet">{match.oddsBwin}</span> 
                       :
                       <><span>{match.oddsBwin}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsBwin)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></> 
