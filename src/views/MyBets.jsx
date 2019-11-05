@@ -200,13 +200,13 @@ const MyBets = (props) => {
   };
 
   const warningOdds = (cp) => {
-    if(cp.outcome === "x" && parseFloat(cp.matchid.oddsDraw) > parseFloat(cp.odds)){
+    if(cp.outcome === "x" && cp.matchid.active === 0 && parseFloat(cp.matchid.oddsDraw) > parseFloat(cp.odds)){
       return <span data-tip="Jobb odds ajánlat van" className="betterodswarn">!</span>
     }
-    if(cp.outcome === "1" && parseFloat(cp.matchid.oddsAwin) > parseFloat(cp.odds)){
+    if(cp.outcome === "1" && cp.matchid.active === 0 && parseFloat(cp.matchid.oddsAwin) > parseFloat(cp.odds)){
       return <span data-tip="Jobb odds ajánlat van" className="betterodswarn">!</span>
     }
-    if(cp.outcome === "2" && parseFloat(cp.matchid.oddsBwin) > parseFloat(cp.odds)){
+    if(cp.outcome === "2" && cp.matchid.active === 0 && parseFloat(cp.matchid.oddsBwin) > parseFloat(cp.odds)){
       return <span data-tip="Jobb odds ajánlat van" className="betterodswarn">!</span>
     }
   }

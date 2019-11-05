@@ -212,7 +212,7 @@ const CurrentMatchInfo = ({ match, history }) => {
                     <tr>
                       <th>Név</th>
                       <th className="text-center">Tipp</th>
-                      <th className="text-center">Feltett pont</th>
+                      <th className="text-center">Tét / odds</th>
                       <th className="text-center">Nettó nyeremény</th>
                     </tr>
                   </thead>
@@ -238,6 +238,13 @@ const CurrentMatchInfo = ({ match, history }) => {
                             <td className="text-center">
                               <NumberFormat
                                 value={Math.round(cp.bet)}
+                                displayType={"text"}
+                                thousandSeparator={true}
+                                renderText={value => value}
+                              />
+                              {" / "}
+                              <NumberFormat
+                                value={parseFloat(cp.odds)}
                                 displayType={"text"}
                                 thousandSeparator={true}
                                 renderText={value => value}
