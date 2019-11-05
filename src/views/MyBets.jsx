@@ -199,6 +199,18 @@ const MyBets = (props) => {
     }
   };
 
+  const warningOdds = (cp) => {
+    if(cp.outcome === "x" && parseFloat(cp.matchid.oddsDraw) > parseFloat(cp.odds)){
+      return <span data-tip="Jobb odds ajánlat van" className="betterodswarn">!</span>
+    }
+    if(cp.outcome === "1" && parseFloat(cp.matchid.oddsAwin) > parseFloat(cp.odds)){
+      return <span data-tip="Jobb odds ajánlat van" className="betterodswarn">!</span>
+    }
+    if(cp.outcome === "2" && parseFloat(cp.matchid.oddsBwin) > parseFloat(cp.odds)){
+      return <span data-tip="Jobb odds ajánlat van" className="betterodswarn">!</span>
+    }
+  }
+
   const isFavorite = coupon => {
     var returnobj = {
       isfav: false,
@@ -423,7 +435,7 @@ const MyBets = (props) => {
                         <th className="text-center">Tét</th>
                         <th className="text-center">Nyeremény</th>
                         <th className="text-center">Status</th>
-                        <th className="text-center">Törlés</th>
+                        <th className="text-center"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -479,7 +491,7 @@ const MyBets = (props) => {
                               </td>
                               <td className="text-center">{matchStatus(cp)}</td>
                               <td className="text-center">
-                                {cp.outcome} / {cp.odds}
+                                {cp.outcome} / {cp.odds} {warningOdds(cp)}
                               </td>
                               <td className="text-center">
                                 <NumberFormat
@@ -748,7 +760,7 @@ const MyBets = (props) => {
                       <Row className={classes.cprow}>
                         <Col xs="5">TIPP/ODDS:</Col>
                         <Col xs="7">
-                          {cp.outcome} / {cp.odds}
+                          {cp.outcome} / {cp.odds} {warningOdds(cp)}
                         </Col>
                       </Row>
                       <Row className={classes.cprow}>
@@ -815,6 +827,7 @@ const MyBets = (props) => {
                     </>
                     ) : null}
                   </CardActions>
+                  <ReactTooltip />
                 </Card>
               );
             })

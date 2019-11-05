@@ -144,13 +144,31 @@ const Matchelement = ({ value }) => {
                   {match.teamB.name}
                 </td>
                 <td className="text-center">
-                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? <span className="alreadybet">{match.oddsAwin}</span> : match.oddsAwin}
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? 
+                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsAwin) ? 
+                        <span className="alreadybet">{match.oddsAwin}</span> 
+                        :
+                        <><span>{match.oddsAwin}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsAwin)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></>
+                      : 
+                      match.oddsAwin}
                 </td>
                 <td className="text-center">
-                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "x" ? <span className="alreadybet">{match.oddsDraw}</span> : match.oddsDraw}
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "x" ? 
+                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsDraw) ? 
+                        <span className="alreadybet">{match.oddsDraw}</span> 
+                        :
+                        <><span>{match.oddsDraw}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsDraw)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></> 
+                      : 
+                      match.oddsDraw}
                 </td>
                 <td className="text-center">
-                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "2" ? <span className="alreadybet">{match.oddsBwin}</span> : match.oddsBwin}
+                  {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "2" ? 
+                      parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsBwin) ? 
+                      <span className="alreadybet">{match.oddsBwin}</span> 
+                      :
+                      <><span>{match.oddsBwin}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsBwin)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></> 
+                      : 
+                      match.oddsBwin}
                 </td>
               </tr>
             );

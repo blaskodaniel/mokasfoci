@@ -10,8 +10,9 @@ import {
   Input,
   FormGroup
 } from "reactstrap";
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import NumberFormat from "react-number-format";
-import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
@@ -29,7 +30,7 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
   const [modalshowing, setModalshowing] = useState(isShowing);
   const [coupon, setCoupon] = useState({});
   const [bet, setBet] = useState({
-    odds: mode === "edit" ? editcoupon.odds : match.oddsDraw,
+    odds: editcoupon.outcome === "1" ? match.oddsAwin : editcoupon.outcome === "2" ? match.oddsBwin : match.oddsDraw,
     outcome: mode === "edit" ? editcoupon.outcome : "x",
     teamid: mode === "edit" ? editcoupon.userid : 0
   });
@@ -159,7 +160,7 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
               <CardBody>
                 <Grid container spacing={0}>
                   <Grid item xs={12}>
-                    <h4>{mode === "create" ? "Szelvény létrehozása":"Szelvény módosítása (beta)"}</h4>
+                    <h4>{mode === "create" ? "Szelvény létrehozása":"Szelvény módosítása [beta]"}</h4>
                   </Grid>
                   <Grid item xs={12}>
                     <Divider variant="middle" />
@@ -177,8 +178,21 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
                   ) : null}
                   <Grid item xs={12}>
                     <p>
-                      <span className="cutivemono">Tipped:</span>{" "}
+                      <span className="cutivemono">Oddsok:</span>{" "}
                     </p>
+                    <Grid hidden item xs={12}>
+                      <ButtonGroup fullWidth size="small" aria-label="">
+                        <Button className={mode === "edit" && editcoupon.outcome === "1" ? "oddsselected":"oddsbtn"}>
+                          1 - {match.oddsAwin}
+                        </Button>
+                        <Button className={mode === "edit" && editcoupon.outcome === "x" ? "oddsselected":"oddsbtn"}>
+                          x - {match.oddsDraw}
+                        </Button>
+                        <Button className={mode === "edit" && editcoupon.outcome === "2" ? "oddsselected":"oddsbtn"}>
+                          2 - {match.oddsBwin}
+                        </Button>
+                      </ButtonGroup>
+                    </Grid>
                     <FormGroup check inline className="form-check-radio jc-e">
                       <Label className={currentUser.userinfo.teamid &&
                             currentUser.userinfo.teamid === match.teamA._id ? "successtext form-check-label":"form-check-label"}>

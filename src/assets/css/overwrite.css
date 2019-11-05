@@ -86,47 +86,71 @@ h3,
   margin: 0;
 }
 
-.mr10{
+.mr10 {
   margin-right: 10px;
 }
 
-.ml10{
+.ml10 {
   margin-left: 10px;
 }
 
-.mb10{
+.mb10 {
   margin-bottom: 10px;
 }
 
-.mt10{
+.mt10 {
   margin-top: 10px;
+}
+
+button.oddsbtn {
+  background: #295d308c;
+  color: white;
+}
+
+button.oddsbtn:hover {
+  cursor: pointer;
+  background: #446329;
+}
+
+button.oddsselected:hover {
+  background: #446329;
+  color: white;
+}
+
+button.oddsbtn:focus {
+  outline: 0px;
+}
+
+button.oddsselected {
+  background: #588035f0;
+  color: white;
 }
 
 a {
   color: rgba(255, 255, 255, 0.7);
 }
 
-a:hover{
+a:hover {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.text-left{
+.text-left {
   text-align: left;
 }
 
-.text-right{
+.text-right {
   text-align: right;
 }
 
-.navbar .navbar-brand{
+.navbar .navbar-brand {
   margin-top: 0px;
 }
 
-.currentmatch table tbody td.wincolor{
+.currentmatch table tbody td.wincolor {
   color: rgba(28, 210, 34, 0.94) !important;
 }
 
-.losecolor{
+.losecolor {
   color: rgba(226, 92, 52, 0.94) !important;
 }
 
@@ -337,6 +361,19 @@ tr.monthtablerow {
   color: rgb(230, 90, 90) !important;
 }
 
+.mybets span.betterodswarn, .mybetsmobile span.betterodswarn {
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+  top: 1px;
+  left: 1px;
+}
+
+.mybets span.betterodswarn:hover {
+  cursor: pointer;
+}
+
 tr.theadrow {
   padding: 3px;
 }
@@ -347,19 +384,26 @@ tr.theadrow > td {
 
 span.alreadybet {
   padding: 0;
-  background-color: rgba(32,135,248,.5);
+  background-color: rgba(32, 135, 248, 0.5);
   width: 35px;
   display: inline-block;
   border-radius: 100px;
 }
 
-.navscorediv{
+span.good {
+  background-color: rgba(32, 248, 124, 0.5);
+}
+
+span.bad {
+  background-color: rgba(248, 87, 32, 0.5);
+}
+
+.navscorediv {
   color: white;
   font-size: 1em;
   padding: 2px 8px;
   background: #27293dad;
   border-radius: 5px;
-
 }
 
 .mytippspan {
@@ -499,19 +543,20 @@ span.footballicon svg {
   font-style: italic;
 }
 
-.currentmatch div.teampadding{
+.currentmatch div.teampadding {
   padding: 0 5px;
 }
 
-.groupstable div.cardbodystyle{
+.groupstable div.cardbodystyle {
   padding: 0 10px;
 }
 
-.groupstable div.cardstyle{
+.groupstable div.cardstyle {
   min-width: 340px;
 }
 
-.groupstable table tr td, .groupstable table tr th {
+.groupstable table tr td,
+.groupstable table tr th {
   padding: 8px 7px;
 }
 
@@ -535,6 +580,9 @@ span.footballicon svg {
   }
   body {
     background: #1e1e2f;
+  }
+  .modal-dialog {
+    margin: 1rem;
   }
   .teamname {
     font-size: 12px;
@@ -575,10 +623,10 @@ span.footballicon svg {
   span.gamename {
     top: 43px;
   }
-  .groupstable table.tablestyle tr td{
+  .groupstable table.tablestyle tr td {
     font-size: 0.9em;
   }
-  .groupstable div.cardstyle{
+  .groupstable div.cardstyle {
     min-width: 320px;
   }
 }
