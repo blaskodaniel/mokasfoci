@@ -7,6 +7,7 @@ import { SharedContext } from "../../context/SharedContect";
 import { Link } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import routes from "../../routes";
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -32,6 +33,7 @@ const useStyles = makeStyles(theme =>
 const Matchelement = ({ value }) => {
   const classes = useStyles();
   const sharedContext = useContext(SharedContext);
+  const authContext = useContext(AuthenticationContext);
   const Bettingmodalopen = (match,mode,coupon=null) => {
     sharedContext.betmodal_setmode(mode)
     sharedContext.betmodal_setcoupon(coupon)
@@ -142,7 +144,7 @@ const Matchelement = ({ value }) => {
                 </td>
                 <td className="text-center">
                   {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? 
-                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsAwin) || sharedContext.settings.alwaysCalculateWithLatestOdds ? 
+                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsAwin) || !authContext.userinfo.oddssuggest ? 
                         <span className="alreadybet">{match.oddsAwin}</span> 
                         :
                         <><span>{match.oddsAwin}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsAwin)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></>
@@ -151,7 +153,7 @@ const Matchelement = ({ value }) => {
                 </td>
                 <td className="text-center">
                   {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "x" ? 
-                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsDraw) || sharedContext.settings.alwaysCalculateWithLatestOdds ? 
+                        parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsDraw) || !authContext.userinfo.oddssuggest ? 
                         <span className="alreadybet">{match.oddsDraw}</span> 
                         :
                         <><span>{match.oddsDraw}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsDraw)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></> 
@@ -160,7 +162,7 @@ const Matchelement = ({ value }) => {
                 </td>
                 <td className="text-center">
                   {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "2" ? 
-                      parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsBwin) || sharedContext.settings.alwaysCalculateWithLatestOdds ? 
+                      parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsBwin) || !authContext.userinfo.oddssuggest ? 
                       <span className="alreadybet">{match.oddsBwin}</span> 
                       :
                       <><span>{match.oddsBwin}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsBwin)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></> 

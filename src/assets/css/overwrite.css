@@ -480,8 +480,18 @@ span.footballicon svg {
   padding: 0;
 }
 
+.profile span.MuiFormControlLabel-label{
+  font-size: 0.8rem;
+}
+
 .profile .card-user .avatar {
   border: 0;
+}
+
+.profile span.oddssuggestinfo{
+  display: block;
+  font-size: 11px;
+  margin-top: -11px;
 }
 
 .avatarModal .modal-content .modal-footer {

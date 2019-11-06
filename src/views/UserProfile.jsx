@@ -1,5 +1,6 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
-import Notify from "react-notification-alert";
+import React, { useState, useContext, useEffect } from "react";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import moment from "moment";
 import { AppConfig } from "../application.config";
 import NumberFormat from "react-number-format";
@@ -97,7 +98,8 @@ const UserProfile = () => {
         currentUser.setUserinfo({
           ...currentUser.userinfo,
           teamid: profildata.teamid,
-          name: profildata.name
+          name: profildata.name,
+          oddssuggest: profildata.oddssuggest
         });
       }
     } catch (e) {
@@ -109,6 +111,11 @@ const UserProfile = () => {
   const handleInputChange = e => {
     const { name, value } = e.target;
     setProfildata({ ...profildata, [name]: value });
+  };
+
+  const handleCheckboxChange = e => {
+    const { name, checked } = e.target;
+    setProfildata({ ...profildata, [name]: checked });
   };
 
   const handleTextareaChange = e => {
@@ -139,7 +146,7 @@ const UserProfile = () => {
       });
       setProfildata({ ...profildata, avatar: avatarname });
       avatarmodal_toggle();
-      sharedcontext.openNotify("Mentés sikeres", "success")
+      sharedcontext.openNotify("Mentés sikeres", "success");
     }
   };
 
@@ -163,7 +170,9 @@ const UserProfile = () => {
                   <DropdownMenu aria-labelledby="dropdownMenuLink" right>
                     <DropdownItem
                       href="#pablo"
-                      onClick={() => {avatarmodal_toggle()}}
+                      onClick={() => {
+                        avatarmodal_toggle();
+                      }}
                     >
                       Avatar cseréje
                     </DropdownItem>
@@ -198,10 +207,7 @@ const UserProfile = () => {
                           displayType={"text"}
                           thousandSeparator={true}
                           renderText={value => (
-                            <span
-                              effect="solid"
-                              data-multiline="false"
-                            >
+                            <span effect="solid" data-multiline="false">
                               <b>{value}</b>
                             </span>
                           )}
@@ -222,10 +228,7 @@ const UserProfile = () => {
                           displayType={"text"}
                           thousandSeparator={true}
                           renderText={value => (
-                            <span
-                              effect="solid"
-                              data-multiline="false"
-                            >
+                            <span effect="solid" data-multiline="false">
                               <b>{value}</b>
                             </span>
                           )}
@@ -313,6 +316,30 @@ const UserProfile = () => {
                       </FormGroup>
                     </Col>
                   </Row>
+                  <Row>
+                    <Col className="pr-md-1" xs="12">
+                      <FormGroup>
+                        {typeof profildata.oddssuggest !== "undefined" ? 
+                          <>
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                checked={profildata.oddssuggest ? profildata.oddssuggest : false}
+                                onChange={handleCheckboxChange}
+                                name="oddssuggest"
+                                color="primary"
+                              />
+                            }
+                            label="Odds ajánló"
+                          />
+                          <span className="oddssuggestinfo">Ha bekapcsolod, akkor az oddsok frissítését követően figyelmeztetés 
+                            jelenik meg, ha jobb oddsot kapott a mérkőzés mint amivel Te létrehoztad a szelvényt </span>
+                          </> 
+                          : 
+                          null}
+                      </FormGroup>
+                    </Col>
+                  </Row>
                 </CardBody>
                 <CardFooter>
                   <Button className="btn-fill" color="primary" type="submit">
@@ -328,8 +355,8 @@ const UserProfile = () => {
                 </CardHeader>
                 <CardBody>
                   <Row>
-                  <Col md="12">
-                    <FormGroup>
+                    <Col md="12">
+                      <FormGroup>
                         <label>Bajnok csapat tipp</label>
                         <Input
                           type="select"
@@ -372,7 +399,9 @@ const UserProfile = () => {
                               value={profildata[group.name]}
                               name={group.name}
                               disabled={
-                                moment().isBefore(AppConfig.gamestart) ? "" : true
+                                moment().isBefore(AppConfig.gamestart)
+                                  ? ""
+                                  : true
                               }
                               onChange={handleInputChange}
                             >
@@ -395,14 +424,13 @@ const UserProfile = () => {
                     })}
                   </Row>
                 </CardBody>
-                {
-                  moment().isBefore(AppConfig.gamestart) ? (<CardFooter>
-                    <Button className="btn-fill"
-                    color="primary" type="submit">
+                {moment().isBefore(AppConfig.gamestart) ? (
+                  <CardFooter>
+                    <Button className="btn-fill" color="primary" type="submit">
                       Mentés
                     </Button>
-                  </CardFooter>) : null
-                }
+                  </CardFooter>
+                ) : null}
               </Card>
             </Form>
             <Card>

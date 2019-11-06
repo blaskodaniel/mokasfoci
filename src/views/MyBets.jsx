@@ -494,7 +494,7 @@ const MyBets = (props) => {
                               </td>
                               <td className="text-center">{matchStatus(cp)}</td>
                               <td className="text-center">
-                                {cp.outcome} / {cp.odds} {warningOdds(cp)}
+                                {cp.outcome} / {cp.odds} {currentUser.userinfo.oddssuggest ? warningOdds(cp) : null}
                               </td>
                               <td className="text-center">
                                 <NumberFormat
@@ -758,7 +758,7 @@ const MyBets = (props) => {
                       </Row>
                       <Row className={classes.cprow}>
                         <Col xs="5">Eredmény:</Col>
-                        <Col xs="7">{matchStatus(cp)}</Col>
+                        <Col xs="7">{currentUser.userinfo.oddssuggest ? matchStatus(cp) : null}</Col>
                       </Row>
                       <Row className={classes.cprow}>
                         <Col xs="5">TIPP/ODDS:</Col>
