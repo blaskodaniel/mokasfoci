@@ -48,7 +48,7 @@ const Home = (props) => {
     <>
       <div className="content">
         <Row>
-          <Col lg="12" md="12">
+          <Col className="m-p-8" xs="12">
             {matchlistReqProgress ? 
               <p>Mérkőzések betöltése....</p> 
               : 
@@ -59,7 +59,7 @@ const Home = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col lg="12">
+          <Col className="m-p-8" xs="12">
           {endmatchlistReqProgress ? 
               <p>Mérkőzések betöltése....</p> 
               : 

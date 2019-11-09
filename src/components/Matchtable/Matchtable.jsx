@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import * as moment from "moment";
 import "moment/locale/hu";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { useTheme,makeStyles, createStyles } from "@material-ui/core/styles";
 import { Card, CardBody, Table, CardTitle, CardHeader } from "reactstrap";
 import { SharedContext } from "../../context/SharedContect";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Link } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import routes from "../../routes";
@@ -26,12 +27,23 @@ const useStyles = makeStyles(theme =>
     alreadybet:{
       background: "#2086f74a",
       textAlign: "center"
+    },
+    teamname:{
+      whiteSpace: "nowrap",
+      display: "inline-block"
+    },
+    fix120:{
+      [theme.breakpoints.down("sm")]:{
+        width: "120px"
+      }
     }
   })
 );
 
 const Matchelement = ({ value }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const sharedContext = useContext(SharedContext);
   const authContext = useContext(AuthenticationContext);
   const Bettingmodalopen = (match,mode,coupon=null) => {
@@ -56,22 +68,47 @@ const Matchelement = ({ value }) => {
             return (
               <tr key={match._id} className="bettingtablerow runmatch">
                 <td>{moment(match.date).format("HH:mm")}</td>
-                <td>
-                  <Link to={runningmatchlink[0].path + "/" + match._id}>
-                    {match.teamA.name}
-                    <Avatar
-                      alt={match.teamA.flag}
-                      src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
-                      className={classes.avatar}
-                    />
-                    -
-                    <Avatar
-                      alt={match.teamA.flag}
-                      src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
-                      className={classes.avatar}
-                    />
-                    {match.teamB.name}
-                  </Link>
+                <td className={classes.fix120}>
+                  {isDesktop ? 
+                      <>
+                        <Link to={runningmatchlink[0].path + "/" + match._id}>
+                          {match.teamA.name}
+                          <Avatar
+                            alt={match.teamA.flag}
+                            src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                            className={classes.avatar}
+                          />
+                          -
+                          <Avatar
+                            alt={match.teamA.flag}
+                            src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                            className={classes.avatar}
+                          />
+                          {match.teamB.name}
+                        </Link>
+                      </> 
+                      :
+                      <>
+                        <Link to={runningmatchlink[0].path + "/" + match._id}>
+                          <div>
+                          <div className={classes.teamname}>{match.teamA.name}</div>
+                          <Avatar
+                          alt={match.teamA.flag}
+                          src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                          className={classes.avatar}
+                          />
+                          </div>
+                          <div>
+                          <div className={classes.teamname}>{match.teamB.name}</div>
+                          <Avatar
+                            alt={match.teamA.flag}
+                            src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                            className={classes.avatar}
+                          />
+                          </div> 
+                        </Link>
+                    </>
+                  }
                 </td>
                 <td className="text-center">
                   {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? <span className="alreadybet">{match.oddsAwin}</span> : match.oddsAwin}
@@ -89,23 +126,48 @@ const Matchelement = ({ value }) => {
             return (
               <tr key={match._id} className="bettingtablerow endmatch">
                 <td>{moment(match.date).format("HH:mm")}</td>
-                <td>
-                  <Link to={runningmatchlink[0].path + "/" + match._id}>
-                    {match.teamA.name}
-                    <Avatar
-                      alt={match.teamA.flag}
-                      src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
-                      className={classes.avatar}
-                    />
-                    -
-                    <Avatar
-                      alt={match.teamA.flag}
-                      src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
-                      className={classes.avatar}
-                    />
-                    {match.teamB.name}
-                  </Link>
-                  <span className="finmatch"> (vége)</span>
+                <td className={classes.fix120}>
+                  {isDesktop ? 
+                      <>
+                        <Link to={runningmatchlink[0].path + "/" + match._id}>
+                        {match.teamA.name}
+                        <Avatar
+                          alt={match.teamA.flag}
+                          src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                          className={classes.avatar}
+                        />
+                        -
+                        <Avatar
+                          alt={match.teamA.flag}
+                          src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                          className={classes.avatar}
+                        />
+                        {match.teamB.name}
+                        </Link>
+                        <span className="finmatch"> (vége)</span>
+                      </> 
+                      :
+                      <>
+                        <Link to={runningmatchlink[0].path + "/" + match._id}>
+                          <div>
+                          <div className={classes.teamname}>{match.teamA.name}</div>
+                          <Avatar
+                          alt={match.teamA.flag}
+                          src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                          className={classes.avatar}
+                          />
+                          </div>
+                          <div>
+                          <div className={classes.teamname}>{match.teamB.name}</div>
+                          <Avatar
+                            alt={match.teamA.flag}
+                            src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                            className={classes.avatar}
+                          />
+                          </div> 
+                        </Link>
+                    </>
+                  }
                 </td>
                 <td className="text-center">
                   {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? <span className="alreadybet">{match.oddsAwin}</span> : match.oddsAwin}
@@ -127,27 +189,50 @@ const Matchelement = ({ value }) => {
                 onClick={() => typeof isAlreadyBetting !== "undefined" ? Bettingmodalopen(match,"edit",isAlreadyBetting) : Bettingmodalopen(match,"create")}
               >
                 <td>{moment(match.date).format("HH:mm")}</td>
-                <td>
-                  {match.teamA.name}
-                  <Avatar
-                    alt={match.teamA.flag}
-                    src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
-                    className={classes.avatar}
-                  />
-                  -
-                  <Avatar
-                    alt={match.teamA.flag}
-                    src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
-                    className={classes.avatar}
-                  />
-                  {match.teamB.name}
+                <td className={classes.fix120}>
+                  {isDesktop ? 
+                      <>
+                        {match.teamA.name}
+                        <Avatar
+                          alt={match.teamA.flag}
+                          src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                          className={classes.avatar}
+                        />
+                        -
+                        <Avatar
+                          alt={match.teamA.flag}
+                          src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                          className={classes.avatar}
+                        />
+                        {match.teamB.name}
+                      </> 
+                      :
+                      <>
+                        <div>
+                        <div className={classes.teamname}>{match.teamA.name}</div>
+                        <Avatar
+                        alt={match.teamA.flag}
+                        src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                        className={classes.avatar}
+                        />
+                        </div>
+                        <div>
+                        <div className={classes.teamname}>{match.teamB.name}</div>
+                        <Avatar
+                          alt={match.teamA.flag}
+                          src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                          className={classes.avatar}
+                        />
+                      </div> 
+                    </>
+                  }
                 </td>
                 <td className="text-center">
                   {typeof isAlreadyBetting !== "undefined" && isAlreadyBetting.outcome === "1" ? 
                         parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsAwin) || !authContext.userinfo.oddssuggest ? 
                         <span className="alreadybet">{match.oddsAwin}</span> 
                         :
-                        <><span>{match.oddsAwin}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsAwin)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></>
+                        <><span className="alreadybet">{match.oddsAwin}</span>{parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsAwin)?null:<i className="fa fa-exclamation oddswarn"></i>}</>
                       : 
                       match.oddsAwin}
                 </td>
@@ -156,7 +241,7 @@ const Matchelement = ({ value }) => {
                         parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsDraw) || !authContext.userinfo.oddssuggest ? 
                         <span className="alreadybet">{match.oddsDraw}</span> 
                         :
-                        <><span>{match.oddsDraw}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsDraw)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></> 
+                        <><span className="alreadybet">{match.oddsDraw}</span>{parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsDraw)?null:<i className="fa fa-exclamation oddswarn"></i>}</> 
                       : 
                       match.oddsDraw}
                 </td>
@@ -165,7 +250,7 @@ const Matchelement = ({ value }) => {
                       parseFloat(isAlreadyBetting.odds) === parseFloat(match.oddsBwin) || !authContext.userinfo.oddssuggest ? 
                       <span className="alreadybet">{match.oddsBwin}</span> 
                       :
-                      <><span>{match.oddsBwin}</span>/<span className={parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsBwin)?"alreadybet good":"alreadybet bad"}>{isAlreadyBetting.odds}</span></> 
+                      <><span className="alreadybet">{match.oddsBwin}</span>{parseFloat(isAlreadyBetting.odds) > parseFloat(match.oddsBwin)?null:<i className="fa fa-exclamation oddswarn"></i>}</> 
                       : 
                       match.oddsBwin}
                 </td>

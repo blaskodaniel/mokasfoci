@@ -362,7 +362,8 @@ tr.monthtablerow {
   color: rgb(230, 90, 90) !important;
 }
 
-.mybets span.betterodswarn, .mybetsmobile span.betterodswarn {
+.mybets span.betterodswarn,
+.mybetsmobile span.betterodswarn {
   color: red;
   font-size: 16px;
   font-weight: bold;
@@ -384,10 +385,8 @@ tr.theadrow > td {
 }
 
 span.alreadybet {
-  padding: 0;
-  background-color: rgba(32, 135, 248, 0.5);
-  width: 35px;
-  display: inline-block;
+  padding: 3px;
+  background-color: rgba(24, 134, 255, 0.5);
   border-radius: 100px;
 }
 
@@ -480,7 +479,7 @@ span.footballicon svg {
   padding: 0;
 }
 
-.profile span.MuiFormControlLabel-label{
+.profile span.MuiFormControlLabel-label {
   font-size: 0.8rem;
 }
 
@@ -488,7 +487,7 @@ span.footballicon svg {
   border: 0;
 }
 
-.profile span.oddssuggestinfo{
+.profile span.oddssuggestinfo {
   display: block;
   font-size: 11px;
   margin-top: -11px;
@@ -571,6 +570,24 @@ span.footballicon svg {
   padding: 8px 7px;
 }
 
+.groupstable tr.favoriteteamrow{
+  background: #28548a;
+  color: #ffffffcf;
+}
+
+i.oddswarn{
+  color:#d84545;
+  font-size: 10px;
+  position: relative;
+  top: -6px;
+}
+
+@media only screen and (max-width: 960px) {
+  div.tablesorter{
+    font-size: 12px;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   h1,
   h2,
@@ -592,6 +609,16 @@ span.footballicon svg {
   body {
     background: #1e1e2f;
   }
+
+  .m-p-8 {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .m-p-8 .card-body{
+    padding: 6px;
+  }
+
   .modal-dialog {
     margin: 1rem;
   }
@@ -639,5 +666,24 @@ span.footballicon svg {
   }
   .groupstable div.cardstyle {
     min-width: 320px;
+  }
+  div.theadrow{
+    margin-left: 0;
+    margin-right: 0;
+  }
+  div.tablesorter{
+    font-size: 12px;
+  }
+  div.tablesorter .teamArow{
+    display: flex;
+    align-self: flex-end;
+  }
+  div.tablesorter .teamBrow{
+    display: flex;
+    align-self: flex-start;
+  }
+
+  div.tablesorter .teamArow p, div.tablesorter .teamBrow p{
+    margin-bottom: 0;
   }
 }

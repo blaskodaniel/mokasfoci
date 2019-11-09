@@ -214,6 +214,16 @@ const MyBets = (props) => {
     }
   }
 
+  const latestodds = (cp) => {
+    if(cp.outcome === "1"){
+      return cp.matchid.oddsAwin
+    }else if(cp.outcome === "x"){
+      return cp.matchid.oddsDraw
+    }else{
+      return cp.matchid.oddsBwin
+    }
+  } 
+
   const isFavorite = coupon => {
     var returnobj = {
       isfav: false,
@@ -494,7 +504,7 @@ const MyBets = (props) => {
                               </td>
                               <td className="text-center">{matchStatus(cp)}</td>
                               <td className="text-center">
-                                {cp.outcome} / {cp.odds} {currentUser.userinfo.oddssuggest ? warningOdds(cp) : null}
+                                {cp.outcome} / {sharedcontext.settings.alwaysCalculateWithLatestOdds ? latestodds(cp) : cp.odds} {currentUser.userinfo.oddssuggest ? warningOdds(cp) : null}
                               </td>
                               <td className="text-center">
                                 <NumberFormat
@@ -763,7 +773,7 @@ const MyBets = (props) => {
                       <Row className={classes.cprow}>
                         <Col xs="5">TIPP/ODDS:</Col>
                         <Col xs="7">
-                          {cp.outcome} / {cp.odds} {warningOdds(cp)}
+                          {cp.outcome} / {sharedcontext.settings.alwaysCalculateWithLatestOdds ? latestodds(cp) : cp.odds} {currentUser.userinfo.oddssuggest ? warningOdds(cp) : null}
                         </Col>
                       </Row>
                       <Row className={classes.cprow}>

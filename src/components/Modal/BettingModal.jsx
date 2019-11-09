@@ -181,7 +181,10 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
                   ) : null}
                   <Grid item xs={12}>
                     <p>
-                      <span className="cutivemono">Oddsok:</span>{" "}
+                      {currentUser.userinfo.oddssuggest && !sharedcontext.settings.alwaysCalculateWithLatestOdds && mode === "edit" ? 
+                        <span className="cutivemono">(szelvényeden: {editcoupon.odds})</span>
+                        :
+                        null}
                     </p>
                     <Grid item xs={12}>
                       <ButtonGroup fullWidth size="small" aria-label="">

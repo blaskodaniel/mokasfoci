@@ -32,7 +32,7 @@ const AllMatches = (props) => {
       <>
       <div className="content">
         <Row>
-          <Col lg="12" md="12">
+          <Col className="m-p-8" xs="12">
           {matchlistReqprogress ? 
               <p>Mérkőzések betöltése....</p> 
               : 

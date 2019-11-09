@@ -62,6 +62,16 @@ export const getMatchesToDay = (day = moment().format("YYYY-MM-DD")) => {
         });
 }
 
+export const getmatchesbygroup = (groupid) => {
+    return APIclient.get(`getmatchesbygroup/${groupid}`)
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+
 export const getMatchesFromTo = (from = moment().format("YYYY-MM-DD"), to = moment().format(AppConfig.gameend)) => {
     return APIclient.post(`getmatchesfromto`,{"from":from, "to": to})
         .then(data => {

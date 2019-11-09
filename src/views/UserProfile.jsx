@@ -319,7 +319,7 @@ const UserProfile = () => {
                   <Row>
                     <Col className="pr-md-1" xs="12">
                       <FormGroup>
-                        {typeof profildata.oddssuggest !== "undefined" ? 
+                        {typeof profildata.oddssuggest !== "undefined" && !sharedcontext.settings.alwaysCalculateWithLatestOdds ? 
                           <>
                           <FormControlLabel
                             control={
@@ -330,7 +330,7 @@ const UserProfile = () => {
                                 color="primary"
                               />
                             }
-                            label="Odds ajánló"
+                            label="Odds figyelő"
                           />
                           <span className="oddssuggestinfo">Ha bekapcsolod, akkor az oddsok frissítését követően figyelmeztetés 
                             jelenik meg, ha jobb oddsot kapott a mérkőzés mint amivel Te létrehoztad a szelvényt </span>

@@ -8,6 +8,7 @@ import CurrentMatchInfo from "./views/CurrentMatchInfo";
 import Transactions from "./views/Transactions";
 import Statistics from "./views/Statistics";
 import GroupsTable from "./views/GroupsTable";
+import GroupsMatches from "./views/GroupsMatches";
 
 var routes = [
   {
@@ -31,16 +32,6 @@ var routes = [
     layout: "/"
   },
   {
-    id: "tabella",
-    path: "tabella",
-    name: "csoportállás",
-    icon: "tim-icons icon-calendar-60",
-    visible: true,
-    hiddenlink: false,
-    component: GroupsTable,
-    layout: "/"
-  },
-  {
     id: "lejatszott",
     path: "lejatszott",
     name: "lejatszott",
@@ -48,6 +39,16 @@ var routes = [
     visible: true,
     hiddenlink: false,
     component: AllEndMatches,
+    layout: "/"
+  },
+  {
+    id: "tabella",
+    path: "tabella",
+    name: "csoportállás",
+    icon: "tim-icons icon-calendar-60",
+    visible: true,
+    hiddenlink: false,
+    component: GroupsTable,
     layout: "/"
   },
   {
@@ -109,6 +110,17 @@ var routes = [
     hiddenlink: true,
     param: "/:matchid",
     component: CurrentMatchInfo,
+    layout: "/"
+  },
+  {
+    id: "csoportmerkozesek",
+    path: "csoport",
+    name: "Csoport mérkőzés",
+    icon: "tim-icons icon-align-center",
+    visible: true,
+    hiddenlink: true,
+    param: "/:groupid",
+    component: GroupsMatches,
     layout: "/"
   }
 ];

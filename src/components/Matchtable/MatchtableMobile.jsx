@@ -65,20 +65,20 @@ const MatchtableMobile = ({ list, title }) => {
               let mybet = coupons.filter(c=>c.matchid._id === m._id)
               return (
                 <Row key={m._id} style={{ padding: "7px", borderBottom: "1px solid #0000003d" }} className="tablesorter">
-                  <Col xs="6">
+                  <Col style={{top: "5px"}} xs="6">
                     <Row>
-                      <Col xs="9">
+                      <Col className="teamArow" xs="9">
                         <p className="teamname"><Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + m._id}>{m.teamA.name}</Link></p>
                       </Col>
-                      <Col xs="3">
+                      <Col className="teamArow" xs="3">
                         <p>{m.goalA}</p>
                       </Col>
                     </Row>
                     <Row>
-                      <Col xs="9">
+                      <Col className="teamBrow" xs="9">
                         <p className="teamname"><Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + m._id}>{m.teamB.name}</Link></p>
                       </Col>
-                      <Col xs="3">
+                      <Col className="teamBrow" xs="3">
                         <p>{m.goalB}</p>
                       </Col>
                     </Row>

@@ -25,7 +25,7 @@ const AllEndMatches = () => {
     <>
       <div className="content">
         <Row>
-          <Col lg="12">
+          <Col className="m-p-8" xs="12">
             {endmatchlist[0] !== 0 ? (
               endmatchlist.length === 0 ? (
                 <div className="content">
