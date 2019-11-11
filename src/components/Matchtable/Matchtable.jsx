@@ -71,17 +71,17 @@ const Matchelement = ({ value }) => {
                 <td className={classes.fix120}>
                   {isDesktop ? 
                       <>
-                        <Link to={runningmatchlink[0].path + "/" + match._id}>
+                        <Link to={"/"+runningmatchlink[0].path+ "/" + match._id}>
                           {match.teamA.name}
                           <Avatar
                             alt={match.teamA.flag}
-                            src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                            src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamA.flag}
                             className={classes.avatar}
                           />
                           -
                           <Avatar
                             alt={match.teamA.flag}
-                            src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                            src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamB.flag}
                             className={classes.avatar}
                           />
                           {match.teamB.name}
@@ -89,12 +89,12 @@ const Matchelement = ({ value }) => {
                       </> 
                       :
                       <>
-                        <Link to={runningmatchlink[0].path + "/" + match._id}>
+                        <Link to={"/"+runningmatchlink[0].path+ "/" + match._id}>
                           <div>
                           <div className={classes.teamname}>{match.teamA.name}</div>
                           <Avatar
                           alt={match.teamA.flag}
-                          src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                          src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamA.flag}
                           className={classes.avatar}
                           />
                           </div>
@@ -102,7 +102,7 @@ const Matchelement = ({ value }) => {
                           <div className={classes.teamname}>{match.teamB.name}</div>
                           <Avatar
                             alt={match.teamA.flag}
-                            src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                            src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamB.flag}
                             className={classes.avatar}
                           />
                           </div> 
@@ -125,21 +125,21 @@ const Matchelement = ({ value }) => {
             // End match
             return (
               <tr key={match._id} className="bettingtablerow endmatch">
-                <td>{moment(match.date).format("HH:mm")}</td>
+                <td>{isDesktop ? match.goalA+"-"+match.goalB : <><div>Vége</div><div>{match.goalA}-{match.goalB}</div></>}</td>
                 <td className={classes.fix120}>
                   {isDesktop ? 
                       <>
-                        <Link to={runningmatchlink[0].path + "/" + match._id}>
+                        <Link to={"/"+runningmatchlink[0].path+ "/" + match._id}>
                         {match.teamA.name}
                         <Avatar
                           alt={match.teamA.flag}
-                          src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                          src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamA.flag}
                           className={classes.avatar}
                         />
                         -
                         <Avatar
                           alt={match.teamA.flag}
-                          src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                          src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamB.flag}
                           className={classes.avatar}
                         />
                         {match.teamB.name}
@@ -148,12 +148,12 @@ const Matchelement = ({ value }) => {
                       </> 
                       :
                       <>
-                        <Link to={runningmatchlink[0].path + "/" + match._id}>
+                        <Link to={"/"+runningmatchlink[0].path+ "/" + match._id}>
                           <div>
                           <div className={classes.teamname}>{match.teamA.name}</div>
                           <Avatar
                           alt={match.teamA.flag}
-                          src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                          src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamA.flag}
                           className={classes.avatar}
                           />
                           </div>
@@ -161,7 +161,7 @@ const Matchelement = ({ value }) => {
                           <div className={classes.teamname}>{match.teamB.name}</div>
                           <Avatar
                             alt={match.teamA.flag}
-                            src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                            src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamB.flag}
                             className={classes.avatar}
                           />
                           </div> 
@@ -195,13 +195,13 @@ const Matchelement = ({ value }) => {
                         {match.teamA.name}
                         <Avatar
                           alt={match.teamA.flag}
-                          src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                          src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamA.flag}
                           className={classes.avatar}
                         />
                         -
                         <Avatar
                           alt={match.teamA.flag}
-                          src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                          src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamB.flag}
                           className={classes.avatar}
                         />
                         {match.teamB.name}
@@ -212,7 +212,7 @@ const Matchelement = ({ value }) => {
                         <div className={classes.teamname}>{match.teamA.name}</div>
                         <Avatar
                         alt={match.teamA.flag}
-                        src={process.env.PUBLIC_URL + "flags/" + match.teamA.flag}
+                        src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamA.flag}
                         className={classes.avatar}
                         />
                         </div>
@@ -220,7 +220,7 @@ const Matchelement = ({ value }) => {
                         <div className={classes.teamname}>{match.teamB.name}</div>
                         <Avatar
                           alt={match.teamA.flag}
-                          src={process.env.PUBLIC_URL + "flags/" + match.teamB.flag}
+                          src={process.env.REACT_APP_BASEURL+"/flags/" + match.teamB.flag}
                           className={classes.avatar}
                         />
                       </div> 

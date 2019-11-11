@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import withWidth from "@material-ui/core/withWidth";
-import MatchtableMobile from "../components/Matchtable/MatchtableMobile";
+//import MatchtableMobile from "../components/Matchtable/MatchtableMobile";
+import Matchtable from "../components/Matchtable/Matchtable";
 // reactstrap components
 import { Row, Col, Card, CardBody } from "reactstrap";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -30,7 +31,8 @@ const GroupsMatches = ({ match, history }) => {
         <Row>
           <Col className="m-p-8" xs="12">
             {matches ? (
-              <MatchtableMobile list={matches} title={pagetitle} />
+              // <MatchtableMobile list={matches} title={pagetitle} />
+              <Matchtable list={matches} title={pagetitle} />
             ) : null}
           </Col>
         </Row>
@@ -38,7 +40,7 @@ const GroupsMatches = ({ match, history }) => {
           <Col className="m-p-8" xs="12">
             <Card>
               <CardBody className="text-right">
-                <span onClick={history.goBack}>
+                <span className="backlink" onClick={history.goBack}>
                   <ChevronLeftIcon />
                   Vissza
                 </span>

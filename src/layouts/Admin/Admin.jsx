@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Route, Switch, Redirect } from "react-router-dom";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";

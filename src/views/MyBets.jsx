@@ -8,7 +8,7 @@ import classNames from "classnames";
 import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert"; // Import
-import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
+import withWidth from '@material-ui/core/withWidth';
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,7 +27,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardTitle,
   Table,
   Row,
   Button,
@@ -51,32 +50,42 @@ const useStyles = makeStyles({
     width: 35,
     height: 35
   },
+  m_matchname:{
+    color: "#bbb84d"
+  },
   deletefab:{
     position: "absolute",
-    bottom: "25px",
+    bottom: "17px",
     right: "15px",
-    width: 35,
-    height: 35
+    width: 30,
+    minHeight: 25,
+    height: 30,
+    background: "#e61c1c"
   },
   modfab: {
     right: "60px",
     position: "absolute",
-    bottom: "25px",
-    width: 35,
-    height: 35
+    bottom: "17px",
+    width: 30,
+    minHeight: 25,
+    height: 30
+  },
+  icon:{
+    fontSize: "1rem"
   },
   cardaction: {
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    padding: "4px"
   },
   cardcontent: {
     color: "white",
-    padding: "9px 15px 0px 15px"
+    padding: "7px 7px 0px 10px"
   },
   cprow: {
-    fontSize: "12px"
+    fontSize: "11px"
   },
   cprowbig: {
-    fontSize: "14px"
+    fontSize: "12px"
   },
   hr: {
     borderTop: "1px solid rgba(234, 193, 193, 0.1)",
@@ -92,47 +101,51 @@ const useStyles = makeStyles({
   infospansucc: {
     position: "absolute",
     right: "0px",
-    width: "100px",
+    width: "80px",
     padding: "3px 0px 2px 7px",
-    top: "15px",
+    top: 0,
     backgroundColor: "#47af4fb5",
     color: "white",
-    fontSize: "11px"
+    fontSize: "11px",
+    borderTopRightRadius: "3px"
   },
   infospanfail: {
     position: "absolute",
     right: "0px",
-    width: "100px",
+    width: "80px",
     padding: "3px 0px 2px 7px",
-    top: "15px",
+    top: 0,
     backgroundColor: "#af3737b5",
     color: "white",
-    fontSize: "11px"
+    fontSize: "11px",
+    borderTopRightRadius: "3px"
   },
   infospantime: {
     position: "absolute",
     right: "0px",
-    width: "100px",
+    width: "80px",
     padding: "3px 0px 2px 7px",
-    top: "15px",
+    top: 0,
     backgroundColor: "#4789afb5",
     color: "white",
-    fontSize: "11px"
+    fontSize: "11px",
+    borderTopRightRadius: "3px"
   },
   runningmatch: {
     position: "absolute",
     right: "0px",
-    width: "100px",
+    width: "80px",
     padding: "3px 0px 2px 7px",
-    top: "15px",
-    backgroundColor: "#178834b5",
+    top: 0,
+    backgroundColor: "#dc1919b5",
     color: "white",
-    fontSize: "11px"
+    fontSize: "11px",
+    borderTopRightRadius: "3px"
   },
   infospanproc: {
     position: "absolute",
     right: "0px",
-    width: "100px",
+    width: "80px",
     padding: "3px 0px 2px 7px",
     top: "15px",
     backgroundColor: "#5247afb5",
@@ -741,7 +754,7 @@ const MyBets = (props) => {
                   )}
                   {cp.matchid.active === 1 ? (
                     <span className={classes.runningmatch}>
-                      {footballicon} Folyamatban...
+                      {footballicon} live...
                     </span>
                   ) : (
                     ""
@@ -757,13 +770,13 @@ const MyBets = (props) => {
                     <div>
                       <Row>
                         <Col xs="10">
-                          <Typography
+                        <Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + cp.matchid._id}><Typography
+                            className={classes.m_matchname}
                             variant="overline"
                             display="block"
-                            gutterBottom
                           >
                             {cp.teamA.name} - {cp.teamB.name}
-                          </Typography>
+                          </Typography></Link>
                         </Col>
                       </Row>
                       <Row className={classes.cprow}>
@@ -780,10 +793,11 @@ const MyBets = (props) => {
                         <Col xs="5">TÉT:</Col>
                         <Col xs="7">{cp.bet} pont</Col>
                       </Row>
-                      {cp.matchid.active === 1 || cp.matchid.active === 2 ? 
+                      {cp.matchid.active === 2 ? 
                       <Row className={classes.cprow}>
-                        <Col xs="12">
-                          <Link className={classes.moreinfoformatch} to={runningmatchlink[0].path + "/" + cp.matchid._id}>Ki mire fogadott?</Link>
+                        <Col xs="5">Dátum:</Col>
+                        <Col xs="7">
+                          {moment(cp.matchid.date).format("MMM Do, ddd HH:mm")}
                         </Col>
                       </Row> : null}
                       {isFavorite(cp).isfav ? (
@@ -826,7 +840,7 @@ const MyBets = (props) => {
                           opeconfirm(cp);
                         }}
                       >
-                        <DeleteIcon />
+                        <DeleteIcon className={classes.icon} />
                       </Fab>
                       <Fab
                       aria-label="modify"
@@ -835,7 +849,7 @@ const MyBets = (props) => {
                         Bettingmodalopen(clonematch.matchid,"edit",cp)
                       }}
                     >
-                      <EditIcon />
+                      <EditIcon className={classes.icon} />
                     </Fab>
                     </>
                     ) : null}

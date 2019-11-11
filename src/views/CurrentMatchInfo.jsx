@@ -162,7 +162,7 @@ const CurrentMatchInfo = ({ match, history }) => {
                         
                         <Avatar
                           alt={teamA.flag}
-                          src={"/flags/" + teamA.flag}
+                          src={process.env.REACT_APP_BASEURL+"/flags/" + teamA.flag}
                           className={classes.avatar}
                         />
                         <p className={classNames("mr10", classes.teamname)}>{teamA.name}</p>
@@ -213,7 +213,7 @@ const CurrentMatchInfo = ({ match, history }) => {
                       <th>Név</th>
                       <th className="text-center">Tipp</th>
                       <th className="text-center">Tét / odds</th>
-                      <th className="text-center">Nettó nyeremény</th>
+                      <th className="text-center">Nyeremény</th>
                     </tr>
                   </thead>
                   <tbody>

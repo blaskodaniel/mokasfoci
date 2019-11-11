@@ -9,6 +9,7 @@ import Transactions from "./views/Transactions";
 import Statistics from "./views/Statistics";
 import GroupsTable from "./views/GroupsTable";
 import GroupsMatches from "./views/GroupsMatches";
+import PlayerPage from "./views/PlayerPage";
 
 var routes = [
   {
@@ -121,6 +122,17 @@ var routes = [
     hiddenlink: true,
     param: "/:groupid",
     component: GroupsMatches,
+    layout: "/"
+  },
+  {
+    id: "userpage",
+    path: "player",
+    name: "Játékos profil",
+    icon: "tim-icons icon-align-center",
+    visible: true,
+    hiddenlink: true,
+    param: "/:playerid",
+    component: PlayerPage,
     layout: "/"
   }
 ];

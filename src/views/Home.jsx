@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Matchtable from "../components/Matchtable/Matchtable";
 import moment from 'moment'
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
+import withWidth from '@material-ui/core/withWidth';
+import Matchtable from "../components/Matchtable/Matchtable";
 import MatchtableMobile from "../components/Matchtable/MatchtableMobile";
 // reactstrap components
 import { Row, Col } from "reactstrap";
@@ -18,10 +18,7 @@ const Home = (props) => {
 
   useEffect(() => {
     const loadMatches = async () => {
-      // const resultPromise = await getMatches("?active=0");
       const resultPromise = await getMatchesByDay(moment().format("YYYY-MM-DD"), 2); // A mai és a holnapi mérkőzések
-      //const resultPromise = await getMatchesFromDay();
-      //const resultPromise = await getMatchesToDay();
       if (resultPromise.message !== "Network Error" && typeof resultPromise.data !== "undefined") {
         setMatchlist(resultPromise.data);
       }

@@ -1,12 +1,12 @@
 import React, {useState,useEffect} from "react";
 import Matchtable from "../components/Matchtable/Matchtable";
-import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
+import withWidth from '@material-ui/core/withWidth';
 import moment from 'moment';
 import {
   Row,
   Col
 } from "reactstrap";
-import { getMatches, getMatchesByDay } from "../_service/api-public-func";
+import { getMatchesByDay } from "../_service/api-public-func";
 import { AppConfig } from "../application.config";
 
 const AllMatches = (props) => {
@@ -18,7 +18,6 @@ const AllMatches = (props) => {
         const start = moment(AppConfig.gamestart, "YYYY-MM-DD");
         const end = moment(AppConfig.gameend, "YYYY-MM-DD");
         const gameDayscount = moment.duration(end.diff(start)).asDays();
-        console.log(gameDayscount)
         const resultPromise = await getMatchesByDay(moment().format("YYYY-MM-DD"),gameDayscount);
         if (resultPromise.message !== "Network Error" && typeof resultPromise.data !== "undefined") {
           setMatchlist(resultPromise.data);

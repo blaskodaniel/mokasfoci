@@ -20,7 +20,7 @@ const AuthenticationProvider = props => {
   const [userinfo, setUserinfo] = useState({});
   const [user, userDispatch] = useThunkReducer(LoginReducer, noAuthUser, () => {
     const localstr = authChecker();
-    console.log("Local storage: "+ JSON.stringify(localstr));
+    //console.log("Local storage: "+ JSON.stringify(localstr));
     return localstr ? localstr : noAuthUser
   });
 
@@ -47,7 +47,6 @@ const AuthenticationProvider = props => {
   }, [user,loginState])
 
   useEffect(() => {
-    console.log("register: ",register);
     if(register.msg === 0){
       // sikeres regisztráció
       setRegisterState(1);

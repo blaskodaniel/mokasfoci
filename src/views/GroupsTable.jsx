@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
+import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import classNames from "classnames";
+import ReactTooltip from "react-tooltip";
 import { Link } from "react-router-dom";
 import routes from "../routes";
 import {
@@ -13,45 +14,52 @@ import {
   DropdownMenu,
   UncontrolledDropdown,
   DropdownItem,
+  NavLink,
   Table,
   Row,
   Col
 } from "reactstrap";
 import Avatar from "@material-ui/core/Avatar";
 import { getTeams } from "../_service/api-public-func";
-import TournamentChart from "../components/Charts/TournamentChart"
+import TournamentChart from "../components/Charts/TournamentChart";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 
-const useStyles = makeStyles(theme => createStyles({
-  avatar: {
-    margin: "0px 10px",
-    width: "15px",
-    height: "15px",
-    top: "2px",
-    display: "inline-flex",
-    [theme.breakpoints.down("sm")]: {
-      width: "13px",
-      height: "13px",
-      top: "2px"
+const useStyles = makeStyles(theme =>
+  createStyles({
+    avatar: {
+      margin: "0px 10px",
+      width: "15px",
+      height: "15px",
+      top: "2px",
+      display: "inline-flex",
+      [theme.breakpoints.down("sm")]: {
+        width: "13px",
+        height: "13px",
+        top: "2px"
+      }
+    },
+    indexnextteamstyle: {
+      background: "#38774b52",
+      color: "white"
+    },
+    groupwin: {
+      fontSize: "11px",
+      position: "relative",
+      top: "-5px",
+      color: "#a1b59ef5"
+    },
+    mb0: {
+      marginBottom: "0 !important"
+    },
+    colorblack: {
+      color: "black"
     }
-  },
-  indexnextteamstyle: {
-    background: "#38774b52",
-    color: "white"
-  },
-  groupwin: {
-    fontSize: "11px",
-    position: "relative",
-    top: "-5px",
-    color: "#a1b59ef5"
-  },
-  mb0:{
-    marginBottom: "0 !important"
-  }
-}));
+  })
+);
 
-const GroupsTable = (props) => {
-  const authContext = useContext(AuthenticationContext)
+const GroupsTable = props => {
+  const grouplink = routes.filter(x => x.id === "csoportmerkozesek");
+  const authContext = useContext(AuthenticationContext);
   const classes = useStyles();
   const [groups, setGroups] = useState([]);
 
@@ -73,31 +81,32 @@ const GroupsTable = (props) => {
     return returnlist;
   };
 
-  const sortTeams = (list) => {
-    list.forEach(x=>{
-      x.teams.sort((x,y)=>{
-        if(x.score > y.score){
-          return -1
-        }else if(y.score > x.score){
-          return 1
-        }else{ // y.score === x.score
-          if(x.kickgoal > y.kickgoal){
-            return -1
-          }else if(y.kickgoal > x.kickgoal){
-            return 1
-          }else{
-            return 0
+  const sortTeams = list => {
+    list.forEach(x => {
+      x.teams.sort((x, y) => {
+        if (x.score > y.score) {
+          return -1;
+        } else if (y.score > x.score) {
+          return 1;
+        } else {
+          // y.score === x.score
+          if (x.kickgoal > y.kickgoal) {
+            return -1;
+          } else if (y.kickgoal > x.kickgoal) {
+            return 1;
+          } else {
+            return 0;
           }
         }
-      })
-    })
-  }
+      });
+    });
+  };
 
   const loadlist = async () => {
     try {
       const resultPromise = await getTeams();
       const _groupedlist = groupbygroupid(resultPromise.data);
-      sortTeams(_groupedlist)
+      sortTeams(_groupedlist);
       setGroups(_groupedlist);
     } catch (e) {
       console.log("HIBA");
@@ -109,49 +118,66 @@ const GroupsTable = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const grouplink = routes.filter(x => x.id === "csoportmerkozesek");
   return (
     <>
       <div className="content groupstable">
-        {isWidthUp('sm', props.width) ? <Row>
-          <TournamentChart />
-        </Row> : null}
+        {isWidthUp("sm", props.width) ? (
+          <Row>
+            <TournamentChart />
+          </Row>
+        ) : null}
         <Row>
           {groups.map(group => {
-            const groupwinteamid = authContext.userinfo ? authContext.userinfo[group.name] : undefined;
-             let groupwinteam = typeof groupwinteamid !== "undefined" ? group.teams.find(x=>x._id === groupwinteamid) : "";
+            const groupwinteamid = authContext.userinfo
+              ? authContext.userinfo[group.name]
+              : undefined;
+            let groupwinteam =
+              typeof groupwinteamid !== "undefined"
+                ? group.teams.find(x => x._id === groupwinteamid)
+                : "";
             return (
               <Col key={group._id}>
                 <Card className="cardstyle">
                   <CardHeader>
                     <Row>
                       <Col className="text-left" xs="10">
-                        <CardTitle className={classes.mb0} tag="h3">{group.name} csoport</CardTitle>
-                        <span className={classes.groupwin}>Csoportgyőztes tipped: {groupwinteam.name}</span>
+                        <CardTitle className={classes.mb0} tag="h3">
+                          {group.name} csoport
+                        </CardTitle>
+                        <span className={classes.groupwin}>
+                          Csoportgyőztes tipped: {groupwinteam.name}
+                        </span>
                       </Col>
                       <Col xs="2">
-                      <UncontrolledDropdown className="fr zi1">
-                        <DropdownToggle
-                          caret
-                          className="btn-icon"
-                          color="link"
-                          data-toggle="dropdown"
-                          type="button"
-                        >
-                          <i className="tim-icons icon-settings-gear-63" />
-                        </DropdownToggle>
-                        <DropdownMenu aria-labelledby="dropdownMenuLink" right>
-                          <DropdownItem
-                            href="#pablo"
-                            style={{color:"black"}}
-                            onClick={() => {
-                              props.history.push(grouplink[0].path+"/"+group._id)
-                            }}
+                        <UncontrolledDropdown className="fr zi1">
+                          <DropdownToggle
+                            caret
+                            className="btn-icon"
+                            color="link"
+                            data-toggle="dropdown"
+                            type="button"
                           >
-                            Csoport mérkőzései
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
+                            <i className="tim-icons icon-settings-gear-63" />
+                          </DropdownToggle>
+                          <DropdownMenu
+                            aria-labelledby="dropdownMenuLink"
+                            right
+                          >
+                            <NavLink tag="li">
+                              <DropdownItem
+                                className="nav-item"
+                                style={{ padding: "0" }}
+                              >
+                                <Link
+                                  className={classes.colorblack}
+                                  to={grouplink[0].path + "/" + group._id}
+                                >
+                                  Csoport mérkőzései
+                                </Link>
+                              </DropdownItem>
+                            </NavLink>
+                          </DropdownMenu>
+                        </UncontrolledDropdown>
                       </Col>
                     </Row>
                   </CardHeader>
@@ -169,11 +195,21 @@ const GroupsTable = (props) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {group.teams.map((team,index) => {
+                        {group.teams.map((team, index) => {
                           return (
-                            <tr key={team._id} className={classNames((index+1) < 3 ? classes.indexnextteamstyle : "",authContext.userinfo.teamid === team._id ? "favoriteteamrow":"")}>
+                            <tr
+                              key={team._id}
+                              className={classNames(
+                                index + 1 < 3 ? classes.indexnextteamstyle : "",
+                                groupwinteamid && groupwinteamid === team._id
+                                  ? "favoriteteamrow"
+                                  : ""
+                              )}
+                            >
                               <th className="text-center" scope="row">
-                                <span>{index+1}</span>
+                                <span>
+                                  {index + 1}                                
+                                </span>
                               </th>
                               <td>
                                 <Avatar
@@ -181,12 +217,14 @@ const GroupsTable = (props) => {
                                   src={"flags/" + team.flag}
                                   className={classes.avatar}
                                 />
-                                {team.name}
+                                {team.name}{authContext.userinfo.teamid === team._id?<><i data-tip="Kedvenc csapat" className="fa fa-heart oddswarn"></i><ReactTooltip /></>:null}
                               </td>
                               <td>{team.win}</td>
                               <td>{team.draw}</td>
                               <td>{team.loss}</td>
-                              <td>{team.kickgoal}:{team.getgoal}</td>
+                              <td>
+                                {team.kickgoal}:{team.getgoal}
+                              </td>
                               <td>{team.score}</td>
                             </tr>
                           );
