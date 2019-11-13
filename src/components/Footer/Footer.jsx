@@ -13,7 +13,7 @@ class Footer extends React.Component {
       <footer className="footer">
         <Container fluid>
           <div className="copyright">
-            version {AppConfig.version} | baseurl: {process.env.REACT_APP_BASEURL}
+            version {AppConfig.version}
           </div>
         </Container>
       </footer>

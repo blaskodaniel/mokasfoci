@@ -118,3 +118,13 @@ export const userstat = () => {
         });
 }
 
+export const userstatbyuserid = (playerid) => {
+    return APItokenclient.post(`userstatbyid`, {playerid: playerid})
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+

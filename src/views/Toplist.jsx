@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import sort from "fast-sort";
 import NumberFormat from "react-number-format";
+import { Link } from "react-router-dom";
+import routes from "../routes";
 // reactstrap components
 import {
   Card,
@@ -14,6 +16,7 @@ import {
 import { getPlayers } from "../_service/api-public-func";
 
 const Toplist = () => {
+  const playerlink = routes.filter(x => x.id === "userpage");
   const [players, setPlayers] = useState([]);
   const [sortdesc_score, setsortdesc_score] = useState(false);
   const [sortdesc_nettoscore, setsortdesc_nettoscore] = useState(false);
@@ -122,7 +125,7 @@ const Toplist = () => {
                               className="photo"
                               alt="..."
                               src={"/avatars/"+p.avatar}
-                            />{p.name}
+                            /><Link to={playerlink[0].path+"/"+p.public_id}>{p.name}</Link>
                           </td>
                           <td className="text-center">
                             <NumberFormat
