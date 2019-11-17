@@ -662,8 +662,8 @@ div.playerpage span.playerscore {
 
 div.playerpage span.closebtn {
   position: absolute;
-  top: 80px;
-  right: 30px;
+  top: 70px;
+  right: 20px;
   color: white;
   background: #0c0c0ccc;
   padding: 2px 6px;
@@ -671,7 +671,14 @@ div.playerpage span.closebtn {
   z-index: 1100000;
 }
 
-div.playerpage > span.closebtn:hover{
+div.playerpage div.windowstyle {
+  background: #0000002e;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 3px 0px black;
+}
+
+div.playerpage > span.closebtn:hover {
   cursor: pointer;
 }
 
@@ -688,7 +695,14 @@ i.oddswarn {
   }
   div.playerpage span.closebtn {
     top: 100px;
-    right: 19px;
+    right: 5px;
+  }
+}
+
+@media (min-width: 773px) and (max-width: 790px) {
+  div.playerpage span.closebtn {
+    top: 100px;
+    right: 20px;
   }
 }
 

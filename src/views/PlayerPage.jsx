@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { userstatbyuserid, getuserinfo } from "../_service/api-func";
-import { Row, Col, Card, CardBody } from "reactstrap";
+import { useTheme } from "@material-ui/core/styles";
+import { Row, Col} from "reactstrap";
+import withWidth from '@material-ui/core/withWidth';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NumberFormat from "react-number-format";
 import Avatar from "@material-ui/core/Avatar";
 import LineChart from "../components/Charts/LineChart";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import SimpleWidget from "../components/Widgets/simple-widget";
 
 /**
  * Player page component
  */
 const PlayerPage = ({ match, history }) => {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
   const [mostwinlost, setmostwinlost] = useState(null);
   const [couponstat, setcouponstat] = useState(null);
   const [scorepath, setScorepath] = useState({ score: null, match: null });
@@ -50,6 +54,7 @@ const PlayerPage = ({ match, history }) => {
     return (
       <>
         <div className="content playerpage">
+          <div className={isDesktop ? "windowstyle":""}>
           <span className="closebtn" style={{cursor: "pointer"}} onClick={history.goBack}><i className="tim-icons icon-simple-remove"></i></span>
           <Row className="avatarcontainer">
               <>
@@ -96,6 +101,7 @@ const PlayerPage = ({ match, history }) => {
               ) : null}
             </Col>
           </Row>
+          </div>
         </div>
       </>
     );
@@ -105,4 +111,4 @@ const PlayerPage = ({ match, history }) => {
   
 };
 
-export default PlayerPage;
+export default withWidth()(PlayerPage);
