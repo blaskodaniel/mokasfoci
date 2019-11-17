@@ -20,6 +20,16 @@ export const saveProfile = (user) => {
         });
 }
 
+export const getuserinfo = (playerid) => {
+    return APItokenclient.get(`getuserinfo/${playerid}`)
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+
 export const createCoupon = (coupon) => {
     return APItokenclient.post(`newcoupon`, coupon)
         .then(data => {

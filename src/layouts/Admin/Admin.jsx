@@ -155,17 +155,9 @@ class Admin extends React.Component {
             />
             {isWidthDown('sm', this.props.width) ? <ScoreBar /> : null}
             <Switch>{this.getRoutes(routes)}</Switch>
-            {// we don't want the Footer to be rendered on map page
-            this.props.location.pathname.indexOf("maps") !== -1 ? null : (
-              <Footer fluid />
-            )}
+            <Footer fluid />
           </div>
-          {/* <BettingModal initialModalState={this.props.bettingmodal} /> */}
         </div>
-        {/* <FixedPlugin
-          bgColor={this.state.backgroundColor}
-          handleBgClick={this.handleBgClick}
-        /> */}
       </>
     );
   }

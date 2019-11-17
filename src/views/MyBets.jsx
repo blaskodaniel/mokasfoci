@@ -170,6 +170,7 @@ const MyBets = (props) => {
   const sharedcontext = useContext(SharedContext);
   const [filter, setFilter] = useState("all");
   const [coupons, setCoupons] = useState([]);
+  const [cpstat, setcpstat] = useState({})
 
   const delCoupon = async coupon => {
     try {
@@ -181,6 +182,11 @@ const MyBets = (props) => {
       });
       sharedcontext.setUsercoupons([...newlist])
       setCoupons(newlist);
+      setcpstat({
+        wincp: newlist.filter(cp=>cp.status === 2 && cp.success).length,
+        lostcp: newlist.filter(cp=>cp.status === 2 && cp.success === false).length,
+        othercp: newlist.filter(cp=>cp.matchid.active === 0 || cp.matchid.active === 1 || cp.status === 0).length
+      })
     } catch (err) {
       console.log("Hiba történt a törlés során", err);
     }
@@ -294,6 +300,11 @@ const MyBets = (props) => {
       //res.sort((x, y) => new Date(y.matchid.date) - new Date(x.matchid.date));
       const allc = [...coupon_run, ...coupon_other];
       setCoupons(allc);
+      setcpstat({
+        wincp: res.filter(cp=>cp.status === 2 && cp.success).length,
+        lostcp: res.filter(cp=>cp.status === 2 && cp.success === false).length,
+        othercp: res.filter(cp=>cp.matchid.active === 0 || cp.matchid.active === 1 || cp.status === 0).length
+      })
     };
 
     loadCoupons();
@@ -376,6 +387,7 @@ const MyBets = (props) => {
                           <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                             Nyertes
                           </span>
+                          <span className="cpcounter">{cpstat.wincp}</span>
                           <span className="d-block d-sm-none">
                             <i className="tim-icons icon-trophy" />
                           </span>
@@ -398,6 +410,7 @@ const MyBets = (props) => {
                           <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                             Vesztes
                           </span>
+                          <span className="cpcounter">{cpstat.lostcp}</span>
                           <span className="d-block d-sm-none">
                             <i className="tim-icons icon-simple-remove" />
                           </span>
@@ -421,6 +434,7 @@ const MyBets = (props) => {
                           <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                             Függőben
                           </span>
+                          <span className="cpcounter">{cpstat.othercp}</span>
                           <span className="d-block d-sm-none">
                             <i className="tim-icons icon-tv-2" />
                           </span>
@@ -443,6 +457,7 @@ const MyBets = (props) => {
                           <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                             Összes
                           </span>
+                          <span className="cpcounter">{coupons.length}</span>
                           <span className="d-block d-sm-none">
                             <i className="tim-icons icon-bullet-list-67" />
                           </span>
@@ -661,6 +676,7 @@ const MyBets = (props) => {
                   </span>
                   <span className="d-block d-sm-none">
                     <i className="tim-icons icon-trophy" />
+                    <span className="cpcounter">{cpstat.wincp}</span>
                   </span>
                 </Button>
                 <Button
@@ -679,6 +695,7 @@ const MyBets = (props) => {
                   </span>
                   <span className="d-block d-sm-none">
                     <i className="tim-icons icon-simple-remove" />
+                    <span className="cpcounter">{cpstat.lostcp}</span>
                   </span>
                 </Button>
                 <Button
@@ -702,6 +719,7 @@ const MyBets = (props) => {
                   </span>
                   <span className="d-block d-sm-none">
                     <i className="tim-icons icon-tv-2" />
+                    <span className="cpcounter">{cpstat.othercp}</span>
                   </span>
                 </Button>
                 <Button
@@ -720,6 +738,7 @@ const MyBets = (props) => {
                   </span>
                   <span className="d-block d-sm-none">
                     <i className="tim-icons icon-bullet-list-67" />
+                    <span className="cpcounter">{coupons.length}</span>
                   </span>
                 </Button>
               </ButtonGroup>

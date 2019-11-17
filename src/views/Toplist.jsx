@@ -87,6 +87,7 @@ const Toplist = () => {
                   <thead className="text-primary">
                     <tr>
                       <th className="text-center">#</th>
+                      <th className="text-center">Stat</th>
                       <th
                         onClick={() => {
                           switchSort("name");
@@ -120,12 +121,15 @@ const Toplist = () => {
                           <td className="text-center">
                             {p.rate}
                           </td>
+                          <td className="text-center">
+                            <Link to={playerlink[0].path+"/"+p.public_id}> <i className="tim-icons icon-chart-bar-32"></i></Link>
+                          </td>
                           <td>
                             <img
                               className="photo"
                               alt="..."
                               src={"/avatars/"+p.avatar}
-                            /><Link to={playerlink[0].path+"/"+p.public_id}>{p.name}</Link>
+                            />{p.name}
                           </td>
                           <td className="text-center">
                             <NumberFormat

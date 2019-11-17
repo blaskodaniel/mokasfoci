@@ -86,6 +86,14 @@ h3,
   margin: 0;
 }
 
+.mr0 {
+  margin-right: 0;
+}
+
+.ml0 {
+  margin-left: 0;
+}
+
 .mr10 {
   margin-right: 10px;
 }
@@ -100,6 +108,26 @@ h3,
 
 .mt10 {
   margin-top: 10px;
+}
+
+.p0 {
+  padding: 0;
+}
+
+.pr0 {
+  padding-right: 0;
+}
+
+.pl0 {
+  padding-left: 0;
+}
+
+.pr5 {
+  padding-right: 5px;
+}
+
+.pl5 {
+  padding-left: 5px;
 }
 
 button.oddsbtn {
@@ -151,11 +179,11 @@ a:hover {
   color: rgba(28, 210, 34, 0.94) !important;
 }
 
-.backlink{
-  color: white
+.backlink {
+  color: white;
 }
 
-.backlink:hover{
+.backlink:hover {
   cursor: pointer;
 }
 
@@ -277,7 +305,8 @@ tr.monthtablerow {
   text-align: center;
 }
 
-.betmodal-content div.MuiFilledInput-inputHiddenLabel.MuiFilledInput-inputMarginDense{
+.betmodal-content
+  div.MuiFilledInput-inputHiddenLabel.MuiFilledInput-inputMarginDense {
   color: white;
 }
 
@@ -386,6 +415,18 @@ tr.monthtablerow {
 
 .mybets span.betterodswarn:hover {
   cursor: pointer;
+}
+
+.mybets span.cpcounter {
+  font-size: 9px;
+  position: absolute;
+  right: 1px;
+  bottom: 7px;
+  color: #efe7e7;
+  border-radius: 100%;
+  background: #1010198f;
+  padding: 2px;
+  min-width: 17px;
 }
 
 tr.theadrow {
@@ -534,8 +575,21 @@ span.footballicon svg {
 
 .mybetsmobile div.mobileFilter {
   /* float: left; */
-  align-self: flex-start;
+  align-self: center;
   margin-bottom: 12px;
+  margin-top: -12px;
+}
+
+.mybetsmobile span.cpcounter {
+  font-size: 9px;
+  position: absolute;
+  right: -14px;
+  bottom: 7px;
+  color: #d6cbcb;
+  border-radius: 100%;
+  background: #1010198f;
+  padding: 2px;
+  min-width: 17px;
 }
 
 .sidebar .nav li > a,
@@ -582,21 +636,59 @@ span.footballicon svg {
   padding: 8px 7px;
 }
 
-.groupstable tr.favoriteteamrow{
+.groupstable tr.favoriteteamrow {
   background: #28548a;
   color: #ffffffcf;
 }
 
-i.oddswarn{
-  color:#d84545;
+div.playerpage div.player_avatar {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 10px;
+}
+
+div.playerpage div.avatarcontainer {
+  padding: 10px 0 30px 0;
+}
+
+div.playerpage .playername {
+  margin-bottom: 0;
+}
+
+div.playerpage span.playerscore {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+div.playerpage span.closebtn {
+  position: absolute;
+  top: 80px;
+  right: 30px;
+  color: white;
+  background: #0c0c0ccc;
+  padding: 2px 6px;
+  border-radius: 100px;
+  z-index: 1100000;
+}
+
+div.playerpage > span.closebtn:hover{
+  cursor: pointer;
+}
+
+i.oddswarn {
+  color: #d84545;
   font-size: 10px;
   position: relative;
   top: -6px;
 }
 
 @media only screen and (max-width: 960px) {
-  div.tablesorter{
+  div.tablesorter {
     font-size: 12px;
+  }
+  div.playerpage span.closebtn {
+    top: 100px;
+    right: 19px;
   }
 }
 
@@ -627,7 +719,7 @@ i.oddswarn{
     padding-left: 8px;
   }
 
-  .m-p-8 .card-body{
+  .m-p-8 .card-body {
     padding: 6px;
   }
 
@@ -679,23 +771,29 @@ i.oddswarn{
   .groupstable div.cardstyle {
     min-width: 320px;
   }
-  div.theadrow{
+  div.theadrow {
     margin-left: 0;
     margin-right: 0;
   }
-  div.tablesorter{
+  div.tablesorter {
     font-size: 12px;
   }
-  div.tablesorter .teamArow{
+  div.tablesorter .teamArow {
     display: flex;
     align-self: flex-end;
   }
-  div.tablesorter .teamBrow{
+  div.tablesorter .teamBrow {
     display: flex;
     align-self: flex-start;
   }
 
-  div.tablesorter .teamArow p, div.tablesorter .teamBrow p{
+  div.tablesorter .teamArow p,
+  div.tablesorter .teamBrow p {
     margin-bottom: 0;
+  }
+
+  div.playerpage span.closebtn {
+    top: 100px;
+    right: 16px;
   }
 }

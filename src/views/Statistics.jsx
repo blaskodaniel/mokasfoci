@@ -82,7 +82,7 @@ const Statistics = () => {
         <Row>
           <Col xs="12" sm="12" md="6" lg="6">
             {piecoupons !== null ? (
-              <PieChart data={piecoupons} title="Szelvények állapota" />
+              <PieChart data={piecoupons} title="Szelvényeid" />
             ) : (
               ""
             )}

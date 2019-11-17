@@ -46,7 +46,7 @@ const LineChart = ({ dataset, xaxis, addtooltipinfo, title }) => {
           ticks: {
             max: Math.max.apply(null, dataset),
             min: Math.min.apply(null, dataset),
-            padding: 20,
+            padding: 10,
             fontColor: "#9a9a9a"
           }
         }
