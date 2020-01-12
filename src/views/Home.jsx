@@ -9,6 +9,7 @@ import {
   getMatchesByDay,
   getMatchesFromTo,
 } from "../_service/api-public-func";
+import News from "./News";
 
 const Home = (props) => {
   const [matchlist, setMatchlist] = useState([0]);
@@ -51,7 +52,7 @@ const Home = (props) => {
               : 
               matchlist[0] === 0 ? <p>Szerver nem válaszol. Kérlek próbálkozz később.</p> 
                 : matchlist.length > 0 ?  <Matchtable list={matchlist} title="Legközelebbi mérkőzések" /> :
-                <p>Ma és holnap nem lesznek mérkőzések</p>
+                null
             }
           </Col>
         </Row>
@@ -66,9 +67,12 @@ const Home = (props) => {
             }
           </Col>
         </Row>
+        <Row>
+          <Col className="m-p-8" xs="12">
+            <News />
+          </Col>
+        </Row>
       </div>
-      
-      
     </>
   );
 };

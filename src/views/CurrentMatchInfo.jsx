@@ -16,6 +16,7 @@ import {
   Col
 } from "reactstrap";
 import { userbets } from "../_service/api-func";
+import { AppConfig } from "../application.config";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -100,29 +101,22 @@ const CurrentMatchInfo = ({ match, history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isFavoriteBetting = cp => {
-    var result = {};
-    result.is = false;
-    result.team = null;
-    if (cp.outcome !== "x") {
-      if (
-        cp.outcome === "1" &&
-        typeof cp.userid.teamid !== "undefined" &&
-        cp.userid.teamid === cp.matchid.teamA
-      ) {
-        result.is = true;
-        result.team = teamA;
-      }
-      if (
-        cp.outcome === "2" &&
-        typeof cp.userid.teamid !== "undefined" &&
-        cp.userid.teamid === cp.matchid.teamB
-      ) {
-        result.is = true;
-        result.team = teamB;
-      }
+  const isFavorite = coupon => {
+    var returnobj = {
+      isfav: false,
+      team: ""
+    };
+    if (coupon.matchid.teamA === coupon.userid.teamid) {
+      returnobj.isfav = true;
+      returnobj.team = coupon.matchid.teamA;
+    } else if (coupon.matchid.teamB === coupon.userid.teamid) {
+      returnobj.isfav = true;
+      returnobj.team = coupon.matchid.teamB;
+    } else {
+      returnobj.isfav = false;
     }
-    return result;
+
+    return returnobj;
   };
 
   const isWin = cp => {
@@ -223,16 +217,6 @@ const CurrentMatchInfo = ({ match, history }) => {
                           <tr key={uuidv1()}>
                             <td className={isWin(cp)}>
                               {cp.userid.name}
-                              {isFavoriteBetting(cp).is ? (
-                                <>
-                                  <br />
-                                  <span className="favoriteteamspan">
-                                    (kedvenc csapat)
-                                  </span>
-                                </>
-                              ) : (
-                                ""
-                              )}
                             </td>
                             <td className="text-center">{cp.outcome}</td>
                             <td className="text-center">
@@ -251,15 +235,18 @@ const CurrentMatchInfo = ({ match, history }) => {
                               />
                             </td>
                             <td className="text-center">
-                              {isFavoriteBetting(cp).is ? (
+                              {isFavorite(cp).isfav ? (
+                                <>
                                 <NumberFormat
                                   value={Math.round(
-                                    cp.bet * cp.odds * 2 - cp.bet
+                                    ((cp.bet * cp.odds)- cp.bet) * 2 
                                   )}
                                   displayType={"text"}
                                   thousandSeparator={true}
                                   renderText={value => <span>{value}</span>}
                                 />
+                                <span className="favoritsign">x{AppConfig.favorite_odds}</span>
+                                </>
                               ) : (
                                 <NumberFormat
                                   value={Math.round(cp.bet * cp.odds - cp.bet)}

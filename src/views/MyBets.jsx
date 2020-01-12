@@ -204,13 +204,8 @@ const MyBets = (props) => {
   };
 
   const resultCalc = coupon => {
-    if (
-      typeof coupon.success !== "undefined" &&
-      coupon.success &&
-      (coupon.matchid.teamA === currentUser.userinfo.teamid ||
-        coupon.matchid.teamB === currentUser.userinfo.teamid)
-    ) {
-      const res = (coupon.bet * coupon.odds - coupon.bet) * 2;
+    if (coupon.matchid.teamA._id === currentUser.userinfo.teamid || coupon.matchid.teamB._id === currentUser.userinfo.teamid) {
+      const res = ((coupon.bet * coupon.odds) - coupon.bet) * 2;
       return Math.round(res * 100) / 100;
     } else {
       const res = coupon.bet * coupon.odds - coupon.bet;
@@ -248,18 +243,10 @@ const MyBets = (props) => {
       isfav: false,
       team: ""
     };
-    if (
-      coupon.status === 2 &&
-      coupon.success &&
-      coupon.matchid.teamA === currentUser.userinfo.teamid
-    ) {
+    if (coupon.matchid.teamA._id === currentUser.userinfo.teamid) {
       returnobj.isfav = true;
       returnobj.team = coupon.matchid.teamA;
-    } else if (
-      coupon.status === 2 &&
-      coupon.success &&
-      coupon.matchid.teamB === currentUser.userinfo.teamid
-    ) {
+    } else if (coupon.matchid.teamB._id === currentUser.userinfo.teamid) {
       returnobj.isfav = true;
       returnobj.team = coupon.matchid.teamB;
     } else {
@@ -556,6 +543,7 @@ const MyBets = (props) => {
                                   thousandSeparator={true}
                                   renderText={value => value}
                                 />
+                                {isFavorite(cp).isfav ? <span className="favoritsign">x{AppConfig.favorite_odds}</span> : null}
                               </td>
                               <td className="text-center">
                                 {cp.status === 2 && cp.success === false ? (
@@ -822,7 +810,7 @@ const MyBets = (props) => {
                       {isFavorite(cp).isfav ? (
                         <Row className={classes.cprow}>
                           <Col xs="12">
-                            + kedvenc csapat szorzó (x{AppConfig.favorite_odds})
+                            + kedvenc csapat szorzó
                           </Col>
                         </Row>
                       ) : null}
@@ -844,6 +832,7 @@ const MyBets = (props) => {
                               thousandSeparator={true}
                               renderText={value => <>{value} pont </>}
                             />
+                            {isFavorite(cp).isfav ? <span className="favoritsign">x{AppConfig.favorite_odds}</span> : null}
                           </span>
                         </Col>
                       </Row>

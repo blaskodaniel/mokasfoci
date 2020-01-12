@@ -429,8 +429,23 @@ tr.monthtablerow {
   min-width: 17px;
 }
 
+span.favoritsign {
+  background: #e20909d1;
+  color: white;
+  font-size: 11px;
+  padding: 0px 3px;
+  font-weight: 100;
+  border-radius: 100px;
+  position: relative;
+  top: -7px;
+  right: 2px;
+}
+
 tr.theadrow {
   padding: 3px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 tr.theadrow > td {
@@ -672,7 +687,7 @@ div.playerpage span.closebtn {
 }
 
 div.playerpage div.windowstyle {
-  background: #0000002e;
+  background: #00000059;
   padding: 12px;
   border-radius: 10px;
   box-shadow: 0px 0px 3px 0px black;
@@ -687,6 +702,49 @@ i.oddswarn {
   font-size: 10px;
   position: relative;
   top: -6px;
+}
+
+.newscomponent div.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin: 0;
+  padding-left: 8px;
+  border: 1px solid #00000057;
+  border-radius: 3px;
+  margin-top: 3px;
+  background: #253b5e91;
+}
+
+.newscomponent .avatar {
+  margin-left: 0;
+  margin-bottom: 0;
+  width: 38px;
+  height: 38px;
+}
+
+.newscomponent .textcont {
+  padding-left: 15px;
+}
+
+.newscomponent .title {
+  color: aliceblue;
+  font-size: 0.9em;
+  font-weight: lighter;
+}
+
+.newscomponent .score {
+  color: yellowgreen;
+  font-size: 1em;
+}
+
+.newscomponent .name {
+  color: aliceblue;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 @media only screen and (max-width: 960px) {
@@ -788,6 +846,9 @@ i.oddswarn {
   div.theadrow {
     margin-left: 0;
     margin-right: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
   }
   div.tablesorter {
     font-size: 12px;

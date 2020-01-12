@@ -50,6 +50,7 @@ const Statistics = () => {
       let score = [];
       let match = [];
       let diffscore = [];
+      resultPromise.data.scorepath.sort((x,y)=> new Date(x.date) - new Date(y.date))
       resultPromise.data.scorepath.forEach(x=>{
         score.push(x.score);
         match.push(x.match)
@@ -71,7 +72,8 @@ const Statistics = () => {
       <div className="content">
         <Row>
           <Col xs="12">
-            {scorepath.score !== null && scorepath.match !== null ? <LineChart
+            {scorepath.score !== null && scorepath.match !== null ? 
+            <LineChart
               dataset={scorepath.score}
               xaxis={scorepath.match}
               addtooltipinfo={scorepath.diffscore}

@@ -25,7 +25,9 @@ const PlayerPage = ({ match, history }) => {
       let score = [];
       let matchlist = [];
       let diffscore = [];
-      resultPromise.data.scorepath.forEach(x => {
+      let resp = resultPromise.data.scorepath;
+      resp.sort((x,y)=> new Date(x.date) - new Date(y.date))
+      resp.forEach(x => {
         score.push(x.score);
         matchlist.push(x.match);
         diffscore.push(x.diff);

@@ -78,6 +78,16 @@ export const getCouponsByUserId = (userid) => {
         });
 }
 
+export const news = () => {
+    return APItokenclient.get(`news`)
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+
 export const userbets = (matchid) => {
     return APItokenclient.get(`userbets/${matchid}`)
         .then(data => {
