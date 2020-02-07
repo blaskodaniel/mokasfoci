@@ -21,6 +21,10 @@ a:hover {
     margin: 15px;
 }
 
+.brackets_container_admin {
+    background: #b30019;
+}
+
 .brackets_container a {
     text-decoration: none;
     color: #000;
@@ -458,6 +462,61 @@ a:hover {
 
 .reversed .match_unit .m_segment.highlight>span {
     box-shadow: -2px 0 0 #c00
+}
+
+
+/*
+   ADMIN
+*/
+span.admin-selectContainer{
+    padding: 0 !important;
+}
+select.admin-selectStyle{
+    border-radius: 0;
+    border: none;
+    display: inline-block;
+    background-color: black;
+    height: 30px;
+    padding: 5px;
+    width: 40%;
+}
+select.admin-selectresultStyle{
+    border-radius: 0;
+    border: none;
+    display: inline-block;
+    background-color: black;
+    height: 30px;
+    padding: 5px;
+    width: 40%;
+}
+input.admin-inputStyle{
+    display: inline-block;
+    width: 20%;
+    padding: 0;
+    height: 30px;
+    margin: 0;
+    border-radius: 0;
+    color: black;
+    text-align: center;
+}
+select.admin-selectStyle:focus{
+    border-radius: 0;
+    background-color: black;
+    height: 30px;
+    padding: 5px;
+}
+select.admin-selectresultStyle:focus{
+    border-radius: 0;
+    background-color: black;
+    height: 30px;
+    padding: 5px;
+}
+input.admin-inputStyle:focus{
+    color: #000;
+}
+div.admin-datetimepicker input{
+    font-size: 10px;
+    padding: 3px;
 }
 
 @media(max-width: 768px) {

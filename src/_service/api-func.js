@@ -30,6 +30,26 @@ export const getuserinfo = (playerid) => {
         });
 }
 
+export const gettabelladata = () => {
+    return APItokenclient.get(`gettabelladata`)
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+
+export const settabella = (data) => {
+    return APItokenclient.post(`settabelladata`,{data:data})
+        .then(data => {
+            return data;
+        }).catch(function (error) {
+            // handle error
+            return error
+        });
+}
+
 export const createCoupon = (coupon) => {
     return APItokenclient.post(`newcoupon`, coupon)
         .then(data => {

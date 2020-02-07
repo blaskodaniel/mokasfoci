@@ -22,6 +22,7 @@ import {
 import Avatar from "@material-ui/core/Avatar";
 import { getTeams } from "../_service/api-public-func";
 import TournamentChart from "../components/Charts/TournamentChart";
+import TournamentChartEdit from "../components/Charts/TournamentChartEdit";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 
 const useStyles = makeStyles(theme =>
@@ -123,7 +124,11 @@ const GroupsTable = props => {
       <div className="content groupstable">
         {isWidthUp("sm", props.width) ? (
           <Row>
-            <TournamentChart />
+            {authContext.userinfo.role && authContext.userinfo.role === "admin" ? 
+              <TournamentChartEdit authctx={authContext} />
+              :
+              <TournamentChart authctx={authContext} />
+            }
           </Row>
         ) : null}
         <Row>
