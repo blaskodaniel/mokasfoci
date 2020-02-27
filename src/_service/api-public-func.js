@@ -72,7 +72,7 @@ export const getmatchesbygroup = (groupid) => {
         });
 }
 
-export const getMatchesFromTo = (from = moment().format("YYYY-MM-DD"), to = moment().format(AppConfig.gameend)) => {
+export const getMatchesFromTo = (from = moment().format("YYYY-MM-DD"), to) => {
     return APIclient.post(`getmatchesfromto`,{"from":from, "to": to})
         .then(data => {
             return data;

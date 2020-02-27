@@ -18,6 +18,7 @@ const AuthenticationProvider = props => {
   const [registerState, setRegisterState] = useState(0);
   const [register, registerDispatch] = useThunkReducer(RegistrationReducer, {msg:null});
   const [userinfo, setUserinfo] = useState({});
+  const [refresh, setrefresh] = useState(true)
   const [user, userDispatch] = useThunkReducer(LoginReducer, noAuthUser, () => {
     const localstr = authChecker();
     //console.log("Local storage: "+ JSON.stringify(localstr));
@@ -35,6 +36,10 @@ const AuthenticationProvider = props => {
     setUserinfo(resultPromise.data);
   };
 
+  const userinforefresh = () => {
+    setrefresh(!refresh)
+  }
+
   useEffect(() => {
     console.log("AuthenticationProvider: ",user);
     if(user.sub !== null && user.email !== null){
@@ -44,7 +49,7 @@ const AuthenticationProvider = props => {
       setLoginState(LoginState.Unauthenticated);
     }
     
-  }, [user,loginState])
+  }, [user,loginState,refresh])
 
   useEffect(() => {
     if(register.msg === 0){
@@ -59,7 +64,7 @@ const AuthenticationProvider = props => {
 
   return (
     <>
-      <AuthenticationContext.Provider value={{ loginstatus: loginState, user, userinfo, setUserinfo, userDispatch, logout }}>
+      <AuthenticationContext.Provider value={{ loginstatus: loginState, user, userinfo, setUserinfo, userDispatch, logout, userinforefresh }}>
         {loginState === LoginState.Pending ? <AuthLoader /> : null}
         {loginState === LoginState.Authenticated ? props.children : null}
         {loginState === LoginState.Unauthenticated || loginState === LoginState.Unknown ? (

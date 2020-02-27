@@ -124,7 +124,7 @@ const BettModal = ({ isShowing, hide, match, mode, editcoupon }) => {
 
   const betList = () => {
     let returnHTML = [];
-    for (let i = AppConfig.minbet; i < AppConfig.maxbet + 1; i++) {
+    for (let i = sharedcontext.settings.minimumbet; i < sharedcontext.settings.maximumbet + 1; i++) {
       if (i % 100 === 0) {
         returnHTML.push(
           <MenuItem key={i} className="white" value={i}>

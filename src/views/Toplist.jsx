@@ -122,14 +122,14 @@ const Toplist = () => {
                             {p.rate}
                           </td>
                           <td className="text-center">
-                            <Link to={playerlink[0].path+"/"+p.public_id}> <i className="tim-icons icon-chart-bar-32"></i></Link>
+                            <Link className="statlink" to={playerlink[0].path+"/"+p.public_id}> <i className="tim-icons icon-chart-bar-32"></i></Link>
                           </td>
                           <td>
                             <img
                               className="photo"
                               alt="..."
                               src={"/avatars/"+p.avatar}
-                            />{p.name}
+                            /><Link className="statlink" to={playerlink[0].path+"/"+p.public_id}>{p.name}</Link>
                           </td>
                           <td className="text-center">
                             <NumberFormat

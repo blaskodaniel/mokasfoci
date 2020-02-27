@@ -6,6 +6,7 @@ import * as AuthActions from "../../store/actions/authentication";
 import { Button, Form, FormGroup, Label, Input,FormFeedback } from "reactstrap";
 import { LoginState } from "../../context/AuthenticationContext";
 import NotificationAlert from 'react-notification-alert';
+import ReCAPTCHA from "react-google-recaptcha";
 import "./Registration.css";
 
 var options = {};
@@ -34,12 +35,13 @@ const mapDispatchToProps = dispatch => {
 class Registration extends Component {
   constructor(props) {
     super(props);
-
+    this.recaptchaRef = React.createRef();
     this.state = {
       email: "",
       password: "",
       name: "",
-      submitted: false
+      submitted: false,
+      recaptcha: false
     };
   }
 
@@ -53,10 +55,15 @@ class Registration extends Component {
     });
   };
 
+  onRecaptchaChange = e => {
+   console.log("onRecaptchaChange activate"+e)
+   this.setState({ recaptcha: true });
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     this.setState({ submitted: true });
-    if(this.state.email && this.state.password && this.state.name){
+    if(this.state.email && this.state.password && this.state.name && this.state.recaptcha){
         this.props.setlogin(LoginState.Pending);
         this.props.onRegister(
           AuthActions.Registration(this.state.email, this.state.password, this.state.name)
@@ -127,6 +134,13 @@ class Registration extends Component {
                 invalid={this.state.submitted && !this.state.email}
               />
               <FormFeedback>Email cím kötelező</FormFeedback>
+            </FormGroup>
+            <FormGroup>
+              <ReCAPTCHA
+                ref={this.recaptchaRef}
+                sitekey="6Le-hdsUAAAAAEr64qVc6iS4epvRlc0KsliHidPy"
+                onChange={this.onRecaptchaChange}
+              />
             </FormGroup>
             <Button className="w-100" color="success">
               Regisztrálok

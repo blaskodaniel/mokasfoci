@@ -293,7 +293,7 @@ const UserProfile = () => {
                         <Input
                           type="select"
                           disabled={
-                            moment().isBefore(AppConfig.gamestart) ? "" : true
+                            moment().isBefore(sharedcontext.settings.gamestart) ? "" : true
                           }
                           className="form-control"
                           value={profildata.teamid}
@@ -361,7 +361,7 @@ const UserProfile = () => {
                         <Input
                           type="select"
                           disabled={
-                            moment().isBefore(AppConfig.gamestart) ? "" : true
+                            moment().isBefore(sharedcontext.settings.gamestart) ? "" : true
                           }
                           className="form-control"
                           value={profildata.winteamid}
@@ -399,7 +399,7 @@ const UserProfile = () => {
                               value={profildata[group.name]}
                               name={group.name}
                               disabled={
-                                moment().isBefore(AppConfig.gamestart)
+                                moment().isBefore(sharedcontext.settings.gamestart)
                                   ? ""
                                   : true
                               }
@@ -424,7 +424,7 @@ const UserProfile = () => {
                     })}
                   </Row>
                 </CardBody>
-                {moment().isBefore(AppConfig.gamestart) ? (
+                {moment().isBefore(sharedcontext.settings.gamestart) ? (
                   <CardFooter>
                     <Button className="btn-fill" color="primary" type="submit">
                       Mentés

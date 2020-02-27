@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import uuidv1 from "uuid/v1";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import NumberFormat from "react-number-format";
 import classNames from "classnames";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Avatar from "@material-ui/core/Avatar";
+import { SharedContext } from '../context/SharedContect';
 // reactstrap components
 import {
   Card,
@@ -68,11 +69,13 @@ const useStyles = makeStyles(theme =>
     losecolortext: {
       color: "rgba(226, 92, 52, 0.94) !important"
     }
+
   })
 );
 
 const CurrentMatchInfo = ({ match, history }) => {
   const classes = useStyles();
+  const sharectx = useContext(SharedContext)
   const [players, setPlayers] = useState([]);
   const [isProgress, setIsProgress] = useState(true);
   const [teamA, setTeamA] = useState({});
@@ -245,7 +248,7 @@ const CurrentMatchInfo = ({ match, history }) => {
                                   thousandSeparator={true}
                                   renderText={value => <span>{value}</span>}
                                 />
-                                <span className="favoritsign">x{AppConfig.favorite_odds}</span>
+                                <span className="favoritsign">x{sharectx.settings.favoritTeamFactor}</span>
                                 </>
                               ) : (
                                 <NumberFormat

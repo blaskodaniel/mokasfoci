@@ -78,7 +78,7 @@ const Statistics = () => {
               xaxis={scorepath.match}
               addtooltipinfo={scorepath.diffscore}
               title="Pontod alakulása"
-            /> : null}
+            /> : <p>Nincsenek adatok</p>}
           </Col>
         </Row>
         <Row>

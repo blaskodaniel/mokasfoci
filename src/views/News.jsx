@@ -32,6 +32,7 @@ const News = ({ title }) => {
       setgroups(res);
     };
 
+    currentUser.userinforefresh()
     loadnews();
     loadgroups()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,8 +54,8 @@ const News = ({ title }) => {
   if(newsdata.length === 0){
     return null
   }else{
-    if(newsdata.maxwin && newsdata.maxwin.length > 0 || 
-      newsdata.couponstatbyuser && newsdata.couponstatbyuser.bestwin && newsdata.couponstatbyuser.bestwin.count != 0){
+    const isNews = newsdata.maxwin && newsdata.maxwin.length > 0 || newsdata.couponstatbyuser && newsdata.couponstatbyuser.bestwin && newsdata.couponstatbyuser.bestwin.count != 0
+    if(isNews){
         return (
           <>
             <Card className="newscomponent">

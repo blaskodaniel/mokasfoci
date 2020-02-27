@@ -5,13 +5,15 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 // reactstrap components
 import {
-  Input
+  Input,
+  Alert
 } from "reactstrap";
 import { gettabelladata, settabella } from "../../_service/api-func";
 
 const TournamentChartEdit = ({authctx}) => {
   const [teamsdata, setTeamsdata] = useState([]);
   const [tabelladata, settabelladata] = useState([]);
+  const [loading, setloading] = useState(true)
 
   useEffect(() => {
     const loadTeams = async () => {
@@ -22,6 +24,7 @@ const TournamentChartEdit = ({authctx}) => {
     const loadTabelladata = async () => {
       const resultPromise = await gettabelladata();
       settabelladata(resultPromise.data);
+      setloading(false)
     };
 
     loadTeams();
@@ -1810,7 +1813,14 @@ const TournamentChartEdit = ({authctx}) => {
     );
   }
   
-  return "Loading..."
+  return loading ? 
+    "Loading..." : tabelladata.length === 0 ? 
+      <div className="brackets_container brackets_container_admin">
+        <Alert style={{backgroundColor: "#d02903"}}>
+          Nem áll rendelkezésre adat. A kieséses szakasz tabellát így nem lehet megjeleníteni
+        </Alert> 
+      </div>
+      : null
 };
 
 export default TournamentChartEdit;

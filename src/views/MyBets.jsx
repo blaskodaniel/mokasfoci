@@ -343,7 +343,7 @@ const MyBets = (props) => {
     return (
       <>
         <div className="content mybets">
-          <h3>Szelvényeim</h3>
+          <h3>Fogadásaim</h3>
           <Row>
             <Col md="12">
               <Card>
@@ -543,7 +543,7 @@ const MyBets = (props) => {
                                   thousandSeparator={true}
                                   renderText={value => value}
                                 />
-                                {isFavorite(cp).isfav ? <span className="favoritsign">x{AppConfig.favorite_odds}</span> : null}
+                                {isFavorite(cp).isfav ? <span className="favoritsign">x{sharedcontext.settings.favoritTeamFactor}</span> : null}
                               </td>
                               <td className="text-center">
                                 {cp.status === 2 && cp.success === false ? (
@@ -619,7 +619,7 @@ const MyBets = (props) => {
                         })
                       ) : (
                         <tr>
-                          <td colSpan="7">Még nincsenek szelvényeid</td>
+                          <td colSpan="7">Még nem fogadtál egyetlen mérkőzésre sem</td>
                         </tr>
                       )}
                     </tbody>
@@ -832,7 +832,7 @@ const MyBets = (props) => {
                               thousandSeparator={true}
                               renderText={value => <>{value} pont </>}
                             />
-                            {isFavorite(cp).isfav ? <span className="favoritsign">x{AppConfig.favorite_odds}</span> : null}
+                            {isFavorite(cp).isfav ? <span className="favoritsign">x{sharedcontext.settings.favoritTeamFactor}</span> : null}
                           </span>
                         </Col>
                       </Row>
@@ -867,7 +867,7 @@ const MyBets = (props) => {
               );
             })
           ) : (
-            <Card><CardContent><div><Row className="jc-c"><p className="m0">Még nincsenek szelvényeid</p></Row></div></CardContent></Card>
+            <Card><CardContent><div><Row className="jc-c"><p className="m0">Még nem fogadtál egyetlen mérkőzésre sem</p></Row></div></CardContent></Card>
           )}
         </div>
       </>

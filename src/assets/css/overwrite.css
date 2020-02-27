@@ -626,6 +626,10 @@ span.footballicon svg {
   margin: 0 10px 0 0;
 }
 
+.toplist .statlink:hover{
+    color: rgb(255, 251, 251) !important;
+}
+
 .toplist span.brpoint {
   font-size: 10px;
   display: block;
