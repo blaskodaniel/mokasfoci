@@ -58,6 +58,11 @@ const Home = (props) => {
         </Row>
         <Row>
           <Col className="m-p-8" xs="12">
+            <News />
+          </Col>
+        </Row>
+        <Row>
+          <Col className="m-p-8" xs="12">
           {endmatchlistReqProgress ? 
               <p>Mérkőzések betöltése....</p> 
               : 
@@ -65,11 +70,6 @@ const Home = (props) => {
                 : endmatchlist.length > 0 ?  <MatchtableMobile list={endmatchlist} title="Nemrégiben lejátszott" /> :
                 null
             }
-          </Col>
-        </Row>
-        <Row>
-          <Col className="m-p-8" xs="12">
-            <News />
           </Col>
         </Row>
       </div>

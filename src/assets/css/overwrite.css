@@ -708,8 +708,15 @@ i.oddswarn {
   top: -6px;
 }
 
-.newscomponent div.container {
+.newscomponent div.bestboxcontainer{
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.newscomponent div.containernews {
+  display: flex;
+  flex-grow: 1;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
@@ -874,5 +881,9 @@ i.oddswarn {
   div.playerpage span.closebtn {
     top: 100px;
     right: 16px;
+  }
+
+  .newscomponent div.bestboxcontainer{
+    flex-direction: column;
   }
 }

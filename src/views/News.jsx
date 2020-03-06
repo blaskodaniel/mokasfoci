@@ -12,17 +12,23 @@ import {
 import { news } from "../_service/api-func";
 import { AuthenticationContext } from '../context/AuthenticationContext';
 import { getGroups } from "../_service/api-public-func";
+import BestBox from "../components/News/BestBox";
 
 const News = ({ title }) => {
   const [newsdata, setnewsdata] = useState([]);
+  const [maxwinfav, setmaxwinfav] = useState([]);
+  const [maxwin, setmaxwin] = useState([]);
   const [groups, setgroups] = useState([]);
-  const [isAlert, setisAlert] = useState(false);
   const currentUser = useContext(AuthenticationContext);
 
   useEffect(() => {
     const loadnews = async () => {
       const resultPromise = await news();
       let res = resultPromise.data;
+      const __maxwinfav = res.maxwin.filter(x=>x.withfavorite)
+      const __maxwin = res.maxwin.filter(x=>!x.withfavorite)
+      setmaxwinfav(__maxwinfav)
+      setmaxwin(__maxwin)
       setnewsdata(res);
     };
 
@@ -63,41 +69,73 @@ const News = ({ title }) => {
                 <CardTitle tag="h4">A legek</CardTitle>
               </CardHeader>
               <CardBody>
-                <Row>
-                  {newsdata.maxwin && newsdata.maxwin.length > 0 ? 
+                <div className="bestboxcontainer">
+                  <BestBox data={maxwinfav} single={true} title={"Legnagyobb nyeremény (kedvenc csapattal)"} />
+                  <BestBox data={maxwin} single={true} title={"Legnagyobb nyeremény"} />
+                  <BestBox data={newsdata.couponstatbyuser.bestwin} single={false} title={"Legtöbbször nyert"} />
+                </div>
+                {/* <Row>
+                  {maxwinfav.length > 0 ? 
                     <Col lg="6" xs="12">
-                    <div className="container">
+                    <div className="containernews">
                       <Avatar
                         className="player_avatar avatar"
                         alt="player avatar"
-                        src={`/avatars/${newsdata.maxwin ? newsdata.maxwin[0].avatar : "player.png"}`}
+                        src={`/avatars/${maxwinfav ? maxwinfav[0].avatar : "player.png"}`}
                       />
                       <div className="textcont">
-                          <div className="title">Legnagyobb nyeremény</div>
-                          <div className="name">{newsdata.maxwin ? newsdata.maxwin[0].name : "Loading..."}</div>
-                          <div className="score">{newsdata.maxwin ? newsdata.maxwin[0].score+" pont" : "Loading..."}</div>
+                          <div className="title">Legnagyobb nyeremény (kedvenc csapattal)</div>
+                          <div className="name">{maxwinfav ? maxwinfav[0].name : "Loading..."}</div>
+                          <div className="score">{maxwinfav ? maxwinfav[0].score+" pont" : "Loading..."}</div>
                       </div>
                     </div>
                     </Col> : null
                   }
-                  {newsdata.couponstatbyuser && newsdata.couponstatbyuser.bestwin && newsdata.couponstatbyuser.bestwin.count != 0 ? 
+                  {newsdata.couponstatbyuser && newsdata.couponstatbyuser.bestwin && newsdata.couponstatbyuser.bestwin.count !== 0 ? 
                     <Col lg="6" xs="12">
-                    <div className="container">
-                      <Avatar
-                        className="player_avatar avatar"
-                        alt="player avatar"
-                        src={`/avatars/${newsdata.couponstatbyuser ? newsdata.couponstatbyuser.bestwin.avatar : "player.png"}`}
-                      />
+                    <div className="containernews">
+                      {newsdata.couponstatbyuser.bestwin.map((player,index)=>{
+                        return <Avatar
+                          key={index}
+                          className="player_avatar avatar"
+                          style={{marginLeft: index > 0 ? "-25px": "0"}}
+                          alt="player avatar"
+                          src={`/avatars/${player ? player.avatar : "player.png"}`}
+                        />
+                      })}
+                      
                       <div className="textcont">
                           <div className="title">Legtöbbször nyert</div>
-                          <div className="name">{newsdata.couponstatbyuser ? newsdata.couponstatbyuser.bestwin.name : "Loading..."}</div>
-                          <div className="score">{newsdata.couponstatbyuser ? newsdata.couponstatbyuser.bestwin.count + " nyertes szelvény" : "Loading..."}</div>
+                          {newsdata.couponstatbyuser.bestwin.map((player,index)=>{
+                            return(
+                            <div key={index} className="name">{player ? player.name : "Loading..."}</div>
+                            )
+                          })}
+                          <div className="score">{newsdata.couponstatbyuser.bestwin ? newsdata.couponstatbyuser.bestwin[0].count + " nyertes szelvény" : "Loading..."}</div>
                       </div>
                     </div>
                   </Col> : null
                   }
                   
                 </Row>
+                <Row>
+                {maxwin.length > 0 ? 
+                    <Col xl="12" lg="12" xs="12">
+                      <div className="containernews">
+                        <Avatar
+                          className="player_avatar avatar"
+                          alt="player avatar"
+                          src={`/avatars/${maxwin ? maxwin[0].avatar : "player.png"}`}
+                        />
+                        <div className="textcont">
+                            <div className="title">Legnagyobb nyeremény</div>
+                            <div className="name">{maxwin ? maxwin[0].name : "Loading..."}</div>
+                            <div className="score">{maxwin ? maxwin[0].score+" pont" : "Loading..."}</div>
+                        </div>
+                      </div>
+                    </Col> : null
+                  }
+                </Row> */}
               </CardBody>
             </Card>
           </>
