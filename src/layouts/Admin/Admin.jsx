@@ -25,7 +25,7 @@ var ps;
 
 // Amit kapunk a store-ból
 const mapStateToProps = (state, match) => {
-  console.log("ReduxStore: " + JSON.stringify(state));
+  //console.log("ReduxStore: " + JSON.stringify(state));
   return {
     bettingmodal: state.Modals.value
   };
@@ -155,7 +155,7 @@ class Admin extends React.Component {
             />
             {isWidthDown('sm', this.props.width) ? <ScoreBar /> : null}
             <Switch>{this.getRoutes(routes)}</Switch>
-            <Footer fluid />
+            {/* <Footer fluid /> */}
           </div>
         </div>
       </>

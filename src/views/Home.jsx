@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import moment from 'moment'
 import withWidth from '@material-ui/core/withWidth';
 import Matchtable from "../components/Matchtable/Matchtable";
@@ -9,9 +9,16 @@ import {
   getMatchesByDay,
   getMatchesFromTo,
 } from "../_service/api-public-func";
+import {
+  Card,
+  CardBody
+} from "reactstrap";
 import News from "./News";
+import { SharedContext } from '../context/SharedContect';
+import Comingsoon from "../components/Comingsoon/Comingsoon";
 
-const Home = (props) => {
+const Home = () => {
+  const sharectx = useContext(SharedContext)
   const [matchlist, setMatchlist] = useState([0]);
   const [endmatchlist, setEndMatchlist] = useState([0]);
   const [matchlistReqProgress, setmatchlistReqProgress] = useState(true);
@@ -38,13 +45,14 @@ const Home = (props) => {
 
     loadMatches();
     loadEndMatches();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <div className="content">
+
+        {/* Jelenlegi és közeli mérkőzések listája */}
         <Row>
           <Col className="m-p-8" xs="12">
             {matchlistReqProgress ? 
@@ -56,11 +64,15 @@ const Home = (props) => {
             }
           </Col>
         </Row>
+
+        {/* Best of emberek */}
         <Row>
           <Col className="m-p-8" xs="12">
             <News />
           </Col>
         </Row>
+
+        {/* Nemrég lejátszott mérkőzések */}
         <Row>
           <Col className="m-p-8" xs="12">
           {endmatchlistReqProgress ? 
@@ -72,6 +84,19 @@ const Home = (props) => {
             }
           </Col>
         </Row>
+
+        {/* Ha még nincs semmi */}
+        {endmatchlist.length === 0 && matchlist.length === 0 ? 
+        <Row>
+          <Col md="12">
+            <Card>
+              <CardBody>
+                <Comingsoon startdate={sharectx.settings.gamestart} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        : null }
       </div>
     </>
   );

@@ -5,11 +5,13 @@ import { gettabelladata } from '../../_service/api-func';
 
 const TournamentChart = ({authctx}) => {
   const [tabelladata, settabelladata] = useState([]);
+  const [loading, setloading] = useState(true);
 
   useEffect(() => {
     const loadTabelladata = async () => {
       const resultPromise = await gettabelladata();
       settabelladata(resultPromise.data);
+      setloading(false)
     };
 
     loadTabelladata();
@@ -17,7 +19,7 @@ const TournamentChart = ({authctx}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if(tabelladata.length > 0){
+  if(tabelladata.length > 0 && !loading){
   return (
     <div className="brackets_container">
       <table>
@@ -564,9 +566,17 @@ const TournamentChart = ({authctx}) => {
       </table>
     </div>
   );
-  }else{
-    return <p>Loading...</p>
   }
+  
+  if(loading){
+    return <p>Betöltés...</p>
+  }
+
+  if(tabelladata.length === 0 && !loading){
+    return <p>Nincs adat a tabellához</p>
+  }
+
+  return <p>Valami hiba történt</p>
 };
 
 export default TournamentChart;

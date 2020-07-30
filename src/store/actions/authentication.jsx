@@ -14,19 +14,23 @@ export const Login = (username, password) => {
                     if(decodedToken){
                         dispatch(LoginSuccess(decodedToken));
                     }else{
-                        noAuthUser.msg = "Sikertelen bejelentkezés!(errcode:4)"
+                        noAuthUser.msg = "Sikertelen bejelentkezés!"
+                        console.log("(errcode:4)")
                         dispatch(LoginError(noAuthUser));
                     }
                 }else{
-                    noAuthUser.msg = "Email cím vagy jelszó nem megfelelő!(errcode:1)"
+                    noAuthUser.msg = "Email cím vagy jelszó nem megfelelő!"
+                    console.log("(errcode:1)")
                     dispatch(LoginError(noAuthUser));
                 }
             }).catch(err => {
                 if(err.response){
-                    noAuthUser.msg = "Email cím vagy jelszó nem megfelelő!(errcode:2)"
+                    noAuthUser.msg = "Email cím vagy jelszó nem megfelelő!"
+                    console.log("(errcode:2)")
                     dispatch(LoginError(noAuthUser));
                 }else{
-                    noAuthUser.msg = "Email cím vagy jelszó nem megfelelő!(errcode:3)"
+                    noAuthUser.msg = "Email cím vagy jelszó nem megfelelő!"
+                    console.log("(errcode:3)")
                     dispatch(LoginError(noAuthUser));
                 }
             });

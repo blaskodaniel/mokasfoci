@@ -45,7 +45,7 @@ const AvatarModal = ({ isShowing, hide, savefunc }) => {
             toggle={hide}
             backdrop={false}
           >
-            <ModalHeader toggle={hide}>Válassz avatart</ModalHeader>
+            <ModalHeader toggle={hide}>Válassz egy másik avatart</ModalHeader>
             <ModalBody>
               <Grid container direction="row" justify="center">
                 {avatarList.map(img => {

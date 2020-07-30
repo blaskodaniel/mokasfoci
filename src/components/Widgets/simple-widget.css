@@ -33,11 +33,28 @@
   background: #27293d;
 }
 
+.widget_container img.image{
+  width: 17px;
+  height: 17px;
+  margin: 8px 4px;
+}
+
+.widget_container div.textcontainer{
+  display: flex;
+}
+
+.widget_container div.textcontainer p{
+  font-size: 20px;
+}
+
 @media only screen and (max-width: 600px) {
   .widget_container div.widget_amount {
     font-size: 24px;
   }
   .widget_container span.widget_text {
     font-size: 11px;
+  }
+  .widget_container div.textcontainer p{
+    font-size: 16px;
   }
 }

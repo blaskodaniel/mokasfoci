@@ -1,7 +1,7 @@
 import { APItokenclient } from './axios-instance';
 
-export const loadProfile = (userid) => {
-    return APItokenclient.get(`getuserbyid/${userid}`)
+export const loadProfile = () => {
+    return APItokenclient.get(`getuserbyid`)
         .then(data => {
             return data;
         }).catch(function (error) {

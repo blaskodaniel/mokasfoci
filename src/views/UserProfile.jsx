@@ -50,7 +50,7 @@ const UserProfile = () => {
   useEffect(() => {
     console.log("AuthenticationContext: ", currentUser.userinfo);
     const loadUserProfile = async () => {
-      const resultPromise = await loadProfile(currentUser.user.sub);
+      const resultPromise = await loadProfile();
       setProfildata(resultPromise.data);
     };
 
@@ -61,7 +61,8 @@ const UserProfile = () => {
 
     const loadGroups = async () => {
       const resultPromise = await getGroups();
-      setGroupsdata(resultPromise.data);
+      if(resultPromise.data)
+        setGroupsdata(resultPromise.data);
     };
 
     loadUserProfile();
@@ -71,20 +72,27 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    let _groupbyteam = [];
-    teamsdata.forEach(team => {
-      const _tgr = _groupbyteam.find(x => x._id === team.groupid._id);
-      if (_tgr) {
-        _tgr.teams.push(team);
-      } else {
-        _groupbyteam.push({
-          _id: team.groupid._id,
-          name: team.groupid.name,
-          teams: [team]
-        });
-      }
-    });
-    setGroupwithteams(_groupbyteam);
+    if(teamsdata.length === 0){
+      console.log("Nincs adat")
+    }else{
+      let _groupbyteam = [];
+      teamsdata.forEach(team => {
+        if(team && team.groupid && team.groupid._id){
+          const _tgr = _groupbyteam.find(x => x._id === team.groupid._id);
+          if (_tgr) {
+            _tgr.teams.push(team);
+          } else {
+            _groupbyteam.push({
+              _id: team.groupid._id,
+              name: team.groupid.name,
+              teams: [team]
+            });
+          }
+        }
+      });
+      setGroupwithteams(_groupbyteam);
+    }
+    
   }, [teamsdata]);
 
   const handleProfilSubmit = async e => {
@@ -133,21 +141,26 @@ const UserProfile = () => {
         throw new Error("Hiba a küldés során");
       }
     } catch (err) {
-      sharedcontext.openNotify("Hiba történt a küldés során", "error");
+      sharedcontext.openNotify("Hiba történt a küldés során", "danger");
     }
   };
 
   const saveavatar = async avatarname => {
-    const saveresp = await setavatar(avatarname);
-    if (saveresp.status) {
-      currentUser.setUserinfo({
-        ...currentUser.userinfo,
-        avatar: avatarname
-      });
-      setProfildata({ ...profildata, avatar: avatarname });
-      avatarmodal_toggle();
-      sharedcontext.openNotify("Mentés sikeres", "success");
+    if(avatarname){
+      const saveresp = await setavatar(avatarname);
+      if (saveresp.status) {
+        currentUser.setUserinfo({
+          ...currentUser.userinfo,
+          avatar: avatarname
+        });
+        setProfildata({ ...profildata, avatar: avatarname });
+        avatarmodal_toggle();
+        sharedcontext.openNotify("Mentés sikeres", "success");
+      }
+    }else{
+      sharedcontext.openNotify("Válassz avatart!", "danger");
     }
+    
   };
 
   return (
@@ -190,6 +203,9 @@ const UserProfile = () => {
                     <img
                       alt="assets/img/default-avatar.png"
                       className="avatar"
+                      onClick={() => {
+                        avatarmodal_toggle();
+                      }}
                       src={"/avatars/" + profildata.avatar}
                     />
                     <h5 className="title f17">

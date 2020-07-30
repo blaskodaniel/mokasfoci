@@ -3,6 +3,14 @@ h1, h2, h3, h4, h5, h6 {
   color: rgba(248, 248, 248, 0.8);
 }
 
+.loginalert{
+  max-width: 300px;
+  font-size: 12px;
+  background-color: #e41818 !important;
+  text-align: center;
+  padding: 6px;
+}
+
 button.loginbtn{
   background: #6592cb;
 }

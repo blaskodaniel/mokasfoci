@@ -33,9 +33,12 @@ const Toplist = () => {
   useEffect(() => {
     const loadlist = async () => {
       const resultPromise = await getPlayers();
-      sort(resultPromise.data).desc(u => u.nettoscore);
-      const extendedList = medalSort(resultPromise.data);
-      setPlayers(extendedList);
+      if(resultPromise && resultPromise.data){
+        sort(resultPromise.data).desc(u => u.nettoscore);
+        const extendedList = medalSort(resultPromise.data);
+        setPlayers(extendedList);
+      }
+      
     };
     loadlist();
   }, []);
@@ -117,7 +120,7 @@ const Toplist = () => {
                   <tbody>
                     {players.map((p, index) => {
                       return (
-                        <tr key={p.id}>
+                        <tr key={p.public_id}>
                           <td className="text-center">
                             {p.rate}
                           </td>

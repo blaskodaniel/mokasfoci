@@ -103,7 +103,7 @@ class Login extends Component {
               Bejelentkezés
             </Button>
             <Alert
-              className="mt-3"
+              className="mt-3 loginalert"
               color="danger"
               isOpen={msg !== ""}
             >

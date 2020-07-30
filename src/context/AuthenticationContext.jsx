@@ -31,8 +31,8 @@ const AuthenticationProvider = props => {
     window.location.href = "/";
   };
 
-  const loadUserProfile = async (currentUser) => {
-    const resultPromise = await loadProfile(currentUser.sub);
+  const loadUserProfile = async () => {
+    const resultPromise = await loadProfile();
     setUserinfo(resultPromise.data);
   };
 
@@ -41,10 +41,10 @@ const AuthenticationProvider = props => {
   }
 
   useEffect(() => {
-    console.log("AuthenticationProvider: ",user);
+    //console.log("AuthenticationProvider: ",user);
     if(user.sub !== null && user.email !== null){
       setLoginState(LoginState.Authenticated);
-      loadUserProfile(user);
+      loadUserProfile();
     }else{
       setLoginState(LoginState.Unauthenticated);
     }
